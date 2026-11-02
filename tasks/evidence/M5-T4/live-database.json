@@ -1,0 +1,66 @@
+{
+  "checkedAt": "2026-11-02T21:59:18.289Z",
+  "database": {
+    "name": "docentra_dev"
+  },
+  "counts": {
+    "headers": "19",
+    "details": "41"
+  },
+  "migrations": [
+    {
+      "migration_name": "20261102000000_init",
+      "checksum": "e6da6d07bca48a5f78bfe45264810eac8008bfd2d9de0b7acad8459300dc8e76",
+      "finished_at": "2026-11-02T19:42:11.378Z"
+    },
+    {
+      "migration_name": "20261102120000_guards",
+      "checksum": "fe84854d851293603c89279cb0f45b566f4146da1f13a5d16e8a5497f6df8ae8",
+      "finished_at": "2026-11-02T20:23:43.935Z"
+    },
+    {
+      "migration_name": "20261102130000_maintenance_override",
+      "checksum": "f824811cd0552fd00c786af8c2592816552435d233ec3511dbf3e78c9751a5df",
+      "finished_at": "2026-11-02T20:32:57.979Z"
+    },
+    {
+      "migration_name": "20261102140000_detail_move_guard",
+      "checksum": "054af5dfca4ac25d02ee02de6c12da1f9f582beb6303f0f9f80bfaa3a1a75f54",
+      "finished_at": "2026-11-02T21:24:42.153Z"
+    },
+    {
+      "migration_name": "20261102150000_detail_guard_locking",
+      "checksum": "b618e39cb47a38dda9ed4c0637b795f6a4ef3c6e1f5ee029f1afe3d1d355cb00",
+      "finished_at": "2026-11-02T21:37:15.924Z"
+    },
+    {
+      "migration_name": "20261102160000_detail_guard_no_key_update",
+      "checksum": "b9549df3eebc1884368c1969d5ce74ee64c39d82d809e2cb2fe431f2f62cc809",
+      "finished_at": "2026-11-02T21:38:26.742Z"
+    },
+    {
+      "migration_name": "20261102170000_detail_guard_lock_order",
+      "checksum": "176eb012fd3945882912d5200f510578ac0cfcb724a39162b6247091838b93ad",
+      "finished_at": "2026-11-02T21:40:17.362Z"
+    },
+    {
+      "migration_name": "20261102180000_detail_parent_immutable",
+      "checksum": "3b97bc04f259d0ed73aad957320e07a6101ffc936c94dcf3ad453f36abd02379",
+      "finished_at": "2026-11-02T21:58:43.375Z"
+    }
+  ],
+  "functions": [
+    {
+      "proname": "recalc_header_totals",
+      "definition": "CREATE OR REPLACE FUNCTION docflow.recalc_header_totals(p_shno bigint)\n RETURNS void\n LANGUAGE plpgsql\nAS $function$\nBEGIN\n  UPDATE docflow.document_header h\n     SET total_amount = COALESCE(\n           (SELECT sum(d.amount) FROM docflow.document_detail d WHERE d.shno = p_shno), 0),\n         line_count = (\n           SELECT count(*) FROM docflow.document_detail d WHERE d.shno = p_shno),\n         updated_at = now()\n   WHERE h.shno = p_shno;\nEND;\n$function$\n"
+    },
+    {
+      "proname": "document_detail_totals",
+      "definition": "CREATE OR REPLACE FUNCTION docflow.document_detail_totals()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\nbegin\n  if tg_op = 'DELETE' then\n    perform docflow.recalc_header_totals(old.shno);\n    return old;\n  end if;\n  perform docflow.recalc_header_totals(new.shno);\n  return new;\nend;\n$function$\n"
+    },
+    {
+      "proname": "guard_approved_document",
+      "definition": "CREATE OR REPLACE FUNCTION docflow.guard_approved_document()\n RETURNS trigger\n LANGUAGE plpgsql\nAS $function$\ndeclare\n  parent_status text;\nbegin\n  if tg_table_name = 'document_detail' and tg_op = 'UPDATE' then\n    if new.shno is distinct from old.shno then\n      raise exception 'document detail parent is immutable'\n        using errcode = '23514';\n    end if;\n  end if;\n\n  if tg_table_name = 'document_header' then\n    if current_setting('docflow.maintenance', true) = 'on' then\n      return new;\n    end if;\n    if old.status = 'approved' and (\n      new.status is distinct from old.status\n      or new.vendor_id is distinct from old.vendor_id\n      or new.document_date is distinct from old.document_date\n      or new.document_number is distinct from old.document_number\n      or new.notes is distinct from old.notes\n    ) then\n      raise exception 'approved documents are immutable' using errcode = '23514';\n    end if;\n    return new;\n  end if;\n\n  -- One parent only. Match the header UPDATE lock used by edits, approvals\n  -- and totals; unlike FOR SHARE this never needs a lock upgrade.\n  -- Writers must lock the header before touching existing detail rows (the\n  -- application and seeder already do). A row trigger cannot order locks that\n  -- PostgreSQL has already taken on the target detail tuple.\n  if tg_op = 'DELETE' then\n    select status into parent_status from docflow.document_header\n      where shno = old.shno for no key update;\n  else\n    select status into parent_status from docflow.document_header\n      where shno = new.shno for no key update;\n  end if;\n\n  if parent_status = 'approved'\n     and current_setting('docflow.maintenance', true) is distinct from 'on' then\n    raise exception 'approved documents are immutable' using errcode = '23514';\n  end if;\n  if tg_op = 'DELETE' then\n    return old;\n  end if;\n  return new;\nend;\n$function$\n"
+    }
+  ]
+}

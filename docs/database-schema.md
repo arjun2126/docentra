@@ -1,6 +1,6 @@
 # DocFlow database schema
 
-Generated from the live database (`docflow` schema, PostgreSQL 16) and the three
+Generated from the live database (`docflow` schema, PostgreSQL 16) and the eight
 applied migrations in `prisma/migrations/`. Nothing here is inferred: column
 types, constraint names and trigger definitions were read back from
 `information_schema` / `pg_catalog`.
@@ -132,10 +132,10 @@ deleted, which is why vendors are retired with `is_active = false` instead.
 | Object | Kind | Behaviour |
 |---|---|---|
 | `trg_document_detail_totals` | AFTER INSERT/UPDATE/DELETE on `document_detail` | Recomputes the parent header's `total_amount`, `line_count` and `updated_at`, so application code, seeds and imports cannot drift apart |
-| `docflow.document_detail_totals()` | trigger function | Calls `recalc_header_totals` for the affected `shno`; a moved line fixes both the old and new header |
+| `docflow.document_detail_totals()` | trigger function | Calls `recalc_header_totals` for the single affected `shno`; transfers are forbidden |
 | `docflow.recalc_header_totals(bigint)` | function | `sum(amount)` / `count(*)` for one header, coalescing `NULL` to `0` |
 | `document_header_immutable` | BEFORE UPDATE on `document_header` | Rejects changes to `vendor_id`, `document_date`, `document_number`, `notes`, or any `status` change, once the row is `approved` (SQLSTATE `23514`) |
-| `document_detail_immutable` | BEFORE INSERT/UPDATE/DELETE on `document_detail` | Rejects inserting or updating a line into an approved document, and deleting a line that belongs to one |
+| `document_detail_immutable` | BEFORE INSERT/UPDATE/DELETE on `document_detail` | Rejects every change to an existing line's `shno` (SQLSTATE `23514`), even under maintenance, before taking any parent lock. For other writes, locks the one parent `FOR NO KEY UPDATE` and rejects approved-document changes unless maintenance is enabled |
 | `docflow.guard_approved_document()` | trigger function | Implements both guards; honours the transaction-local `docflow.maintenance = 'on'` override used only by the demo seeder |
 
 Immutability is enforced in the database, not only in the application: the app
@@ -166,6 +166,37 @@ check is the friendly path, the trigger is the guarantee.
 | `20261102000000_init` | `docflow` schema, three tables, checks, indexes, totals trigger |
 | `20261102120000_guards` | Approval immutability triggers, case-insensitive and date indexes |
 | `20261102130000_maintenance_override` | Closes the bare-status-update hole; adds the seeder-only maintenance override |
+| `20261102140000_detail_move_guard` | Checks both source and destination parents when a line is re-parented, closing the move-out-of-approved gap |
+| `20261102150000_detail_guard_locking` | Takes `FOR SHARE` on the parent rows so the checks serialise against a concurrent approval |
+| `20261102160000_detail_guard_no_key_update` | Switches those locks to `FOR NO KEY UPDATE`, which still blocks approval but cannot deadlock two concurrent editors of the same draft |
+| `20261102170000_detail_guard_lock_order` | Takes the parent locks in ascending `shno` order in one statement, removing the remaining deadlock between opposite-direction moves |
+| `20261102180000_detail_parent_immutable` | Final behavior: permanent line ownership, single-parent approval lock and totals calculation; preserves transaction-local maintenance for rebuilding lines |
+
+The four migrations from `140000` through `170000` are applied history, not
+the final design. Their attempted transfer support is superseded by `180000`;
+they were preserved byte-for-byte, with checksums verified against the live DB.
+
+### Locking contract
+
+- Existing-document writers lock/update the header **before** touching detail
+  rows. `updateDocument` does its conditional version/status header update before
+  replacing lines; `transitionDocument` updates only the header. Creation owns a
+  new header. The seeder upserts each header before replacing its lines.
+- The detail guard holds one `FOR NO KEY UPDATE` parent lock through commit,
+  including under maintenance. It conflicts with approvals and other totals
+  writers without a `FOR SHARE` upgrade. The totals trigger reuses that lock.
+  Under the application's default READ COMMITTED isolation, queued writers see
+  committed approval status and recompute totals after earlier writers commit.
+- Raw SQL writers must follow the same header-before-details order. PostgreSQL
+  locks an UPDATE/DELETE target detail tuple before its row trigger runs; the
+  trigger cannot retroactively fix child-first transactions. Arbitrary mixed
+  child-first/header-first SQL (or inconsistent multi-document ordering) may
+  still deadlock and PostgreSQL aborts one transaction; universal deadlock freedom
+  is not claimed. Multi-document maintenance must lock headers in ascending SHNO
+  order before details. No application operation transfers an existing line.
+- Concurrency regressions exercise queued approvals/edits, exact totals,
+  header-first line replacement, concurrent direct edits, and transfer rejection
+  while both parent locks are held elsewhere.
 
 ## Notes and limitations
 
@@ -173,5 +204,5 @@ check is the friendly path, the trigger is the guarantee.
 - `updated_at` has no database trigger on `vendor` or on non-derived header columns; it is set by application writes.
 - `total_amount` and `line_count` are denormalised on purpose so listings and dashboards avoid aggregating lines, at the cost of trusting the totals trigger.
 - Money is `numeric`, never floating point. Application code carries values as decimal strings and never applies a currency symbol or locale.
-- The detail guard inspects only the destination document (`new.shno`), so moving a line *out* of an approved document into a non-approved one is not blocked by the trigger; the totals trigger still recalculates both headers. The application never performs such a move.
+- Line ownership is permanent in every status: changing `shno` is rejected, including under maintenance. Draft inserts, edits (including assigning the same `shno`), and deletions remain supported. Tests live in `tests/integration/guards.test.ts`.
 - The `docflow.maintenance` override is transaction-local (`set_config(..., true)` in `prisma/seed.mjs`); it is not granted to the application and exists only for rebuilding demo data.

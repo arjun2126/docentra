@@ -664,9 +664,41 @@
         "tasks/evidence/M5-ACCEPT/2026-11-02T20-36-08-166Z-M5-ACCEPT.json"
       ],
       "note": "implemented by manager; independently reviewed"
+    },
+    {
+      "id": "M5-T4",
+      "milestone": "M5",
+      "title": "Fix document integrity with permanent detail ownership",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 1,
+      "dependsOn": [
+        "M5-T3"
+      ],
+      "scope": [
+        "prisma/",
+        "tests/",
+        "docs/",
+        "tasks/",
+        "journal/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration",
+      "brief": "Owner-approved simplification: reject every change to an existing detail's shno in a new forward-only migration; preserve draft edits, inserts/deletes, approval immutability and transaction-scoped maintenance. Audit lock ordering, test concurrency, update schema docs, run full gates/build/browser regressions and obtain independent review before commit/push.",
+      "note": "Owner authorization 2026-11-02: permanent detail ownership replaces cross-document transfers; preserve all four already-applied uncommitted migrations. Commit and push only after independent acceptance.",
+      "evidence": [
+        "tasks/evidence/M5-T4/2026-11-02-final-ownership.json"
+      ],
+      "completedAt": "2026-11-02T22:01:34.897Z",
+      "reviewer": {
+        "verdict": "accept",
+        "reasons": [],
+        "sessionID": "ses_e61b84551ffeL3FqrEU4XafzmP",
+        "reviewedAt": "2026-11-02T22:01:34.893Z",
+        "readOnly": true
+      }
     }
   ],
-  "updatedAt": "2026-11-02T19:44:54.021Z",
+  "updatedAt": "2026-11-02T22:01:34.897Z",
   "authorization": {
     "authorizedBy": "owner",
     "authorizedAt": "2026-11-02",

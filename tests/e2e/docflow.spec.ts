@@ -33,6 +33,18 @@ test("a document can be created, approved, searched and exported", async ({ page
   expect(number).toMatch(/^DOC-\d{4}-\d{6}$/);
   await expect(page.getByText("24.75")).toBeVisible();
 
+  // Draft replacement still supports editing, insertion and deletion.
+  await page.getByRole("link", { name: "Edit draft" }).click();
+  await page.locator('input[name="quantity"]').nth(0).fill("3");
+  await page.getByRole("button", { name: "Remove line 2", exact: true }).click();
+  await page.getByRole("button", { name: "Add line", exact: true }).click();
+  await page.locator('input[name="item"]').nth(1).fill("Replacement toner");
+  await page.locator('input[name="quantity"]').nth(1).fill("1");
+  await page.locator('input[name="price"]').nth(1).fill("2.00");
+  await page.getByRole("button", { name: "Save draft" }).click();
+  await expect(page).toHaveURL(/\/documents\/\d+$/);
+  await expect(page.getByText("33.50")).toBeVisible();
+
   // 4. Submit, then approve.
   await page.getByRole("button", { name: "Submit for approval" }).click();
   await expect(page.getByText("submitted", { exact: true })).toBeVisible();
