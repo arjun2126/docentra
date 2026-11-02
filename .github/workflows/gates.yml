@@ -7,15 +7,46 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   gates:
     runs-on: ubuntu-latest
+    services:
+      # The integration gate needs a real database; without one gates.sh reports
+      # INTEGRATION SKIP and CI would be weaker than a local run.
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: docentra
+          POSTGRES_PASSWORD: docentra
+          POSTGRES_DB: docentra_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U docentra -d docentra_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+    env:
+      DATABASE_URL: postgresql://docentra:docentra@127.0.0.1:5432/docentra_test
+      TEST_DATABASE_URL: postgresql://docentra:docentra@127.0.0.1:5432/docentra_test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Generate Prisma client
+        run: npx prisma generate
       - name: Run gates
+        # HARNESS_BUILD=1 adds the production build gate, matching a milestone
+        # boundary run locally.
+        env:
+          HARNESS_BUILD: '1'
         run: bash scripts/gates.sh
       - name: Upload evidence
         if: always()
