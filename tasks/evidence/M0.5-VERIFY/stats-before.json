@@ -1,0 +1,344 @@
+{
+  "range": {
+    "from": 1767243600000,
+    "to": 1793645573059
+  },
+  "sessions": 53,
+  "subagents": 75,
+  "prompts": 176,
+  "steps": 5839,
+  "tokens": {
+    "input": 181838410,
+    "output": 2248063,
+    "reasoning": 2091443,
+    "cache": {
+      "read": 1573734868,
+      "write": 0
+    }
+  },
+  "cost": 0,
+  "tools": {
+    "mode": "detail",
+    "totals": {
+      "calls": 8143,
+      "succeeded": 7978,
+      "failed": 165,
+      "unfinished": 0
+    },
+    "usage": [
+      {
+        "name": "shell",
+        "calls": 3608,
+        "succeeded": 3495,
+        "failed": 113,
+        "unfinished": 0,
+        "durationP50": 132.5
+      },
+      {
+        "name": "read",
+        "calls": 1904,
+        "succeeded": 1886,
+        "failed": 18,
+        "unfinished": 0,
+        "durationP50": 16
+      },
+      {
+        "name": "execute",
+        "calls": 830,
+        "succeeded": 830,
+        "failed": 0,
+        "unfinished": 0,
+        "durationP50": 128
+      },
+      {
+        "name": "edit",
+        "calls": 633,
+        "succeeded": 625,
+        "failed": 8,
+        "unfinished": 0,
+        "durationP50": 13
+      },
+      {
+        "name": "grep",
+        "calls": 347,
+        "succeeded": 341,
+        "failed": 6,
+        "unfinished": 0,
+        "durationP50": 27
+      },
+      {
+        "name": "write",
+        "calls": 204,
+        "succeeded": 204,
+        "failed": 0,
+        "unfinished": 0,
+        "durationP50": 11
+      },
+      {
+        "name": "glob",
+        "calls": 174,
+        "succeeded": 174,
+        "failed": 0,
+        "unfinished": 0,
+        "durationP50": 36
+      },
+      {
+        "name": "websearch",
+        "calls": 158,
+        "succeeded": 158,
+        "failed": 0,
+        "unfinished": 0,
+        "durationP50": 1694
+      },
+      {
+        "name": "patch",
+        "calls": 114,
+        "succeeded": 107,
+        "failed": 7,
+        "unfinished": 0,
+        "durationP50": 13
+      },
+      {
+        "name": "subagent",
+        "calls": 95,
+        "succeeded": 92,
+        "failed": 3,
+        "unfinished": 0,
+        "durationP50": 17381
+      },
+      {
+        "name": "webfetch",
+        "calls": 59,
+        "succeeded": 49,
+        "failed": 10,
+        "unfinished": 0,
+        "durationP50": 250
+      },
+      {
+        "name": "skill",
+        "calls": 15,
+        "succeeded": 15,
+        "failed": 0,
+        "unfinished": 0,
+        "durationP50": 7
+      },
+      {
+        "name": "question",
+        "calls": 2,
+        "succeeded": 2,
+        "failed": 0,
+        "unfinished": 0,
+        "durationP50": 91363.5
+      }
+    ]
+  },
+  "activeDays": 6,
+  "streak": 6,
+  "activity": [
+    {
+      "date": "2026-10-28",
+      "steps": 587
+    },
+    {
+      "date": "2026-10-29",
+      "steps": 2330
+    },
+    {
+      "date": "2026-10-30",
+      "steps": 925
+    },
+    {
+      "date": "2026-10-31",
+      "steps": 685
+    },
+    {
+      "date": "2026-11-01",
+      "steps": 1141
+    },
+    {
+      "date": "2026-11-02",
+      "steps": 171
+    }
+  ],
+  "models": [
+    {
+      "model": {
+        "id": "deepseek/deepseek-v4.1-flash",
+        "providerID": "openscale",
+        "variant": "default"
+      },
+      "steps": 4770,
+      "tokens": {
+        "input": 173751363,
+        "output": 1934168,
+        "reasoning": 1942003,
+        "cache": {
+          "read": 1457697154,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "gpt-6.1-sol",
+        "providerID": "openai",
+        "variant": "default"
+      },
+      "steps": 645,
+      "tokens": {
+        "input": 5824978,
+        "output": 216710,
+        "reasoning": 79598,
+        "cache": {
+          "read": 95560320,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "gpt-6-astra",
+        "providerID": "openai",
+        "variant": "default"
+      },
+      "steps": 138,
+      "tokens": {
+        "input": 707344,
+        "output": 35074,
+        "reasoning": 2371,
+        "cache": {
+          "read": 7490688,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "gpt-6.1-sol",
+        "providerID": "openai",
+        "variant": "max"
+      },
+      "steps": 41,
+      "tokens": {
+        "input": 296612,
+        "output": 15703,
+        "reasoning": 14717,
+        "cache": {
+          "read": 7263488,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "gpt-5.6-luna-fast",
+        "providerID": "openai",
+        "variant": "default"
+      },
+      "steps": 161,
+      "tokens": {
+        "input": 833606,
+        "output": 31491,
+        "reasoning": 21299,
+        "cache": {
+          "read": 3348352,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "z-ai/glm-5.3-flash",
+        "providerID": "openscale",
+        "variant": "default"
+      },
+      "steps": 56,
+      "tokens": {
+        "input": 298249,
+        "output": 11374,
+        "reasoning": 31128,
+        "cache": {
+          "read": 2148050,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "gpt-6.1-terra",
+        "providerID": "openai"
+      },
+      "steps": 25,
+      "tokens": {
+        "input": 113245,
+        "output": 3532,
+        "reasoning": 295,
+        "cache": {
+          "read": 226816,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "glm-5.3-flash-free",
+        "providerID": "opencode",
+        "variant": "default"
+      },
+      "steps": 1,
+      "tokens": {
+        "input": 6658,
+        "output": 3,
+        "reasoning": 7,
+        "cache": {
+          "read": 0,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "gpt-6.1-terra",
+        "providerID": "openai",
+        "variant": "default"
+      },
+      "steps": 1,
+      "tokens": {
+        "input": 6355,
+        "output": 8,
+        "reasoning": 25,
+        "cache": {
+          "read": 0,
+          "write": 0
+        }
+      },
+      "cost": 0
+    },
+    {
+      "model": {
+        "id": "big-pickle",
+        "providerID": "opencode",
+        "variant": "default"
+      },
+      "steps": 1,
+      "tokens": {
+        "input": 0,
+        "output": 0,
+        "reasoning": 0,
+        "cache": {
+          "read": 0,
+          "write": 0
+        }
+      },
+      "cost": 0
+    }
+  ]
+}

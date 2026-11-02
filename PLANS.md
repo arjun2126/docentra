@@ -184,3 +184,34 @@ task halts its dependents; unrelated tasks may continue.
   harness with synthetic tasks so that gate and review mechanics are validated
   independently of any model's behaviour.
 - Token/cost metrics are `unmeasured` until a session-log source is confirmed.
+
+## M0.5 findings (real agent integration, executed)
+
+Verified by execution, not by configuration:
+
+- OpenCode v2.1.4 loads `.opencode/agent/*.md`. `implementer` (primary) and
+  `reviewer` (subagent) both resolve through `opencode debug agents`, in the
+  repository and in an isolated fixture carrying its own `.opencode/`.
+- `opencode run` blocks indefinitely when stdin stays open. Every harness call
+  site pipes stdin, so the loop is unaffected — but new call sites must close it.
+- Free model tiers meter **requests per model**, not tokens. A reviewer that
+  spends two turns reading files exhausts its allowance and exits 1; the harness
+  correctly records that as a rejection, never as an acceptance.
+- Reviews are therefore single-shot: `scripts/m05-review-payload.mjs` inlines the
+  recorded evidence into one request (1.1k chars for a small patch).
+- Roles run on different models (`M05_MODEL_IMPL`, `M05_MODEL_REVIEW`) so one
+  free allowance cannot starve the other.
+- Real usage comes from `opencode stats --json --cost` snapshots via
+  `scripts/verify-m05.sh stats-before|stats-after`. Aggregate only; per-task
+  attribution is not reliable and is not claimed.
+- Measured for the verified run: cost 0, 618k input tokens, 48k output,
+  20 prompts across 18 sessions (free tier, two models).
+
+Remaining limitations carried into M1:
+
+- GitHub is still unwired. `gh` is authenticated with `repo` and `workflow`
+  scopes, but no remote exists, so no Issue and no workflow run has ever executed.
+- Reviewer judgement is a real model, not a deterministic check. One probe shows
+  it rejects a policy violation; that is evidence of capability, not a guarantee.
+- Task `workdir` lets a task act on an isolated fixture. Real Docentra tasks still
+  default to the repository root and have never run through a model.

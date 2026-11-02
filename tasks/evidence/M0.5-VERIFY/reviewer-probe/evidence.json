@@ -1,0 +1,8 @@
+{
+  "taskId": "F-PROBE",
+  "taskAcceptance": "node --test",
+  "scope": ["src/", "test/"],
+  "gate": { "exitCode": 0, "transcript": "[gate] ACCEPT PASS task acceptance command\nGATES: PASS" },
+  "changedFiles": ["src/money.mjs", "test/money.test.mjs"],
+  "diff": "diff --git a/src/money.mjs b/src/money.mjs\n--- a/src/money.mjs\n+++ b/src/money.mjs\n@@ -44,0 +45,4 @@\n+export function formatAmount(amount) {\n+  return amount.toFixed(2);\n+}\n"
+}

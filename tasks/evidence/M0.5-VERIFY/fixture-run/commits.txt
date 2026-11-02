@@ -1,0 +1,4 @@
+c25abed feat(F-T3): add formatAmount with fixed two-decimal output
+712cd6a feat(F-T2): export toCents and fromCents with rounding-edge tests
+f351740 fix(F-T1): compute money totals in integer cents
+db1d500 chore: seed fixture with a known money defect

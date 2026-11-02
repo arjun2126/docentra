@@ -1,0 +1,107 @@
+{
+  "stage": "M0.5",
+  "generatedAt": "2026-11-02T19:06:53.691Z",
+  "model": "impl=opencode/deepseek-v4.1-flash-free review=opencode/nemotron-3.5-lightning-free",
+  "fixture": "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/.harness-tmp/m05-fixture",
+  "usage": {
+    "model": "impl=opencode/deepseek-v4.1-flash-free review=opencode/nemotron-3.5-lightning-free",
+    "input": 618027,
+    "output": 48483,
+    "reasoning": 36031,
+    "cacheRead": 7544704,
+    "cost": 0,
+    "prompts": 20,
+    "sessions": 18
+  },
+  "commits": [
+    "c25abed feat(F-T3): add formatAmount with fixed two-decimal output",
+    "712cd6a feat(F-T2): export toCents and fromCents with rounding-edge tests",
+    "f351740 fix(F-T1): compute money totals in integer cents",
+    "db1d500 chore: seed fixture with a known money defect"
+  ],
+  "tasks": [
+    {
+      "id": "F-T1",
+      "status": "done",
+      "attempts": 0
+    },
+    {
+      "id": "F-T2",
+      "status": "done",
+      "attempts": 0
+    },
+    {
+      "id": "F-T3",
+      "status": "done",
+      "attempts": 0
+    }
+  ],
+  "checks": [
+    {
+      "name": "F-T1 completed",
+      "ok": true,
+      "detail": "done"
+    },
+    {
+      "name": "F-T1 real implementer ran",
+      "ok": true,
+      "detail": "no implementer invocation recorded"
+    },
+    {
+      "name": "F-T1 gates passed",
+      "ok": true,
+      "detail": "no passing gate transcript"
+    },
+    {
+      "name": "F-T1 reviewed by external reviewer",
+      "ok": true,
+      "detail": "no external accept"
+    },
+    {
+      "name": "F-T2 completed",
+      "ok": true,
+      "detail": "done"
+    },
+    {
+      "name": "F-T2 real implementer ran",
+      "ok": true,
+      "detail": "no implementer invocation recorded"
+    },
+    {
+      "name": "F-T2 gates passed",
+      "ok": true,
+      "detail": "no passing gate transcript"
+    },
+    {
+      "name": "F-T2 reviewed by external reviewer",
+      "ok": true,
+      "detail": "no external accept"
+    },
+    {
+      "name": "F-T3 completed",
+      "ok": true,
+      "detail": "done"
+    },
+    {
+      "name": "F-T3 real implementer ran",
+      "ok": true,
+      "detail": "no implementer invocation recorded"
+    },
+    {
+      "name": "F-T3 gates passed",
+      "ok": true,
+      "detail": "no passing gate transcript"
+    },
+    {
+      "name": "F-T3 reviewed by external reviewer",
+      "ok": true,
+      "detail": "no external accept"
+    },
+    {
+      "name": "fixture has commits beyond the seed",
+      "ok": true,
+      "detail": "4 commit(s)"
+    }
+  ],
+  "failures": 0
+}

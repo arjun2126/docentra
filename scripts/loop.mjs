@@ -12,6 +12,7 @@
 // Exit codes: 0 = authorized work complete or awaiting approval, 1 = blocked,
 // anything else = crash (state survives; rerun to resume).
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import fs from 'node:fs';
 import {
@@ -47,11 +48,18 @@ function gitToplevel(dir) {
   }
 }
 
-// Changed files are measured in the run's own data root. A verification root
-// nested inside another repository must not borrow that repository's tree, so
-// git has to own the root itself (rev-parse toplevel === data root).
-function changedFiles() {
-  const root = dataRoot();
+// Tasks may declare a working directory (an isolated fixture or sandbox).
+// Default is the repository root, so existing tasks are unaffected.
+function taskWorkdir(task) {
+  if (!task?.workdir) return CODE_ROOT;
+  return path.isAbsolute(task.workdir) ? task.workdir : path.resolve(CODE_ROOT, task.workdir);
+}
+
+// Changed files are measured in the task's own workdir. A nested fixture must
+// not borrow the parent repository's tree, so git has to own that root itself
+// (rev-parse toplevel === workdir).
+function changedFiles(task) {
+  const root = taskWorkdir(task);
   const top = gitToplevel(root);
   if (!top || top !== fs.realpathSync(root)) return { gitTracked: false, files: [] };
   const result = spawnSync('git', ['-C', root, 'status', '--porcelain'], {
@@ -66,6 +74,57 @@ function changedFiles() {
   return { gitTracked: true, files };
 }
 
+/**
+ * Fingerprint of the task's working tree (HEAD + uncommitted changes). Used to
+ * resume an interrupted task without re-spending tokens on an implementer call
+ * when nothing has changed since the last passing gate.
+ */
+function gitHead(task) {
+  const result = spawnSync('git', ['-C', taskWorkdir(task), 'rev-parse', 'HEAD'], {
+    encoding: 'utf8',
+  });
+  return result.status === 0 ? result.stdout.trim() : null;
+}
+
+/**
+ * Everything the task changed, committed or not, against the base it started
+ * from. Recorded in evidence so an independent reviewer can judge work that was
+ * already committed, instead of only the uncommitted remainder.
+ */
+function diffSince(task, base) {
+  const result = spawnSync('git', ['-C', taskWorkdir(task), 'diff', base ?? 'HEAD'], {
+    encoding: 'utf8',
+    maxBuffer: 8 * 1024 * 1024,
+  });
+  if (result.status !== 0) return '';
+  return (result.stdout ?? '').slice(0, 8000);
+}
+
+function treeState(task) {
+  const root = taskWorkdir(task);
+  const head = spawnSync('git', ['-C', root, 'rev-parse', 'HEAD'], { encoding: 'utf8' });
+  if (head.status !== 0) return null;
+  const status = spawnSync('git', ['-C', root, 'status', '--porcelain'], { encoding: 'utf8' });
+  return createHash('sha256')
+    .update(`${head.stdout.trim()}\n${status.stdout ?? ''}`)
+    .digest('hex');
+}
+
+function resumedWithExistingWork(task, kind) {
+  if (kind !== 'resume') return null;
+  const last = (task.evidence ?? []).at(-1);
+  if (!last) return null;
+  try {
+    const prior = JSON.parse(fs.readFileSync(last, 'utf8'));
+    if (prior?.gate?.exitCode !== 0) return null;
+    const current = treeState(task);
+    if (!current || !prior.treeState || current !== prior.treeState) return null;
+    return prior.runId;
+  } catch {
+    return null;
+  }
+}
+
 function runImplementer(task) {
   const command = process.env.HARNESS_IMPLEMENTER_CMD;
   if (!command) {
@@ -76,17 +135,24 @@ function runImplementer(task) {
         : 'HARNESS_IMPLEMENTER_CMD is not set',
     };
   }
+  const workdir = taskWorkdir(task);
   const brief = [
     `Task ${task.id}: ${task.title}`,
     '',
     task.brief ?? '(no additional brief)',
     '',
+    // A retry that does not say what failed invites the same mistake again and
+    // burns another attempt (and another model call).
+    task.attempts > 0 && task.lastFailure
+      ? `Previous attempt failed — fix the cause, do not bypass the gate:\n${task.lastFailure}\n`
+      : '',
+    `Working directory: ${workdir}`,
     `Scope: ${(task.scope ?? []).join(', ') || '(none declared)'}`,
     `Acceptance: ${task.acceptance ?? '(none)'}`,
   ].join('\n');
 
   const result = spawnSync('bash', ['-c', command], {
-    cwd: CODE_ROOT,
+    cwd: workdir,
     encoding: 'utf8',
     input: brief,
     env: {
@@ -96,6 +162,7 @@ function runImplementer(task) {
       TASK_SCOPE: (task.scope ?? []).join(','),
       TASK_ACCEPTANCE: task.acceptance ?? '',
       TASK_BRIEF: brief,
+      HARNESS_WORKDIR: workdir,
     },
   });
   return {
@@ -110,7 +177,12 @@ function runGates(task) {
   const result = spawnSync('bash', [path.join(CODE_ROOT, 'scripts', 'gates.sh')], {
     cwd: CODE_ROOT,
     encoding: 'utf8',
-    env: { ...process.env, TASK_ID: task.id, TASK_ACCEPTANCE: task.acceptance ?? '' },
+    env: {
+      ...process.env,
+      TASK_ID: task.id,
+      TASK_ACCEPTANCE: task.acceptance ?? '',
+      HARNESS_ACCEPTANCE_CWD: taskWorkdir(task),
+    },
   });
   return {
     exitCode: result.status,
@@ -118,25 +190,67 @@ function runGates(task) {
   };
 }
 
+// Model CLIs wrap answers in prose or logs, so pull the verdict object out
+// instead of assuming stdout is pure JSON.
+export function extractVerdict(text = '') {
+  const marker = text.lastIndexOf('"verdict"');
+  if (marker === -1) return null;
+  const start = text.lastIndexOf('{', marker);
+  if (start === -1) return null;
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let i = start; i < text.length; i += 1) {
+    const ch = text[i];
+    if (escaped) { escaped = false; continue; }
+    if (ch === '\\') { escaped = true; continue; }
+    if (ch === '"') { inString = !inString; continue; }
+    if (inString) continue;
+    if (ch === '{') depth += 1;
+    else if (ch === '}') {
+      depth -= 1;
+      if (depth === 0) {
+        try {
+          return JSON.parse(text.slice(start, i + 1));
+        } catch {
+          return null;
+        }
+      }
+    }
+  }
+  return null;
+}
+
 function runExternalReviewer(task, evidence, evidencePath) {
   const command = process.env.HARNESS_REVIEWER_CMD;
   const result = spawnSync('bash', ['-c', command], {
-    cwd: CODE_ROOT,
+    cwd: taskWorkdir(task),
     encoding: 'utf8',
     input: JSON.stringify(evidence, null, 2),
-    env: { ...process.env, TASK_ID: task.id, EVIDENCE_PATH: evidencePath },
+    env: {
+      ...process.env,
+      TASK_ID: task.id,
+      EVIDENCE_PATH: evidencePath,
+      HARNESS_WORKDIR: taskWorkdir(task),
+    },
   });
-  try {
-    const verdict = JSON.parse((result.stdout ?? '').trim());
-    if (!['accept', 'reject'].includes(verdict.verdict)) throw new Error('bad verdict');
-    return { verdict: verdict.verdict, reasons: verdict.reasons ?? [], reviewer: 'external' };
-  } catch {
+  const stdout = result.stdout ?? '';
+  const stderr = result.stderr ?? '';
+  const verdict = extractVerdict(stdout) ?? extractVerdict(stderr);
+  if (verdict && ['accept', 'reject'].includes(verdict.verdict)) {
     return {
-      verdict: 'reject',
-      reasons: [`external reviewer produced no valid verdict (exit ${result.status})`],
+      verdict: verdict.verdict,
+      reasons: verdict.reasons ?? [],
       reviewer: 'external',
+      rawTail: stdout.slice(-1500),
     };
   }
+  return {
+    verdict: 'reject',
+    reasons: [`external reviewer produced no valid verdict (exit ${result.status})`],
+    reviewer: 'external',
+    rawTail: `${stdout}${stderr}`.slice(-1500),
+  };
 }
 
 function log(line) {
@@ -182,6 +296,8 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
   } else {
     task.status = 'in_progress';
     task.startedAt = task.startedAt ?? nowIso();
+    // Base commit for this task's diff, so review sees committed work too.
+    task.baseHead = task.baseHead ?? gitHead(task);
     saveState(state);
     appendJournal(
       [
@@ -197,8 +313,18 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
 
   const runId = newRunId();
   const startedAt = nowIso();
-  const implementer = runImplementer(task);
-  const changed = changedFiles();
+  // Resuming an interrupted task whose tree still satisfies the last passing
+  // gate must not pay for another implementer run.
+  const alreadyDone = resumedWithExistingWork(task, selection.kind);
+  const implementer = alreadyDone
+    ? {
+        invoked: false,
+        resumed: true,
+        reason: `resumed: worktree unchanged since passing gate (${alreadyDone})`,
+      }
+    : runImplementer(task);
+  const changed = changedFiles(task);
+  const tree = treeState(task);
   const gate = runGates(task);
 
   const implementerFailed = implementer.invoked === true && implementer.exitCode !== 0;
@@ -217,6 +343,10 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
       : gate,
     taskAcceptance: task.acceptance ?? '',
     scope: task.scope ?? [],
+    workdir: taskWorkdir(task),
+    treeState: tree,
+    baseHead: task.baseHead ?? null,
+    diff: diffSince(task, task.baseHead),
     changedFiles: changed.files,
     gitTracked: changed.gitTracked,
   };
@@ -239,6 +369,7 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
       process.exit(1);
     }
 
+    task.lastFailure = `gates failed (exit ${gate.exitCode}); acceptance \`${task.acceptance ?? '(none)'}\` did not pass. Transcript tail: ${gate.transcript.slice(-800)}`;
     saveState(state);
     appendJournal(
       `- attempt ${task.attempts} failed gates; ${maxAttempts - task.attempts} repair attempt(s) left\n- evidence: \`${path.relative(CODE_ROOT, evidencePath)}\`\n`,
@@ -269,6 +400,9 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
 
   if (review.verdict === 'accept') {
     if (process.env.HARNESS_CRASH_TASK === task.id) {
+      // Persist the evidence pointer first: after a crash the resume path must
+      // be able to see the passing gate and skip re-paying for the implementer.
+      saveState(state);
       log(`[harness] simulating hard kill during ${task.id}, before completion is recorded`);
       process.kill(process.pid, 'SIGKILL');
     }
@@ -289,6 +423,7 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
   }
 
   task.attempts = (task.attempts ?? 0) + 1;
+  task.lastFailure = `review rejected: ${review.reasons.join('; ')}`;
   if (task.attempts >= maxAttempts) {
     task.status = 'blocked';
     task.blockedReason = `review rejected after ${task.attempts} attempt(s): ${review.reasons.join('; ')}`;

@@ -43,7 +43,9 @@ export function reviewEvidence({ task, evidence, maxAttempts = DEFAULT_MAX_ATTEM
   if ((task.attempts ?? 0) > maxAttempts) {
     reasons.push(`attempts (${task.attempts}) exceeded bound (${maxAttempts})`);
   }
-  if (evidence.implementer?.invoked === false && task.synthetic !== true) {
+  const implementerSkipped = evidence.implementer?.invoked === false;
+  const skipWasJustified = task.synthetic === true || evidence.implementer?.resumed === true;
+  if (implementerSkipped && !skipWasJustified) {
     reasons.push('no implementer ran for a non-synthetic task');
   }
 

@@ -66,11 +66,14 @@ gate_g1 && pass G1 "task state valid" || fail G1 "task state invalid"
 gate_g2 && pass G2 "shell syntax" || fail G2 "shell syntax errors"
 gate_g3 && pass G3 "harness unit tests" || fail G3 "harness unit tests failed"
 
-# Task acceptance — the task's own definition of done.
+# Task acceptance — the task's own definition of done. It runs in the task's
+# working directory (an isolated fixture may be the unit under test).
 if [[ -n "${TASK_ACCEPTANCE:-}" ]]; then
+  ACCEPT_CWD="${HARNESS_ACCEPTANCE_CWD:-$CODE_ROOT}"
   echo "-- task acceptance (${TASK_ID:-unknown}) --"
+  echo "   cwd: $ACCEPT_CWD"
   echo "   \$ $TASK_ACCEPTANCE"
-  if ( cd "$CODE_ROOT" && bash -c "$TASK_ACCEPTANCE" ); then
+  if ( cd "$ACCEPT_CWD" && bash -c "$TASK_ACCEPTANCE" ); then
     pass ACCEPT "task acceptance command"
   else
     fail ACCEPT "task acceptance command failed"
