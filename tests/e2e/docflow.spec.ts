@@ -1,11 +1,27 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
+import pg from "pg";
 
 import { readPdf } from "../helpers/pdf-text";
 
-const stamp = Date.now();
-const vendorCode = `E2E-${stamp}`;
-const vendorName = `Café Müller ${stamp}`;
+const vendorCode = "E2E-PDF";
+const vendorName = "Café Müller";
+
+test.beforeAll(async () => {
+  const receipt = JSON.parse(await readFile(process.env.DOCENTRA_E2E_RECEIPT!, "utf8"));
+  const db = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  await db.connect();
+  try {
+    const { rows } = await db.query("SELECT current_database() AS name, oid::text, shobj_description(oid, 'pg_database') AS marker FROM pg_database WHERE datname=current_database()");
+    expect(rows[0]).toEqual({ name: receipt.name, oid: receipt.oid, marker: receipt.marker });
+    expect((await db.query("SELECT code, name FROM docflow.vendor ORDER BY id")).rows).toEqual([{ code: "E2E-SEED", name: "Deterministic seed" }]);
+    const seed = (await db.query("SELECT row_to_json(v) AS row FROM docflow.vendor v")).rows[0].row;
+    expect(seed).toEqual({ id: 1, code: "E2E-SEED", name: "Deterministic seed", email: null, phone: null, address: null,
+      is_active: true, created_at: "2026-01-01T00:00:00+00:00", updated_at: "2026-01-01T00:00:00+00:00" });
+    expect((await db.query("SELECT count(*)::int AS n FROM docflow.document_header")).rows[0].n).toBe(0);
+    expect((await db.query("SELECT count(*)::int AS n FROM docflow.document_detail")).rows[0].n).toBe(0);
+  } finally { await db.end(); }
+});
 
 test("a document can be created, approved, searched and exported", async ({ page }, testInfo) => {
   // 1. Create a vendor.
@@ -14,6 +30,12 @@ test("a document can be created, approved, searched and exported", async ({ page
   await page.fill("#vendor-name", vendorName);
   await page.getByRole("button", { name: "Create vendor" }).click();
   await expect(page.getByRole("status")).toContainText("Vendor saved");
+  // Verify an actual browser/server write in the target, not an HTTP identity claim.
+  const db = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  await db.connect();
+  try {
+    expect((await db.query("SELECT name FROM docflow.vendor WHERE code=$1", [vendorCode])).rows).toEqual([{ name: vendorName }]);
+  } finally { await db.end(); }
 
   // 2. Create a draft with two line items.
   await page.goto("/documents/new");
@@ -101,7 +123,7 @@ test("invalid vendor input is rejected with an accessible message", async ({ pag
 
 test("PDF errors stay on the document and allow retry without losing data", async ({ page }) => {
   await page.goto("/vendors");
-  const code = `FONT-${stamp}`;
+  const code = "FONT-ERROR";
   await page.fill("#vendor-code", code);
   await page.fill("#vendor-name", "東京 Supply");
   await page.getByRole("button", { name: "Create vendor" }).click();

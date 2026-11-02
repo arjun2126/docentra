@@ -32,6 +32,7 @@ jobs:
     env:
       DATABASE_URL: postgresql://docentra:docentra@127.0.0.1:5432/docentra_test
       TEST_DATABASE_URL: postgresql://docentra:docentra@127.0.0.1:5432/docentra_test
+      E2E_ADMIN_DATABASE_URL: postgresql://docentra:docentra@127.0.0.1:5432/postgres
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -42,12 +43,18 @@ jobs:
         run: npm ci
       - name: Generate Prisma client
         run: npx prisma generate
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Initialize protected CI database
+        run: npm run db:migrate
       - name: Run gates
         # HARNESS_BUILD=1 adds the production build gate, matching a milestone
         # boundary run locally.
         env:
           HARNESS_BUILD: '1'
         run: bash scripts/gates.sh
+      - name: Run isolated E2E
+        run: npm run test:e2e
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4

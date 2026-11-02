@@ -729,8 +729,8 @@
       "milestone": "Q1",
       "title": "Isolate deterministic E2E database and enable CI",
       "synthetic": false,
-      "status": "pending",
-      "attempts": 0,
+      "status": "done",
+      "attempts": 2,
       "dependsOn": [
         "Q1-T1"
       ],
@@ -747,7 +747,13 @@
         "journal/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
-      "brief": "Dedicated disposable E2E DB, deterministic fixtures, verify app database identity, reject unsafe targets/reused regular servers, scoped cleanup and preserve development fingerprint; practical CI E2E."
+      "brief": "Dedicated disposable E2E DB, deterministic fixtures, verify app database identity, reject unsafe targets/reused regular servers, scoped cleanup and preserve development fingerprint; practical CI E2E.",
+      "startedAt": "2026-11-02T22:14:08.002Z",
+      "baseHead": "f54cf6409e058a5b60aadd2e81b8257b0d11b268",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/Q1-T2/2026-11-02-e2e-isolation-final.json"
+      ],
+      "completedAt": "2026-11-02T22:21:44.574Z"
     },
     {
       "id": "Q1-T3",
@@ -813,7 +819,7 @@
       "brief": "Full gates/unit/PostgreSQL integration/E2E/build; actual PDF draft+approved content, development fingerprints unchanged, keyboard/accessibility/responsive and immutability regression; independent acceptance, push and CI verification."
     }
   ],
-  "updatedAt": "2026-11-02T22:13:50.496Z",
+  "updatedAt": "2026-11-02T22:21:44.574Z",
   "authorization": {
     "authorizedBy": "owner",
     "authorizedAt": "2026-11-02",
