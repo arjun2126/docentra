@@ -9,6 +9,14 @@ export type StatusSummary = {
   total: string;
 };
 
+export type VendorMetric = {
+  vendorId: string;
+  code: string;
+  name: string;
+  count: number;
+  total: string;
+};
+
 export type RecentDocument = {
   shno: string;
   documentNumber: string;
@@ -26,6 +34,9 @@ export type DashboardData = {
   byStatus: StatusSummary[];
   awaitingApprovalValue: string;
   approvedValue: string;
+  approvedThisMonth: string;
+  approvedThisMonthCount: number;
+  topVendors: VendorMetric[];
   recent: RecentDocument[];
 };
 
@@ -42,21 +53,38 @@ export function amountToString(value: unknown): string {
   return String(value);
 }
 
-export async function getDashboard(): Promise<DashboardData> {
-  const [groups, vendorCount, activeVendorCount, recent] = await Promise.all([
-    prisma.documentHeader.groupBy({
-      by: ["status"],
-      _count: { _all: true },
-      _sum: { totalAmount: true },
-    }),
-    prisma.vendor.count(),
-    prisma.vendor.count({ where: { isActive: true } }),
-    prisma.documentHeader.findMany({
-      take: 5,
-      orderBy: [{ documentDate: "desc" }, { shno: "desc" }],
-      include: { vendor: { select: { name: true, code: true } } },
-    }),
-  ]);
+function startOfMonth(now = new Date()): Date {
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+}
+
+export async function getDashboard(now = new Date()): Promise<DashboardData> {
+  const [groups, vendorCount, activeVendorCount, recent, topGroups, monthAggregate] =
+    await Promise.all([
+      prisma.documentHeader.groupBy({
+        by: ["status"],
+        _count: { _all: true },
+        _sum: { totalAmount: true },
+      }),
+      prisma.vendor.count(),
+      prisma.vendor.count({ where: { isActive: true } }),
+      prisma.documentHeader.findMany({
+        take: 5,
+        orderBy: [{ documentDate: "desc" }, { shno: "desc" }],
+        include: { vendor: { select: { name: true, code: true } } },
+      }),
+      prisma.documentHeader.groupBy({
+        by: ["vendorId"],
+        _count: { _all: true },
+        _sum: { totalAmount: true },
+        orderBy: [{ _count: { vendorId: "desc" } }, { vendorId: "asc" }],
+        take: 5,
+      }),
+      prisma.documentHeader.aggregate({
+        where: { status: "approved", documentDate: { gte: startOfMonth(now) } },
+        _count: { _all: true },
+        _sum: { totalAmount: true },
+      }),
+    ]);
 
   const byStatus: StatusSummary[] = DOCUMENT_STATUSES.map((status) => {
     const group = groups.find((row) => row.status === status);
@@ -67,16 +95,34 @@ export async function getDashboard(): Promise<DashboardData> {
     };
   });
 
-  const submitted = byStatus.find((row) => row.status === "submitted");
-  const approved = byStatus.find((row) => row.status === "approved");
+  const vendorsById = new Map(
+    (
+      await prisma.vendor.findMany({
+        where: { id: { in: topGroups.map((row) => row.vendorId) } },
+        select: { id: true, code: true, name: true },
+      })
+    ).map((vendor) => [vendor.id.toString(), vendor]),
+  );
 
   return {
     totalDocuments: byStatus.reduce((sum, row) => sum + row.count, 0),
     vendorCount,
     activeVendorCount,
     byStatus,
-    awaitingApprovalValue: submitted?.total ?? "0.00",
-    approvedValue: approved?.total ?? "0.00",
+    awaitingApprovalValue: byStatus.find((row) => row.status === "submitted")?.total ?? "0.00",
+    approvedValue: byStatus.find((row) => row.status === "approved")?.total ?? "0.00",
+    approvedThisMonth: amountToString(monthAggregate._sum.totalAmount),
+    approvedThisMonthCount: monthAggregate._count._all,
+    topVendors: topGroups.map((row) => {
+      const vendor = vendorsById.get(row.vendorId.toString());
+      return {
+        vendorId: row.vendorId.toString(),
+        code: vendor?.code ?? "—",
+        name: vendor?.name ?? "Unknown vendor",
+        count: row._count._all,
+        total: amountToString(row._sum.totalAmount),
+      };
+    }),
     recent: recent.map((row) => ({
       shno: row.shno.toString(),
       documentNumber: row.documentNumber,

@@ -3,12 +3,38 @@ import Link from "next/link";
 import { StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { listDocuments } from "@/lib/docflow/documents";
+import { Label } from "@/components/ui/label";
+import { searchDocuments } from "@/lib/docflow/search";
+import { listVendors } from "@/lib/docflow/vendors";
+import { parseSearchParams, searchQueryString } from "@/lib/schemas/search";
 
 export const dynamic = "force-dynamic";
 
-export default async function DocumentsPage() {
-  const documents = await listDocuments(50);
+const STATUSES = ["draft", "submitted", "approved", "rejected"] as const;
+
+export default async function DocumentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const raw = await searchParams;
+  const parsed = parseSearchParams(raw);
+
+  // Invalid filters fall back to defaults but are reported, never silent.
+  const fallback = parseSearchParams({});
+  if (!fallback.ok) throw new Error("search defaults are invalid");
+  const active = parsed.ok ? parsed.data : fallback.data;
+
+  const [result, vendors] = await Promise.all([
+    searchDocuments(active),
+    listVendors({ includeInactive: true }),
+  ]);
+
+  const hasFilters = Boolean(
+    active.q || active.status || active.vendorId || active.from || active.to,
+  );
+  const pageHref = (page: number) =>
+    `/documents${searchQueryString({ ...active, page })}`;
 
   return (
     <div className="space-y-6">
@@ -24,15 +50,105 @@ export default async function DocumentsPage() {
         </Link>
       </header>
 
+      {!parsed.ok ? (
+        <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
+          Some filters were ignored:{" "}
+          {Object.values(parsed.fieldErrors).flat().join(" ")}
+        </p>
+      ) : null}
+
+      <Card>
+        <CardContent className="pt-6">
+          <form method="get" action="/documents" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+            <div className="space-y-1 lg:col-span-2">
+              <Label htmlFor="filter-q">Search</Label>
+              <input
+                id="filter-q"
+                name="q"
+                defaultValue={active.q ?? ""}
+                placeholder="Number, vendor or item"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="filter-status">Status</Label>
+              <select
+                id="filter-status"
+                name="status"
+                defaultValue={active.status ?? ""}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <option value="">Any</option>
+                {STATUSES.map((status) => (
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="filter-vendor">Vendor</Label>
+              <select
+                id="filter-vendor"
+                name="vendorId"
+                defaultValue={active.vendorId ?? ""}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                <option value="">Any</option>
+                {vendors.map((vendor) => (
+                  <option key={vendor.id} value={vendor.id}>
+                    {vendor.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="filter-from">From</Label>
+              <input
+                id="filter-from"
+                name="from"
+                type="date"
+                defaultValue={active.from ?? ""}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="filter-to">To</Label>
+              <input
+                id="filter-to"
+                name="to"
+                type="date"
+                defaultValue={active.to ?? ""}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+            </div>
+            <div className="flex items-end gap-2 sm:col-span-2 lg:col-span-6">
+              <input type="hidden" name="pageSize" value={active.pageSize} />
+              <Button type="submit">Apply filters</Button>
+              {hasFilters ? (
+                <Link href="/documents" className="text-sm text-muted-foreground hover:underline">
+                  Clear
+                </Link>
+              ) : null}
+              <span className="ml-auto text-sm text-muted-foreground">
+                {result.total} match{result.total === 1 ? "" : "es"}
+              </span>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardContent className="overflow-x-auto pt-6">
-          {documents.length === 0 ? (
+          {result.items.length === 0 ? (
             <p className="py-6 text-sm text-muted-foreground">
-              No documents yet. Create the first draft.
+              {hasFilters
+                ? "No documents match these filters."
+                : "No documents yet. Create the first draft."}
             </p>
           ) : (
             <table className="w-full text-sm">
-              <caption className="sr-only">Documents</caption>
+              <caption className="sr-only">Documents matching the current filters</caption>
               <thead>
                 <tr className="border-b text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <th scope="col" className="py-2 pr-3 font-medium">Number</th>
@@ -44,7 +160,7 @@ export default async function DocumentsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y">
-                {documents.map((doc) => (
+                {result.items.map((doc) => (
                   <tr key={doc.shno}>
                     <td className="py-2 pr-3 font-mono text-xs">
                       <Link href={`/documents/${doc.shno}`} className="hover:underline">
@@ -65,6 +181,32 @@ export default async function DocumentsPage() {
           )}
         </CardContent>
       </Card>
+
+      {result.pageCount > 1 ? (
+        <nav aria-label="Pagination" className="flex items-center justify-between gap-3">
+          {result.page > 1 ? (
+            <Link href={pageHref(result.page - 1)} className="text-sm text-brand hover:underline">
+              Previous
+            </Link>
+          ) : (
+            <span aria-disabled="true" className="text-sm text-muted-foreground">
+              Previous
+            </span>
+          )}
+          <span className="text-sm text-muted-foreground">
+            Page {result.page} of {result.pageCount}
+          </span>
+          {result.page < result.pageCount ? (
+            <Link href={pageHref(result.page + 1)} className="text-sm text-brand hover:underline">
+              Next
+            </Link>
+          ) : (
+            <span aria-disabled="true" className="text-sm text-muted-foreground">
+              Next
+            </span>
+          )}
+        </nav>
+      ) : null}
     </div>
   );
 }

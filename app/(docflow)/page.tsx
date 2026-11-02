@@ -63,6 +63,11 @@ export default async function DashboardPage() {
           value={data.approvedValue}
           hint="Unformatted amount"
         />
+        <Stat
+          label="Approved this month"
+          value={data.approvedThisMonth}
+          hint={`${data.approvedThisMonthCount} document(s), unformatted amount`}
+        />
       </section>
 
       <section aria-labelledby="status-heading" className="grid gap-6 lg:grid-cols-2">
@@ -124,6 +129,48 @@ export default async function DashboardPage() {
                   </li>
                 ))}
               </ul>
+            )}
+          </CardContent>
+        </Card>
+      </section>
+
+      <section aria-labelledby="top-vendors-heading">
+        <Card>
+          <CardHeader>
+            <CardTitle id="top-vendors-heading" className="text-base">
+              Top vendors by document count
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="overflow-x-auto">
+            {data.topVendors.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                No vendors with documents yet.
+              </p>
+            ) : (
+              <table className="w-full text-sm">
+                <caption className="sr-only">Top vendors by document count</caption>
+                <thead>
+                  <tr className="border-b text-left text-xs uppercase tracking-wide text-muted-foreground">
+                    <th scope="col" className="py-2 pr-3 font-medium">Vendor</th>
+                    <th scope="col" className="py-2 pr-3 text-right font-medium">Documents</th>
+                    <th scope="col" className="py-2 text-right font-medium">Total</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {data.topVendors.map((vendor) => (
+                    <tr key={vendor.vendorId}>
+                      <td className="py-2 pr-3">
+                        <span className="font-medium">{vendor.name}</span>
+                        <span className="ml-2 font-mono text-xs text-muted-foreground">
+                          {vendor.code}
+                        </span>
+                      </td>
+                      <td className="py-2 pr-3 text-right tabular-nums">{vendor.count}</td>
+                      <td className="py-2 text-right tabular-nums">{vendor.total}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             )}
           </CardContent>
         </Card>

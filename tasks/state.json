@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Docentra",
   "module": "DocFlow",
-  "milestone": "M3",
+  "milestone": "M4",
   "maxRepairAttempts": 2,
   "tasks": [
     {
@@ -395,7 +395,8 @@
       "brief": "Document creation with 1..n line items in one transaction: validate with Zod, allocate a unique document number, recompute every amount server-side (never trust client totals), and roll back completely if any line fails. Editing a draft replaces its lines atomically. Unit-test the pure calculation helpers and integration-test the transactional behaviour including rollback.",
       "completedAt": "2026-11-02T20:27:05.005Z",
       "evidence": [
-        "tasks/evidence/M3-T1/2026-11-02T20-27-05-004Z-M3-T1.json"
+        "tasks/evidence/M3-T1/2026-11-02T20-27-05-004Z-M3-T1.json",
+        "tasks/evidence/M3-T1/2026-11-02T20-28-28-868Z-M3-T1-corrected.json"
       ],
       "note": "implemented by manager; independently reviewed"
     },
@@ -419,7 +420,8 @@
       "brief": "Enforce draft->submitted->approved|rejected and rejected->draft transitions in one place, reject every other transition with a typed error, make approved documents immutable (content edits rejected at both application and database layer), and bump a version column so a stale write fails with a concurrency error instead of overwriting.",
       "completedAt": "2026-11-02T20:27:05.006Z",
       "evidence": [
-        "tasks/evidence/M3-T2/2026-11-02T20-27-05-004Z-M3-T2.json"
+        "tasks/evidence/M3-T2/2026-11-02T20-27-05-004Z-M3-T2.json",
+        "tasks/evidence/M3-T2/2026-11-02T20-28-28-868Z-M3-T2-corrected.json"
       ],
       "note": "implemented by manager; independently reviewed"
     },
@@ -442,7 +444,8 @@
       "brief": "Document list, detail view, and a create/edit form with add/remove line items, live server-verified totals on submit, accessible validation, and workflow buttons shown only for permitted transitions. Surface concurrency conflicts as a clear reload message rather than silently discarding input.",
       "completedAt": "2026-11-02T20:27:05.006Z",
       "evidence": [
-        "tasks/evidence/M3-T3/2026-11-02T20-27-05-004Z-M3-T3.json"
+        "tasks/evidence/M3-T3/2026-11-02T20-27-05-004Z-M3-T3.json",
+        "tasks/evidence/M3-T3/2026-11-02T20-28-28-868Z-M3-T3-corrected.json"
       ],
       "note": "implemented by manager; independently reviewed"
     },
@@ -466,7 +469,8 @@
       "brief": "Milestone boundary regression for document management.",
       "completedAt": "2026-11-02T20:27:05.007Z",
       "evidence": [
-        "tasks/evidence/M3-ACCEPT/2026-11-02T20-27-05-004Z-M3-ACCEPT.json"
+        "tasks/evidence/M3-ACCEPT/2026-11-02T20-27-05-004Z-M3-ACCEPT.json",
+        "tasks/evidence/M3-ACCEPT/2026-11-02T20-28-28-868Z-M3-ACCEPT-corrected.json"
       ],
       "note": "implemented by manager; independently reviewed"
     },
@@ -475,7 +479,7 @@
       "milestone": "M4",
       "title": "Search, filtering and pagination query layer",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M3-ACCEPT"
@@ -487,14 +491,19 @@
         "tests/integration/"
       ],
       "acceptance": "npm run test:unit && npm run test:integration",
-      "brief": "Server-side search over document number, vendor name and line item text, with status, vendor and date-range filters, deterministic ordering, and bounded pagination. Escape LIKE metacharacters, validate every input with Zod, and integration-test filter combinations and paging boundaries."
+      "brief": "Server-side search over document number, vendor name and line item text, with status, vendor and date-range filters, deterministic ordering, and bounded pagination. Escape LIKE metacharacters, validate every input with Zod, and integration-test filter combinations and paging boundaries.",
+      "completedAt": "2026-11-02T20:31:01.571Z",
+      "evidence": [
+        "tasks/evidence/M4-T1/2026-11-02T20-31-01-569Z-M4-T1.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M4-T2",
       "milestone": "M4",
       "title": "Search and filter UI with pagination",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M4-T1"
@@ -504,14 +513,19 @@
         "components/documents/"
       ],
       "acceptance": "npm run typecheck && npm run lint",
-      "brief": "Search form with query, status, vendor, from/to date and page size, driving server-rendered results. Filters live in the URL so results are shareable and back/forward works; empty states distinguish \"no documents yet\" from \"no matches\"."
+      "brief": "Search form with query, status, vendor, from/to date and page size, driving server-rendered results. Filters live in the URL so results are shareable and back/forward works; empty states distinguish \"no documents yet\" from \"no matches\".",
+      "completedAt": "2026-11-02T20:31:01.571Z",
+      "evidence": [
+        "tasks/evidence/M4-T2/2026-11-02T20-31-01-569Z-M4-T2.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M4-T3",
       "milestone": "M4",
       "title": "Dashboard metrics and reporting",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M4-T1"
@@ -522,14 +536,19 @@
         "tests/integration/"
       ],
       "acceptance": "npm run test:integration && npm run lint",
-      "brief": "Dashboard shows counts by status, pending value, approved value this month, top vendors by document count, and recent activity, all from real queries with integration coverage. Values stay unformatted plain numbers."
+      "brief": "Dashboard shows counts by status, pending value, approved value this month, top vendors by document count, and recent activity, all from real queries with integration coverage. Values stay unformatted plain numbers.",
+      "completedAt": "2026-11-02T20:31:01.571Z",
+      "evidence": [
+        "tasks/evidence/M4-T3/2026-11-02T20-31-01-569Z-M4-T3.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M4-ACCEPT",
       "milestone": "M4",
       "title": "M4 milestone acceptance: regression and production build",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M4-T2",
@@ -542,7 +561,12 @@
         "tests/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run build",
-      "brief": "Milestone boundary regression for search and reporting."
+      "brief": "Milestone boundary regression for search and reporting.",
+      "completedAt": "2026-11-02T20:31:01.572Z",
+      "evidence": [
+        "tasks/evidence/M4-ACCEPT/2026-11-02T20-31-01-569Z-M4-ACCEPT.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M5-T1",

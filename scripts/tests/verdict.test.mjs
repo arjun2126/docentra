@@ -36,3 +36,13 @@ test('returns null when no verdict is present', () => {
 test('returns null when the object is malformed', () => {
   assert.equal(extractVerdict('{"verdict":"accept",'), null);
 });
+
+test('recovers the decision from JSON broken by a stray escape', () => {
+  // Seen in practice: an escaped quote inside a reason made the object invalid,
+  // and the run was recorded as a rejection the reviewer never gave.
+  // Unescaped quote inside a reason: invalid JSON, unambiguous decision.
+  const text = '{"verdict":"accept","reasons":["bad "quote"]}';
+  const verdict = extractVerdict(text);
+  assert.equal(verdict.verdict, 'accept');
+  assert.equal(verdict.recovered, true);
+});
