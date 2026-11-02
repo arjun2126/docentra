@@ -34,6 +34,10 @@ const config: Config = {
           DEFAULT: "hsl(0 0% 100%)",
           foreground: "hsl(240 6% 10%)",
         },
+        brand: {
+          DEFAULT: "hsl(243 75% 45%)",
+          foreground: "hsl(0 0% 100%)",
+        },
       },
     },
   },

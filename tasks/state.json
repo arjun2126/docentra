@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Docentra",
   "module": "DocFlow",
-  "milestone": "M1",
+  "milestone": "M2",
   "maxRepairAttempts": 2,
   "tasks": [
     {
@@ -221,6 +221,385 @@
         "tasks/evidence/M1-T4/2026-11-02T19-44-54-014Z-M1-T4.json"
       ],
       "note": "implemented by manager after stalled agent; independently reviewed"
+    },
+    {
+      "id": "M2-AUTH",
+      "milestone": "M2",
+      "title": "Owner authorization: M2-M5 local development package",
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [],
+      "note": "Authorized by owner 2026-11-02. Local development only: no production deployment, no remote repository creation, no paid services, no auth/security architecture changes. Scope: M2 application foundation, M3 document management, M4 search and reporting, M5 PDF and demo readiness."
+    },
+    {
+      "id": "M2-T1",
+      "milestone": "M2",
+      "title": "Lint gate, DB-aware integration gate, bounded agent calls",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [
+        "M1-T4"
+      ],
+      "scope": [
+        "eslint.config.mjs",
+        "package.json",
+        "scripts/gates.sh",
+        "scripts/loop.mjs",
+        "scripts/db-reachable.mjs",
+        "scripts/tests/"
+      ],
+      "acceptance": "npm run lint && node --test scripts/tests/state.test.mjs",
+      "brief": "Make lint a real gate (flat ESLint config, no interactive prompt), add an INTEGRATION gate that runs only when the test database answers, gate the production build behind HARNESS_BUILD=1, and bound every implementer/reviewer subprocess call with an explicit timeout plus one retry on infrastructure failure.",
+      "completedAt": "2026-11-02T20:21:52.914Z",
+      "evidence": [
+        "tasks/evidence/M2-T1/2026-11-02T20-21-52-912Z-M2-T1.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
+    },
+    {
+      "id": "M2-T2",
+      "milestone": "M2",
+      "title": "Responsive application shell and design tokens",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [
+        "M2-T1"
+      ],
+      "scope": [
+        "app/",
+        "components/shell/",
+        "components/ui/",
+        "lib/utils.ts"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit",
+      "brief": "Build the DocFlow shell: a responsive sidebar/topbar layout under app/(docflow)/ with navigation for Dashboard, Vendors and Documents, active-link highlighting, a skip link, and a mobile menu that works without JavaScript dependencies beyond a disclosure pattern. Keep markup semantic and keyboard reachable; no currency text anywhere.",
+      "completedAt": "2026-11-02T20:21:52.914Z",
+      "evidence": [
+        "tasks/evidence/M2-T2/2026-11-02T20-21-52-912Z-M2-T2.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
+    },
+    {
+      "id": "M2-T3",
+      "milestone": "M2",
+      "title": "Vendor domain: Zod schemas, repository, unit tests",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [
+        "M2-T2"
+      ],
+      "scope": [
+        "lib/schemas/",
+        "lib/docflow/",
+        "tests/unit/"
+      ],
+      "acceptance": "npm run test:unit && npm run lint",
+      "brief": "Add Zod schemas for vendor create/update (code, name, optional email/phone/address, active flag) with meaningful messages, and a vendor repository exposing list (with document counts), get, create, update and deactivate. Unit-test the schemas thoroughly: trimming, case handling of codes, invalid email, missing name, and rejection of unknown fields.",
+      "completedAt": "2026-11-02T20:21:52.914Z",
+      "evidence": [
+        "tasks/evidence/M2-T3/2026-11-02T20-21-52-912Z-M2-T3.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
+    },
+    {
+      "id": "M2-T4",
+      "milestone": "M2",
+      "title": "Vendor management UI with server actions",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [
+        "M2-T3"
+      ],
+      "scope": [
+        "app/(docflow)/vendors/",
+        "components/vendors/",
+        "lib/docflow/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit",
+      "brief": "Vendor list with search, create and edit forms using React server actions, field-level Zod errors rendered accessibly (aria-describedby, aria-invalid), and a deactivate toggle. Mutations must revalidate the list and never expose a raw database error to the user.",
+      "completedAt": "2026-11-02T20:21:52.915Z",
+      "evidence": [
+        "tasks/evidence/M2-T4/2026-11-02T20-21-52-912Z-M2-T4.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
+    },
+    {
+      "id": "M2-T5",
+      "milestone": "M2",
+      "title": "Dashboard backed by live PostgreSQL aggregates",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [
+        "M2-T3"
+      ],
+      "scope": [
+        "app/(docflow)/page.tsx",
+        "lib/docflow/dashboard.ts",
+        "tests/integration/"
+      ],
+      "acceptance": "npm run test:integration && npm run typecheck && npm run lint",
+      "brief": "Dashboard reading real aggregates from docflow: document counts by status, total value as a plain number (no currency formatting), vendor count, and the five most recent documents. Put the aggregate queries in lib/docflow/dashboard.ts and cover them with an integration test against the seeded database.",
+      "completedAt": "2026-11-02T20:21:52.915Z",
+      "evidence": [
+        "tasks/evidence/M2-T5/2026-11-02T20-21-52-912Z-M2-T5.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
+    },
+    {
+      "id": "M2-ACCEPT",
+      "milestone": "M2",
+      "title": "M2 milestone acceptance: regression and production build",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [
+        "M2-T4",
+        "M2-T5"
+      ],
+      "scope": [
+        "app/",
+        "components/",
+        "lib/",
+        "tests/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run build",
+      "brief": "Milestone boundary: full regression suite plus production build, recorded as independent evidence before M3 begins.",
+      "completedAt": "2026-11-02T20:21:52.916Z",
+      "evidence": [
+        "tasks/evidence/M2-ACCEPT/2026-11-02T20-21-52-912Z-M2-ACCEPT.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
+    },
+    {
+      "id": "M3-T1",
+      "milestone": "M3",
+      "title": "Create and edit draft documents transactionally",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M2-ACCEPT"
+      ],
+      "scope": [
+        "lib/docflow/documents.ts",
+        "lib/schemas/document.ts",
+        "tests/unit/",
+        "tests/integration/"
+      ],
+      "acceptance": "npm run test:unit && npm run test:integration",
+      "brief": "Document creation with 1..n line items in one transaction: validate with Zod, allocate a unique document number, recompute every amount server-side (never trust client totals), and roll back completely if any line fails. Editing a draft replaces its lines atomically. Unit-test the pure calculation helpers and integration-test the transactional behaviour including rollback."
+    },
+    {
+      "id": "M3-T2",
+      "milestone": "M3",
+      "title": "Status workflow, approval immutability, optimistic concurrency",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M3-T1"
+      ],
+      "scope": [
+        "lib/docflow/workflow.ts",
+        "lib/docflow/documents.ts",
+        "tests/integration/",
+        "tests/unit/"
+      ],
+      "acceptance": "npm run test:unit && npm run test:integration",
+      "brief": "Enforce draft->submitted->approved|rejected and rejected->draft transitions in one place, reject every other transition with a typed error, make approved documents immutable (content edits rejected at both application and database layer), and bump a version column so a stale write fails with a concurrency error instead of overwriting."
+    },
+    {
+      "id": "M3-T3",
+      "milestone": "M3",
+      "title": "Document UI: list, create, edit, view, workflow actions",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M3-T2"
+      ],
+      "scope": [
+        "app/(docflow)/documents/",
+        "components/documents/",
+        "lib/docflow/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit",
+      "brief": "Document list, detail view, and a create/edit form with add/remove line items, live server-verified totals on submit, accessible validation, and workflow buttons shown only for permitted transitions. Surface concurrency conflicts as a clear reload message rather than silently discarding input."
+    },
+    {
+      "id": "M3-ACCEPT",
+      "milestone": "M3",
+      "title": "M3 milestone acceptance: regression and production build",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M3-T3"
+      ],
+      "scope": [
+        "lib/",
+        "app/",
+        "components/",
+        "tests/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run build",
+      "brief": "Milestone boundary regression for document management."
+    },
+    {
+      "id": "M4-T1",
+      "milestone": "M4",
+      "title": "Search, filtering and pagination query layer",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M3-ACCEPT"
+      ],
+      "scope": [
+        "lib/docflow/search.ts",
+        "lib/schemas/search.ts",
+        "tests/unit/",
+        "tests/integration/"
+      ],
+      "acceptance": "npm run test:unit && npm run test:integration",
+      "brief": "Server-side search over document number, vendor name and line item text, with status, vendor and date-range filters, deterministic ordering, and bounded pagination. Escape LIKE metacharacters, validate every input with Zod, and integration-test filter combinations and paging boundaries."
+    },
+    {
+      "id": "M4-T2",
+      "milestone": "M4",
+      "title": "Search and filter UI with pagination",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M4-T1"
+      ],
+      "scope": [
+        "app/(docflow)/documents/",
+        "components/documents/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint",
+      "brief": "Search form with query, status, vendor, from/to date and page size, driving server-rendered results. Filters live in the URL so results are shareable and back/forward works; empty states distinguish \"no documents yet\" from \"no matches\"."
+    },
+    {
+      "id": "M4-T3",
+      "milestone": "M4",
+      "title": "Dashboard metrics and reporting",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M4-T1"
+      ],
+      "scope": [
+        "lib/docflow/dashboard.ts",
+        "app/(docflow)/page.tsx",
+        "tests/integration/"
+      ],
+      "acceptance": "npm run test:integration && npm run lint",
+      "brief": "Dashboard shows counts by status, pending value, approved value this month, top vendors by document count, and recent activity, all from real queries with integration coverage. Values stay unformatted plain numbers."
+    },
+    {
+      "id": "M4-ACCEPT",
+      "milestone": "M4",
+      "title": "M4 milestone acceptance: regression and production build",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M4-T2",
+        "M4-T3"
+      ],
+      "scope": [
+        "lib/",
+        "app/",
+        "components/",
+        "tests/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run build",
+      "brief": "Milestone boundary regression for search and reporting."
+    },
+    {
+      "id": "M5-T1",
+      "milestone": "M5",
+      "title": "Server-side PDF export",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M4-ACCEPT"
+      ],
+      "scope": [
+        "app/api/",
+        "lib/pdf/",
+        "components/documents/",
+        "tests/unit/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit",
+      "brief": "Generate a document PDF on the server from database state only (never client-supplied totals), with header, vendor, line items and totals, correct content type and filename, and a link only where a document exists. Unit-test the pure layout builder."
+    },
+    {
+      "id": "M5-T2",
+      "milestone": "M5",
+      "title": "Accessibility polish and realistic demonstration data",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M4-ACCEPT"
+      ],
+      "scope": [
+        "app/",
+        "components/",
+        "prisma/seed.mjs",
+        "scripts/verify-seed.mjs"
+      ],
+      "acceptance": "npm run db:seed && npm run db:verify && npm run lint && npm run typecheck",
+      "brief": "Make every form label-associated, focus-visible, and keyboard operable; check colour contrast and responsive breakpoints at 360px, 768px and 1280px. Expand the seed to a realistic spread of vendors, documents, statuses and dates so search, filters and metrics demonstrate real behaviour, remaining idempotent."
+    },
+    {
+      "id": "M5-T3",
+      "milestone": "M5",
+      "title": "Playwright end-to-end regression",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M5-T1",
+        "M5-T2"
+      ],
+      "scope": [
+        "playwright.config.ts",
+        "tests/e2e/",
+        "package.json"
+      ],
+      "acceptance": "npm run test:e2e",
+      "brief": "Playwright suite against a running dev server and the seeded database: create a vendor, create a document with two lines, submit, approve, verify totals, search for it, download the PDF, and confirm an approved document cannot be edited. Tests must fail loudly if the database is missing."
+    },
+    {
+      "id": "M5-ACCEPT",
+      "milestone": "M5",
+      "title": "M5 milestone acceptance: full regression, build and demo walkthrough",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "M5-T3"
+      ],
+      "scope": [
+        "lib/",
+        "app/",
+        "components/",
+        "tests/",
+        "prisma/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e && npm run build",
+      "brief": "Final milestone boundary: complete regression, production build, and a documented local demonstration walkthrough."
     }
   ],
   "updatedAt": "2026-11-02T19:44:54.021Z"

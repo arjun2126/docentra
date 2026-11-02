@@ -1,16 +1,15 @@
-import { defineConfig } from "vitest/config";
 import path from "node:path";
 
+import { defineConfig } from "vitest/config";
+
 export default defineConfig({
+  resolve: {
+    alias: { "@": path.resolve(__dirname) },
+  },
   test: {
     environment: "node",
-    // `npm run test:unit` invokes `vitest run --dir tests/unit`, so patterns are
-    // matched relative to that directory.
+    // `--dir` narrows the scan; the pattern must stay root-relative so unit and
+    // integration runs pick up their own files.
     include: ["**/*.test.ts"],
-  },
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "."),
-    },
   },
 });

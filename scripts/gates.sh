@@ -75,10 +75,36 @@ if [[ -f "$CODE_ROOT/package.json" ]]; then
   else
     fail TYPECHECK "npm run typecheck failed"
   fi
+  if ( cd "$CODE_ROOT" && npm run --silent lint ); then
+    pass LINT "npm run lint"
+  else
+    fail LINT "npm run lint failed"
+  fi
   if ( cd "$CODE_ROOT" && npm run --silent test:unit ); then
     pass UNIT "npm run test:unit"
   else
     fail UNIT "npm run test:unit failed"
+  fi
+  # Integration gates need a real database. Unreachable is reported as SKIP so
+  # harness-only runs stay honest, while every DB task's acceptance still fails
+  # loudly without one.
+  if ( cd "$CODE_ROOT" && node scripts/db-reachable.mjs >/dev/null 2>&1 ); then
+    if ( cd "$CODE_ROOT" && npm run --silent test:integration ); then
+      pass INTEGRATION "npm run test:integration"
+    else
+      fail INTEGRATION "npm run test:integration failed"
+    fi
+  else
+    echo "[gate] INTEGRATION  SKIP  test database not reachable"
+  fi
+  # Milestone boundaries set HARNESS_BUILD=1 so the production build is gated
+  # too, without paying for it on every task.
+  if [[ "${HARNESS_BUILD:-0}" == "1" ]]; then
+    if ( cd "$CODE_ROOT" && npm run --silent build ); then
+      pass BUILD "npm run build"
+    else
+      fail BUILD "npm run build failed"
+    fi
   fi
 else
   echo "[gate] PRODUCT      SKIP  no package.json yet"

@@ -13,7 +13,9 @@ describe("cn", () => {
 
   it("drops falsy, null, undefined and false values", () => {
     expect(cn("p-2", null, undefined, false, 0)).toBe("p-2");
-    expect(cn(false && "p-2", true && "p-4")).toBe("p-4");
+    const hidden = false;
+    const shown = true;
+    expect(cn(hidden && "p-2", shown && "p-4")).toBe("p-4");
     expect(cn(undefined)).toBe("");
   });
 

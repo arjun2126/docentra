@@ -1,7 +1,7 @@
 // Deterministic task selection. Same input => same output. No model involved.
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadState, statePath } from './lib/state.mjs';
+import { loadState } from './lib/state.mjs';
 
 /**
  * Decide what the loop should do next.

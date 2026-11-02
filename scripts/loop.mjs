@@ -19,7 +19,6 @@ import {
   CODE_ROOT,
   DEFAULT_MAX_ATTEMPTS,
   appendJournal,
-  dataRoot,
   findTask,
   journalHasTask,
   loadState,
@@ -34,6 +33,10 @@ import { extractVerdict } from './lib/verdict.mjs';
 
 const MAX_ITERATIONS = Number(process.env.HARNESS_MAX_ITERATIONS ?? 25);
 const MAX_REVIEWER_RETRIES = Number(process.env.HARNESS_REVIEWER_RETRIES ?? 1);
+// Every external call is bounded. A nonresponsive agent must cost one timeout,
+// never an unattended wait with no evidence and no exit.
+const IMPLEMENTER_TIMEOUT_MS = Number(process.env.HARNESS_IMPLEMENTER_TIMEOUT_MS ?? 600_000);
+const REVIEWER_TIMEOUT_MS = Number(process.env.HARNESS_REVIEWER_TIMEOUT_MS ?? 180_000);
 
 // Harness-owned paths never count as implementation changes.
 const HARNESS_OWNED = ['tasks/', 'journal/', '.harness-tmp/'];
@@ -157,6 +160,8 @@ function runImplementer(task) {
     cwd: workdir,
     encoding: 'utf8',
     input: brief,
+    timeout: IMPLEMENTER_TIMEOUT_MS,
+    killSignal: 'SIGKILL',
     env: {
       ...process.env,
       TASK_ID: task.id,
@@ -167,10 +172,15 @@ function runImplementer(task) {
       HARNESS_WORKDIR: workdir,
     },
   });
+  const timedOut = result.error?.code === 'ETIMEDOUT' || result.signal === 'SIGKILL';
   return {
     invoked: true,
     command,
-    exitCode: result.status,
+    exitCode: result.status ?? (timedOut ? 124 : 1),
+    timedOut,
+    reason: timedOut
+      ? `implementer did not finish within ${IMPLEMENTER_TIMEOUT_MS}ms and was killed`
+      : undefined,
     outputTail: `${result.stdout ?? ''}${result.stderr ?? ''}`.slice(-4000),
   };
 }
@@ -198,6 +208,8 @@ function runExternalReviewer(task, evidence, evidencePath) {
     cwd: taskWorkdir(task),
     encoding: 'utf8',
     input: JSON.stringify(evidence, null, 2),
+    timeout: REVIEWER_TIMEOUT_MS,
+    killSignal: 'SIGKILL',
     env: {
       ...process.env,
       TASK_ID: task.id,
@@ -216,10 +228,15 @@ function runExternalReviewer(task, evidence, evidencePath) {
       rawTail: stdout.slice(-1500),
     };
   }
+  const timedOut = result.error?.code === 'ETIMEDOUT' || result.signal === 'SIGKILL';
   return {
     verdict: 'reject',
     unavailable: true,
-    reasons: [`external reviewer produced no valid verdict (exit ${result.status})`],
+    reasons: [
+      timedOut
+        ? `external reviewer timed out after ${REVIEWER_TIMEOUT_MS}ms`
+        : `external reviewer produced no valid verdict (exit ${result.status})`,
+    ],
     reviewer: 'external',
     rawTail: `${stdout}${stderr}`.slice(-1500),
   };
