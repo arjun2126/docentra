@@ -1,72 +1,96 @@
-// Verify the seeded data is complete and internally consistent.
-// Exits non-zero with a specific message instead of a generic failure.
+// Independent check of the demonstration data. Reads the database rather than
+// trusting the seeder's own report, and fails loudly on any inconsistency.
 import pg from 'pg';
 
 const DATABASE_URL =
-  process.env.DATABASE_URL ?? 'postgresql://docentra:docentra@localhost:55432/docentra_dev';
-const EXPECTED_VENDORS = 4;
-const EXPECTED_DOCUMENTS = 6;
+  process.env.DATABASE_URL ?? 'postgresql://docentra:docentra@127.0.0.1:56000/docentra_dev';
+
+const EXPECTED_VENDORS = 6;
+const EXPECTED_DOCUMENTS = 12;
+const STATUSES = ['draft', 'submitted', 'approved', 'rejected'];
 
 const client = new pg.Client({ connectionString: DATABASE_URL });
 await client.connect();
 
 const problems = [];
-const addProblem = (message) => problems.push(message);
 
 try {
+  // The baseline is a floor, not a total: using the application (or an end-to-end
+  // run) adds vendors and documents, and that must not read as a seed failure.
   const vendors = await client.query('select count(*)::int as n from docflow.vendor');
-  if (vendors.rows[0].n !== EXPECTED_VENDORS) {
-    addProblem(`expected ${EXPECTED_VENDORS} vendors, found ${vendors.rows[0].n}`);
+  if (vendors.rows[0].n < EXPECTED_VENDORS) {
+    problems.push(`expected at least ${EXPECTED_VENDORS} vendors, found ${vendors.rows[0].n}`);
   }
 
   const documents = await client.query('select count(*)::int as n from docflow.document_header');
-  if (documents.rows[0].n !== EXPECTED_DOCUMENTS) {
-    addProblem(`expected ${EXPECTED_DOCUMENTS} documents, found ${documents.rows[0].n}`);
+  if (documents.rows[0].n < EXPECTED_DOCUMENTS) {
+    problems.push(`expected at least ${EXPECTED_DOCUMENTS} documents, found ${documents.rows[0].n}`);
+  }
+
+  const seeded = await client.query(
+    `select count(*)::int as n from docflow.document_header
+      where document_number ~ '^DOC-2026-0000(0[1-9]|1[0-2])$'`,
+  );
+  if (seeded.rows[0].n !== EXPECTED_DOCUMENTS) {
+    problems.push(
+      `expected ${EXPECTED_DOCUMENTS} seeded document numbers, found ${seeded.rows[0].n}`,
+    );
   }
 
   const statuses = await client.query(
     'select status, count(*)::int as n from docflow.document_header group by status',
   );
-  for (const required of ['draft', 'submitted', 'approved', 'rejected']) {
-    const found = statuses.rows.find((row) => row.status === required);
-    if (!found || found.n < 1) addProblem(`no document with status ${required}`);
+  for (const status of STATUSES) {
+    const row = statuses.rows.find((entry) => entry.status === status);
+    if (!row) problems.push(`no document in status ${status}`);
   }
 
-  const totals = await client.query(`
-    select h.document_number,
-           h.total_amount::text as total,
-           coalesce(sum(d.amount), 0)::text as detail_sum,
-           count(d.detail_id)::int as lines
-      from docflow.document_header h
-      left join docflow.document_detail d on d.shno = h.shno
-     group by h.shno, h.document_number, h.total_amount
-  `);
+  const totals = await client.query(
+    `select h.document_number,
+            h.total_amount::text as header_total,
+            coalesce(sum(d.amount), 0)::text as detail_total,
+            h.line_count,
+            count(d.detail_id)::int as detail_count
+       from docflow.document_header h
+       left join docflow.document_detail d on d.shno = h.shno
+      group by h.shno`,
+  );
   for (const row of totals.rows) {
-    if (Number(row.total) !== Number(row.detail_sum)) {
-      addProblem(`${row.document_number}: total ${row.total} != sum of details ${row.detail_sum}`);
+    if (Number(row.header_total) !== Number(row.detail_total)) {
+      problems.push(
+        `${row.document_number}: header total ${row.header_total} != detail sum ${row.detail_total}`,
+      );
     }
-    if (row.lines === 0) addProblem(`${row.document_number}: has no line items`);
+    if (row.line_count !== row.detail_count) {
+      problems.push(
+        `${row.document_number}: line_count ${row.line_count} != ${row.detail_count} details`,
+      );
+    }
   }
 
-  const duplicates = await client.query(`
-    select document_number, count(*)::int as n
-      from docflow.document_header
-     group by document_number
-    having count(*) > 1
-  `);
-  for (const row of duplicates.rows) {
-    addProblem(`duplicate document_number ${row.document_number}`);
+  const duplicates = await client.query(
+    `select document_number, count(*)::int as n
+       from docflow.document_header group by document_number having count(*) > 1`,
+  );
+  if (duplicates.rows.length) {
+    problems.push(`duplicate document numbers: ${duplicates.rows.map((r) => r.document_number).join(', ')}`);
+  }
+
+  const unlinked = await client.query(
+    `select count(*)::int as n from docflow.document_header h
+      left join docflow.vendor v on v.id = h.vendor_id where v.id is null`,
+  );
+  if (unlinked.rows[0].n !== 0) problems.push(`${unlinked.rows[0].n} documents without a vendor`);
+
+  if (problems.length) {
+    console.error('seed verification failed:');
+    for (const problem of problems) console.error(` - ${problem}`);
+    process.exitCode = 1;
+  } else {
+    console.log(
+      `seed verified: ${EXPECTED_VENDORS} vendors, ${EXPECTED_DOCUMENTS} documents, totals consistent`,
+    );
   }
 } finally {
   await client.end();
 }
-
-if (problems.length > 0) {
-  console.error('seed verification failed:');
-  for (const problem of problems) console.error(`  - ${problem}`);
-  process.exit(1);
-}
-
-console.log(
-  `seed verified: ${EXPECTED_VENDORS} vendors, ${EXPECTED_DOCUMENTS} documents, totals consistent`,
-);

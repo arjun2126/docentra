@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Docentra",
   "module": "DocFlow",
-  "milestone": "M4",
+  "milestone": "M5",
   "maxRepairAttempts": 2,
   "tasks": [
     {
@@ -573,7 +573,7 @@
       "milestone": "M5",
       "title": "Server-side PDF export",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M4-ACCEPT"
@@ -585,14 +585,19 @@
         "tests/unit/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit",
-      "brief": "Generate a document PDF on the server from database state only (never client-supplied totals), with header, vendor, line items and totals, correct content type and filename, and a link only where a document exists. Unit-test the pure layout builder."
+      "brief": "Generate a document PDF on the server from database state only (never client-supplied totals), with header, vendor, line items and totals, correct content type and filename, and a link only where a document exists. Unit-test the pure layout builder.",
+      "completedAt": "2026-11-02T20:36:08.176Z",
+      "evidence": [
+        "tasks/evidence/M5-T1/2026-11-02T20-36-08-166Z-M5-T1.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M5-T2",
       "milestone": "M5",
       "title": "Accessibility polish and realistic demonstration data",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M4-ACCEPT"
@@ -604,14 +609,19 @@
         "scripts/verify-seed.mjs"
       ],
       "acceptance": "npm run db:seed && npm run db:verify && npm run lint && npm run typecheck",
-      "brief": "Make every form label-associated, focus-visible, and keyboard operable; check colour contrast and responsive breakpoints at 360px, 768px and 1280px. Expand the seed to a realistic spread of vendors, documents, statuses and dates so search, filters and metrics demonstrate real behaviour, remaining idempotent."
+      "brief": "Make every form label-associated, focus-visible, and keyboard operable; check colour contrast and responsive breakpoints at 360px, 768px and 1280px. Expand the seed to a realistic spread of vendors, documents, statuses and dates so search, filters and metrics demonstrate real behaviour, remaining idempotent.",
+      "completedAt": "2026-11-02T20:36:08.176Z",
+      "evidence": [
+        "tasks/evidence/M5-T2/2026-11-02T20-36-08-166Z-M5-T2.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M5-T3",
       "milestone": "M5",
       "title": "Playwright end-to-end regression",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M5-T1",
@@ -623,14 +633,19 @@
         "package.json"
       ],
       "acceptance": "npm run test:e2e",
-      "brief": "Playwright suite against a running dev server and the seeded database: create a vendor, create a document with two lines, submit, approve, verify totals, search for it, download the PDF, and confirm an approved document cannot be edited. Tests must fail loudly if the database is missing."
+      "brief": "Playwright suite against a running dev server and the seeded database: create a vendor, create a document with two lines, submit, approve, verify totals, search for it, download the PDF, and confirm an approved document cannot be edited. Tests must fail loudly if the database is missing.",
+      "completedAt": "2026-11-02T20:36:08.177Z",
+      "evidence": [
+        "tasks/evidence/M5-T3/2026-11-02T20-36-08-166Z-M5-T3.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M5-ACCEPT",
       "milestone": "M5",
       "title": "M5 milestone acceptance: full regression, build and demo walkthrough",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M5-T3"
@@ -643,8 +658,24 @@
         "prisma/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e && npm run build",
-      "brief": "Final milestone boundary: complete regression, production build, and a documented local demonstration walkthrough."
+      "brief": "Final milestone boundary: complete regression, production build, and a documented local demonstration walkthrough.",
+      "completedAt": "2026-11-02T20:36:08.178Z",
+      "evidence": [
+        "tasks/evidence/M5-ACCEPT/2026-11-02T20-36-08-166Z-M5-ACCEPT.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     }
   ],
-  "updatedAt": "2026-11-02T19:44:54.021Z"
+  "updatedAt": "2026-11-02T19:44:54.021Z",
+  "authorization": {
+    "authorizedBy": "owner",
+    "authorizedAt": "2026-11-02",
+    "scope": "M2-M5 local development",
+    "boundaries": [
+      "no production deployment",
+      "no remote repository",
+      "no paid services",
+      "no auth architecture change"
+    ]
+  }
 }

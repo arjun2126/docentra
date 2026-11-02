@@ -155,6 +155,17 @@ describe("approved documents are immutable", () => {
     ).rejects.toThrow(/immutable/i);
   });
 
+  it("refuses to reopen itself with a bare status update", async () => {
+    const doc = await approvedDocument();
+    await expect(
+      withClient((client) =>
+        client.query("update docflow.document_header set status = 'draft' where shno = $1", [
+          doc.shno,
+        ]),
+      ),
+    ).rejects.toThrow(/immutable/i);
+  });
+
   it("refuses new lines at the database layer", async () => {
     const doc = await approvedDocument();
     await expect(

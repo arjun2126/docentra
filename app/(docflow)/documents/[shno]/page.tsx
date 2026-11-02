@@ -48,6 +48,12 @@ export default async function DocumentPage({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <a
+            href={`/api/documents/${document.shno}/pdf`}
+            className="text-sm text-brand hover:underline"
+          >
+            Download PDF
+          </a>
           {editable ? (
             <Link href={`/documents/${document.shno}/edit`}>
               <Button variant="outline">Edit draft</Button>
