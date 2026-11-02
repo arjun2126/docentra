@@ -1,0 +1,146 @@
+[
+  {
+    "file": "dashboard-1024-geometry.json",
+    "viewport": 1024,
+    "documentWidth": 1024,
+    "pass": true
+  },
+  {
+    "file": "dashboard-1440-geometry.json",
+    "viewport": 1440,
+    "documentWidth": 1440,
+    "pass": true
+  },
+  {
+    "file": "dashboard-320-geometry.json",
+    "viewport": 320,
+    "documentWidth": 320,
+    "pass": true
+  },
+  {
+    "file": "dashboard-375-geometry.json",
+    "viewport": 375,
+    "documentWidth": 375,
+    "pass": true
+  },
+  {
+    "file": "dashboard-390-geometry.json",
+    "viewport": 390,
+    "documentWidth": 390,
+    "pass": true
+  },
+  {
+    "file": "dashboard-768-geometry.json",
+    "viewport": 768,
+    "documentWidth": 768,
+    "pass": true
+  },
+  {
+    "file": "detail-1024-geometry.json",
+    "viewport": 1024,
+    "documentWidth": 1024,
+    "pass": true
+  },
+  {
+    "file": "detail-1440-geometry.json",
+    "viewport": 1440,
+    "documentWidth": 1440,
+    "pass": true
+  },
+  {
+    "file": "detail-320-geometry.json",
+    "viewport": 320,
+    "documentWidth": 320,
+    "pass": true
+  },
+  {
+    "file": "detail-375-geometry.json",
+    "viewport": 375,
+    "documentWidth": 375,
+    "pass": true
+  },
+  {
+    "file": "detail-390-geometry.json",
+    "viewport": 390,
+    "documentWidth": 390,
+    "pass": true
+  },
+  {
+    "file": "detail-768-geometry.json",
+    "viewport": 768,
+    "documentWidth": 768,
+    "pass": true
+  },
+  {
+    "file": "documents-1024-geometry.json",
+    "viewport": 1024,
+    "documentWidth": 1024,
+    "pass": true
+  },
+  {
+    "file": "documents-1440-geometry.json",
+    "viewport": 1440,
+    "documentWidth": 1440,
+    "pass": true
+  },
+  {
+    "file": "documents-320-geometry.json",
+    "viewport": 320,
+    "documentWidth": 320,
+    "pass": true
+  },
+  {
+    "file": "documents-375-geometry.json",
+    "viewport": 375,
+    "documentWidth": 375,
+    "pass": true
+  },
+  {
+    "file": "documents-390-geometry.json",
+    "viewport": 390,
+    "documentWidth": 390,
+    "pass": true
+  },
+  {
+    "file": "documents-768-geometry.json",
+    "viewport": 768,
+    "documentWidth": 768,
+    "pass": true
+  },
+  {
+    "file": "vendors-1024-geometry.json",
+    "viewport": 1024,
+    "documentWidth": 1024,
+    "pass": true
+  },
+  {
+    "file": "vendors-1440-geometry.json",
+    "viewport": 1440,
+    "documentWidth": 1440,
+    "pass": true
+  },
+  {
+    "file": "vendors-320-geometry.json",
+    "viewport": 320,
+    "documentWidth": 320,
+    "pass": true
+  },
+  {
+    "file": "vendors-375-geometry.json",
+    "viewport": 375,
+    "documentWidth": 375,
+    "pass": true
+  },
+  {
+    "file": "vendors-390-geometry.json",
+    "viewport": 390,
+    "documentWidth": 390,
+    "pass": true
+  },
+  {
+    "file": "vendors-768-geometry.json",
+    "viewport": 768,
+    "documentWidth": 768,
+    "pass": true
+  }
+]

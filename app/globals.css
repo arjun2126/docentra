@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 @layer base {
+  body { line-height: 1.5; }
+  main h1 { @apply break-words text-2xl font-semibold tracking-tight sm:text-3xl; }
   /* One visible focus treatment everywhere, including elements that opt out of
      browser defaults for styling reasons. */
   :focus-visible {
@@ -19,4 +21,19 @@
       transition-duration: 0.01ms !important;
     }
   }
+}
+
+@layer components {
+  .page-header { @apply flex flex-wrap items-center justify-between gap-4; }
+  /* Keep absolutely positioned accessible captions/labels inside the scrollport's
+     containing block, rather than letting them extend the document viewport. */
+  .table-scroll { @apply relative min-w-0 overflow-x-auto; }
+  .data-table { @apply w-full text-sm; }
+  .data-table thead { @apply bg-muted/60; }
+  .data-table th { @apply whitespace-nowrap px-3 py-3 text-xs font-semibold uppercase tracking-wide text-slate-600; }
+  .data-table td { @apply px-3 py-4 leading-relaxed; }
+  .data-table tbody tr { @apply hover:bg-muted/40; }
+  .data-table td:first-child, .data-table th:first-child { @apply pl-0; }
+  .data-table td:last-child, .data-table th:last-child { @apply pr-0; }
+  .data-table a { @apply font-medium text-brand underline-offset-4 hover:underline; }
 }

@@ -30,7 +30,7 @@ export default async function VendorsPage({
             Suppliers referenced by DocFlow documents. Deactivating keeps history intact.
           </p>
         </div>
-        <form className="flex items-center gap-2" action="/vendors" method="get">
+        <form className="flex w-full items-center gap-2 sm:w-auto" action="/vendors" method="get">
           <label htmlFor="vendor-search" className="sr-only">
             Search vendors
           </label>
@@ -39,7 +39,7 @@ export default async function VendorsPage({
             name="q"
             defaultValue={query}
             placeholder="Search code or name"
-            className="w-56"
+            className="min-w-0 flex-1 sm:w-56"
           />
           <Button type="submit" variant="outline">
             Search
@@ -53,22 +53,22 @@ export default async function VendorsPage({
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
-        <Card>
+      <div className="grid items-start gap-6 2xl:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="min-w-0">
           <CardHeader>
             <CardTitle className="text-base">
               {query ? `Results for “${query}”` : "All vendors"}
             </CardTitle>
           </CardHeader>
-          <CardContent className="overflow-x-auto">
+          <CardContent className="table-scroll" tabIndex={0} role="region" aria-label="Vendors table">
             {vendors.length === 0 ? (
               <p className="py-6 text-sm text-muted-foreground">
                 {query
                   ? "No vendors match that search."
-                  : "No vendors yet. Create the first one on the right."}
+                  : "No vendors yet. Use the vendor form to create the first one."}
               </p>
             ) : (
-              <table className="w-full text-sm">
+              <table className="data-table min-w-[660px]">
                 <caption className="sr-only">Vendors</caption>
                 <thead>
                   <tr className="border-b text-left text-xs uppercase tracking-wide text-muted-foreground">
@@ -85,7 +85,7 @@ export default async function VendorsPage({
                   {vendors.map((vendor) => (
                     <tr key={vendor.id}>
                       <td className="py-2 pr-3 font-mono text-xs">{vendor.code}</td>
-                      <td className="py-2 pr-3">
+                      <td className="min-w-48 max-w-80 break-words">
                         <span className="font-medium">{vendor.name}</span>
                         {vendor.email ? (
                           <span className="block text-xs text-muted-foreground">

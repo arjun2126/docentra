@@ -760,8 +760,8 @@
       "milestone": "Q1",
       "title": "Polish dashboard navigation tables and responsive accessibility",
       "synthetic": false,
-      "status": "pending",
-      "attempts": 0,
+      "status": "done",
+      "attempts": 3,
       "dependsOn": [
         "Q1-T2"
       ],
@@ -774,7 +774,29 @@
         "journal/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
-      "brief": "Improve visual hierarchy, readable KPI/status visualization, tables/navigation/spacing/typography/responsive/accessibility; preserve routes and workflows, no currency assumptions."
+      "brief": "Improve visual hierarchy, readable KPI/status visualization, tables/navigation/spacing/typography/responsive/accessibility; preserve routes and workflows, no currency assumptions.",
+      "startedAt": "2026-11-02T22:22:05.806Z",
+      "baseHead": "9185be914a942bb7658cbf2811e081c88d73a530",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/Q1-T3/2026-11-02-ui-blocked.json",
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/Q1-T3/2026-11-02-ui-resume-final.json"
+      ],
+      "reviewer": {
+        "verdict": "accept",
+        "reasons": [],
+        "sessionID": "ses_e6180baacffeejeOlshBopJS8E",
+        "reviewedAt": "2026-11-02T23:02:38.534Z"
+      },
+      "repairAuthorization": {
+        "authorizedBy": "owner",
+        "authorizedAt": "2026-11-02T22:29:43.800Z",
+        "additionalAttempts": 2,
+        "attemptsUsed": 1,
+        "priorAttempts": 2,
+        "scope": "Focused /vendors overflow repair, no document-level overflow hiding; widths 375,768,1024,desktop; proceed P4/P6 automatically after acceptance"
+      },
+      "previousBlockedReason": "Repair budget exhausted: responsive overflow on /vendors at 768px; mobile and final UI changes unverified",
+      "completedAt": "2026-11-02T23:02:38.535Z"
     },
     {
       "id": "Q1-T4",
@@ -819,7 +841,7 @@
       "brief": "Full gates/unit/PostgreSQL integration/E2E/build; actual PDF draft+approved content, development fingerprints unchanged, keyboard/accessibility/responsive and immutability regression; independent acceptance, push and CI verification."
     }
   ],
-  "updatedAt": "2026-11-02T22:21:44.574Z",
+  "updatedAt": "2026-11-02T23:02:38.535Z",
   "authorization": {
     "authorizedBy": "owner",
     "authorizedAt": "2026-11-02",

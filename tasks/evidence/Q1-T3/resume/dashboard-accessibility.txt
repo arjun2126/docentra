@@ -1,0 +1,107 @@
+- link "Skip to content":
+  - /url: "#main"
+- complementary:
+  - paragraph: Docentra
+  - paragraph: DocFlow workspace
+  - navigation "Main":
+    - link "Dashboard":
+      - /url: /
+    - link "Vendors":
+      - /url: /vendors
+    - link "Documents":
+      - /url: /documents
+  - paragraph: Local development build
+- main:
+  - paragraph: DocFlow overview
+  - heading "Dashboard" [level=1]
+  - paragraph: Your documents, activity and approvals at a glance.
+  - link "New document":
+    - /url: /documents/new
+  - region "Summary":
+    - group "Documents":
+      - heading "Documents" [level=2]
+      - paragraph: "6"
+      - paragraph: Across all statuses
+    - group "Vendors":
+      - heading "Vendors" [level=2]
+      - paragraph: "2"
+      - paragraph: 2 active
+    - group "Awaiting approval":
+      - heading "Awaiting approval" [level=2]
+      - paragraph: "2500.50"
+      - paragraph: Total amount · submitted
+    - group "Approved value":
+      - heading "Approved value" [level=2]
+      - paragraph: "2500.50"
+      - paragraph: Total amount · approved
+    - group "Approved this month":
+      - heading "Approved this month" [level=2]
+      - paragraph: "2500.50"
+      - paragraph: 1 document(s) · by document date
+  - region "Document activity":
+    - heading "Documents by status" [level=2]
+    - paragraph: 6 documents · share of total
+    - list "Status legend":
+      - listitem:
+        - text: draft
+        - strong: "3"
+        - text: 50%
+      - listitem:
+        - text: submitted
+        - strong: "1"
+        - text: 17%
+      - listitem:
+        - text: approved
+        - strong: "1"
+        - text: 17%
+      - listitem:
+        - text: rejected
+        - strong: "1"
+        - text: 17%
+    - heading "Recent documents" [level=2]
+    - link "View all documents →":
+      - /url: /documents
+    - list:
+      - listitem:
+        - link "DOC-2026-900006":
+          - /url: /documents/6
+        - paragraph: Northbridge Office & Technical Supplies · 2026-11-01
+        - text: 2500.50 rejected
+      - listitem:
+        - link "DOC-2026-900005":
+          - /url: /documents/5
+        - paragraph: Northbridge Office & Technical Supplies · 2026-11-01
+        - text: 2500.50 approved
+      - listitem:
+        - link "DOC-2026-900004":
+          - /url: /documents/4
+        - paragraph: Northbridge Office & Technical Supplies · 2026-11-01
+        - text: 2500.50 submitted
+      - listitem:
+        - link "DOC-2026-900003":
+          - /url: /documents/3
+        - paragraph: Northbridge Office & Technical Supplies · 2026-11-01
+        - text: 2500.50 draft
+      - listitem:
+        - link "DOC-2026-900002":
+          - /url: /documents/2
+        - paragraph: Northbridge Office & Technical Supplies · 2026-11-01
+        - text: 2500.50 draft
+  - region "Top vendors by document count":
+    - heading "Top vendors by document count" [level=2]
+    - region "Top vendors table":
+      - table "Top vendors by document count":
+        - caption: Top vendors by document count
+        - rowgroup:
+          - row "Vendor Documents Total":
+            - columnheader "Vendor"
+            - columnheader "Documents"
+            - columnheader "Total"
+        - rowgroup:
+          - row "Northbridge Office & Technical SuppliesQ1-UI 6 15003.00":
+            - cell "Northbridge Office & Technical SuppliesQ1-UI"
+            - cell "6"
+            - cell "15003.00"
+- contentinfo:
+  - paragraph: Docentra · DocFlow — demonstration data, no currency configured.
+- alert

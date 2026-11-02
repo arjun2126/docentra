@@ -1,7 +1,8 @@
 import Link from "next/link";
 
 import { StatusBadge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getDashboard } from "@/lib/docflow/dashboard";
 
 export const dynamic = "force-dynamic";
@@ -16,38 +17,36 @@ function Stat({
   hint?: string;
 }) {
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {label}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-3xl font-semibold tracking-tight">{value}</p>
-        {hint ? <p className="mt-1 text-xs text-muted-foreground">{hint}</p> : null}
-      </CardContent>
+    <Card className="min-w-0 border-t-2 border-t-brand/30" role="group" aria-label={label}>
+      <div className="space-y-3 p-5">
+        <h2 className="text-sm font-medium text-muted-foreground">{label}</h2>
+        <p className="break-all text-2xl font-semibold tracking-tight tabular-nums" data-kpi-value>{value}</p>
+        {hint ? <p className="text-xs leading-relaxed text-muted-foreground">{hint}</p> : null}
+      </div>
     </Card>
   );
 }
 
 export default async function DashboardPage() {
   const data = await getDashboard();
-  const maxCount = Math.max(1, ...data.byStatus.map((row) => row.count));
+  const statusColors = { draft: "bg-slate-500", submitted: "bg-blue-600", approved: "bg-emerald-600", rejected: "bg-red-600" };
 
   return (
     <div className="space-y-8">
-      <header className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">
-          Live totals from the DocFlow database.
-        </p>
+      <header className="page-header">
+        <div className="space-y-2">
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand">DocFlow overview</p>
+          <h1>Dashboard</h1>
+          <p className="text-sm text-muted-foreground">Your documents, activity and approvals at a glance.</p>
+        </div>
+        <Link href="/documents/new" className={buttonVariants()}>New document</Link>
       </header>
 
       <section
         aria-label="Summary"
-        className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+        className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
       >
-        <Stat label="Documents" value={String(data.totalDocuments)} />
+        <Stat label="Documents" value={String(data.totalDocuments)} hint="Across all statuses" />
         <Stat
           label="Vendors"
           value={String(data.vendorCount)}
@@ -56,69 +55,69 @@ export default async function DashboardPage() {
         <Stat
           label="Awaiting approval"
           value={data.awaitingApprovalValue}
-          hint="Submitted, unformatted amount"
+          hint="Total amount · submitted"
         />
         <Stat
           label="Approved value"
           value={data.approvedValue}
-          hint="Unformatted amount"
+          hint="Total amount · approved"
         />
         <Stat
           label="Approved this month"
           value={data.approvedThisMonth}
-          hint={`${data.approvedThisMonthCount} document(s), unformatted amount`}
+          hint={`${data.approvedThisMonthCount} document(s) · by document date`}
         />
       </section>
 
-      <section aria-labelledby="status-heading" className="grid gap-6 lg:grid-cols-2">
+      <section aria-label="Document activity" className="grid items-start gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         <Card>
           <CardHeader>
-            <CardTitle id="status-heading" className="text-base">
+            <h2 id="status-heading" className="text-base font-semibold">
               Documents by status
-            </CardTitle>
+            </h2>
+            <p className="text-sm text-muted-foreground">{data.totalDocuments} documents · share of total</p>
           </CardHeader>
-          <CardContent className="space-y-3">
-            {data.byStatus.map((row) => (
-              <div key={row.status} className="space-y-1">
-                <div className="flex items-center justify-between text-sm">
-                  <StatusBadge status={row.status} />
-                  <span className="font-medium">{row.count}</span>
-                </div>
-                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full bg-brand"
-                    style={{ width: `${Math.round((row.count / maxCount) * 100)}%` }}
-                  />
-                </div>
-              </div>
-            ))}
+          <CardContent className="space-y-5">
+            <div aria-hidden="true" className="flex h-4 overflow-hidden rounded-full bg-muted" data-status-chart>
+              {data.byStatus.map((row) => <span key={row.status} data-status={row.status} className={statusColors[row.status]} style={{ width: `${data.totalDocuments ? row.count / data.totalDocuments * 100 : 0}%` }} />)}
+            </div>
+            {data.totalDocuments === 0 ? <p className="text-sm text-muted-foreground">No documents yet. Status shares appear when you create a document.</p> : null}
+            <ul aria-label="Status legend" className="divide-y">
+              {data.byStatus.map((row) => (
+                <li key={row.status} className="flex items-center justify-between gap-3 py-3 text-sm" data-status-row={row.status}>
+                  <span className="flex items-center gap-2 capitalize"><span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${statusColors[row.status]}`} />{row.status}</span>
+                  <span className="text-right tabular-nums"><strong className="font-semibold">{row.count}</strong><span className="ml-3 text-muted-foreground">{data.totalDocuments ? Math.round(row.count / data.totalDocuments * 100) : 0}%</span></span>
+                </li>
+              ))}
+            </ul>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Recent documents</CardTitle>
+            <h2 className="text-base font-semibold">Recent documents</h2>
+            <Link href="/documents" className="w-fit text-sm font-medium text-brand hover:underline">View all documents →</Link>
           </CardHeader>
           <CardContent>
             {data.recent.length === 0 ? (
               <p className="text-sm text-muted-foreground">
-                No documents yet. Run <code>npm run db:seed</code> for sample data.
+                No documents yet. Create your first draft to get started.
               </p>
             ) : (
               <ul className="divide-y">
                 {data.recent.map((doc) => (
                   <li
                     key={doc.shno}
-                    className="flex flex-wrap items-center justify-between gap-2 py-2"
+                    className="flex flex-wrap items-center justify-between gap-3 py-4"
                   >
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1 basis-48">
                       <Link
                         href={`/documents/${doc.shno}`}
-                        className="block truncate text-sm font-medium hover:underline"
+                        className="block text-sm font-semibold text-brand hover:underline"
                       >
                         {doc.documentNumber}
                       </Link>
-                      <p className="truncate text-xs text-muted-foreground">
+                      <p className="mt-1 break-words text-xs leading-relaxed text-muted-foreground">
                         {doc.vendorName} · {doc.documentDate}
                       </p>
                     </div>
@@ -137,17 +136,17 @@ export default async function DashboardPage() {
       <section aria-labelledby="top-vendors-heading">
         <Card>
           <CardHeader>
-            <CardTitle id="top-vendors-heading" className="text-base">
+            <h2 id="top-vendors-heading" className="text-base font-semibold">
               Top vendors by document count
-            </CardTitle>
+            </h2>
           </CardHeader>
-          <CardContent className="overflow-x-auto">
+          <CardContent className="table-scroll" tabIndex={0} role="region" aria-label="Top vendors table">
             {data.topVendors.length === 0 ? (
               <p className="text-sm text-muted-foreground">
                 No vendors with documents yet.
               </p>
             ) : (
-              <table className="w-full text-sm">
+              <table className="data-table min-w-[480px]">
                 <caption className="sr-only">Top vendors by document count</caption>
                 <thead>
                   <tr className="border-b text-left text-xs uppercase tracking-wide text-muted-foreground">

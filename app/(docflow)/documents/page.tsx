@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { StatusBadge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { searchDocuments } from "@/lib/docflow/search";
@@ -45,9 +45,7 @@ export default async function DocumentsPage({
             Draft, submit and approve vendor purchase documents.
           </p>
         </div>
-        <Link href="/documents/new">
-          <Button>New document</Button>
-        </Link>
+        <Link href="/documents/new" className={buttonVariants()}>New document</Link>
       </header>
 
       {!parsed.ok ? (
@@ -59,8 +57,8 @@ export default async function DocumentsPage({
 
       <Card>
         <CardContent className="pt-6">
-          <form method="get" action="/documents" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
-            <div className="space-y-1 lg:col-span-2">
+          <form method="get" action="/documents" className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
+            <div className="space-y-1 xl:col-span-2">
               <Label htmlFor="filter-q">Search</Label>
               <input
                 id="filter-q"
@@ -122,7 +120,7 @@ export default async function DocumentsPage({
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
             </div>
-            <div className="flex items-end gap-2 sm:col-span-2 lg:col-span-6">
+            <div className="flex flex-wrap items-end gap-2 sm:col-span-2 xl:col-span-6">
               <input type="hidden" name="pageSize" value={active.pageSize} />
               <Button type="submit">Apply filters</Button>
               {hasFilters ? (
@@ -139,7 +137,7 @@ export default async function DocumentsPage({
       </Card>
 
       <Card>
-        <CardContent className="overflow-x-auto pt-6">
+        <CardContent className="table-scroll pt-6" tabIndex={0} role="region" aria-label="Documents table">
           {result.items.length === 0 ? (
             <p className="py-6 text-sm text-muted-foreground">
               {hasFilters
@@ -147,7 +145,7 @@ export default async function DocumentsPage({
                 : "No documents yet. Create the first draft."}
             </p>
           ) : (
-            <table className="w-full text-sm">
+            <table className="data-table min-w-[720px]">
               <caption className="sr-only">Documents matching the current filters</caption>
               <thead>
                 <tr className="border-b text-left text-xs uppercase tracking-wide text-muted-foreground">
@@ -162,13 +160,13 @@ export default async function DocumentsPage({
               <tbody className="divide-y">
                 {result.items.map((doc) => (
                   <tr key={doc.shno}>
-                    <td className="py-2 pr-3 font-mono text-xs">
+                    <td className="whitespace-nowrap font-mono text-xs">
                       <Link href={`/documents/${doc.shno}`} className="hover:underline">
                         {doc.documentNumber}
                       </Link>
                     </td>
-                    <td className="py-2 pr-3">{doc.documentDate}</td>
-                    <td className="py-2 pr-3">{doc.vendor.name}</td>
+                    <td className="whitespace-nowrap">{doc.documentDate}</td>
+                    <td className="min-w-48 max-w-80 break-words">{doc.vendor.name}</td>
                     <td className="py-2 pr-3">
                       <StatusBadge status={doc.status} />
                     </td>

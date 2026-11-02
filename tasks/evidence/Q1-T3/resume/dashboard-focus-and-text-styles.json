@@ -1,0 +1,58 @@
+{
+  "focusStyle": {
+    "outline": "solid",
+    "color": "rgb(37, 29, 201)"
+  },
+  "text": [
+    {
+      "text": "Dashboard",
+      "color": "rgb(24, 24, 27)",
+      "size": "30px"
+    },
+    {
+      "text": "6",
+      "color": "rgb(24, 24, 27)",
+      "size": "24px"
+    },
+    {
+      "text": "2",
+      "color": "rgb(24, 24, 27)",
+      "size": "24px"
+    },
+    {
+      "text": "2500.50",
+      "color": "rgb(24, 24, 27)",
+      "size": "24px"
+    },
+    {
+      "text": "2500.50",
+      "color": "rgb(24, 24, 27)",
+      "size": "24px"
+    },
+    {
+      "text": "2500.50",
+      "color": "rgb(24, 24, 27)",
+      "size": "24px"
+    },
+    {
+      "text": "draft350%",
+      "color": "rgb(24, 24, 27)",
+      "size": "14px"
+    },
+    {
+      "text": "submitted117%",
+      "color": "rgb(24, 24, 27)",
+      "size": "14px"
+    },
+    {
+      "text": "approved117%",
+      "color": "rgb(24, 24, 27)",
+      "size": "14px"
+    },
+    {
+      "text": "rejected117%",
+      "color": "rgb(24, 24, 27)",
+      "size": "14px"
+    }
+  ]
+}

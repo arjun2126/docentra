@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-11-02T22:28:02.596Z",
+  "tables": {
+    "vendor": {
+      "count": 13,
+      "fingerprint": "85967cd9f1e9b89b36fb49f897ee7694",
+      "unchanged": true
+    },
+    "document_header": {
+      "count": 19,
+      "fingerprint": "f24a90ba4d9a6d18a418eaeb74c1c768",
+      "unchanged": true
+    },
+    "document_detail": {
+      "count": 41,
+      "fingerprint": "b04dac65acd2bbe4587c2058a6fc1a6f",
+      "unchanged": true
+    }
+  }
+}

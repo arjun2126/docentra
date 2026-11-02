@@ -1,0 +1,348 @@
+{
+  "runId": "2026-11-02-ui-resume-final",
+  "taskId": "Q1-T3",
+  "attempts": 3,
+  "additionalAuthorizedCandidate": 1,
+  "startedAt": "2026-11-02T22:29:43.800Z",
+  "finishedAt": "2026-11-02T22:37:18.147Z",
+  "implementer": {
+    "invoked": true,
+    "delegated": true,
+    "sessionID": "ses_e61a4cc1effeWoB4E1TSfB8Fg5"
+  },
+  "gate": {
+    "command": "HARNESS_BUILD=1 TASK_ID=Q1-T3 TASK_ACCEPTANCE=<registered acceptance> bash scripts/gates.sh with isolated integration database",
+    "exitCode": 0,
+    "transcript": "== gates ==\n   code:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   data:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n[gate] G0           PASS  harness files present\nstate ok: 36 tasks, 3 not done (/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/state.json)\n[gate] G1           PASS  task state valid\n[gate] G2           PASS  shell syntax\nTAP version 13\n# Subtest: direct Playwright invocation refuses before running browser tests\nok 1 - direct Playwright invocation refuses before running browser tests\n  ---\n  duration_ms: 259.887292\n  ...\n# Subtest: target names are fresh, safely configurable and never an existing regular name\nok 2 - target names are fresh, safely configurable and never an existing regular name\n  ---\n  duration_ms: 0.368375\n  ...\n# Subtest: app environment discards inherited database and process overrides\nok 3 - app environment discards inherited database and process overrides\n  ---\n  duration_ms: 0.13625\n  ...\n# Subtest: creation collision never returns a receipt or invokes cleanup\nok 4 - creation collision never returns a receipt or invokes cleanup\n  ---\n  duration_ms: 0.353292\n  ...\n# Subtest: cleanup refuses unknown, changed and previous databases; only receipt identity can drop\nok 5 - cleanup refuses unknown, changed and previous databases; only receipt identity can drop\n  ---\n  duration_ms: 0.236542\n  ...\n# Subtest: selects the first pending task whose dependencies are done\nok 6 - selects the first pending task whose dependencies are done\n  ---\n  duration_ms: 0.74875\n  ...\n# Subtest: never selects a task whose dependency is unfinished\nok 7 - never selects a task whose dependency is unfinished\n  ---\n  duration_ms: 0.10275\n  ...\n# Subtest: never selects a task whose dependency is blocked\nok 8 - never selects a task whose dependency is blocked\n  ---\n  duration_ms: 0.278125\n  ...\n# Subtest: resumes an in-flight task instead of starting a new one\nok 9 - resumes an in-flight task instead of starting a new one\n  ---\n  duration_ms: 0.046417\n  ...\n# Subtest: independent ready work proceeds while an approval gate is open\nok 10 - independent ready work proceeds while an approval gate is open\n  ---\n  duration_ms: 0.092875\n  ...\n# Subtest: an approval gate is reported once it is the only thing preventing progress\nok 11 - an approval gate is reported once it is the only thing preventing progress\n  ---\n  duration_ms: 0.043959\n  ...\n# Subtest: reports none when every task is done\nok 12 - reports none when every task is done\n  ---\n  duration_ms: 0.08825\n  ...\n# Subtest: selection is deterministic across repeated calls\nok 13 - selection is deterministic across repeated calls\n  ---\n  duration_ms: 0.052667\n  ...\n# Subtest: state round-trips through disk\nok 14 - state round-trips through disk\n  ---\n  duration_ms: 2.19125\n  ...\n# Subtest: writes are atomic and leave no temp files behind\nok 15 - writes are atomic and leave no temp files behind\n  ---\n  duration_ms: 0.805083\n  ...\n# Subtest: a partially written state can never be observed\nok 16 - a partially written state can never be observed\n  ---\n  duration_ms: 0.667292\n  ...\n# Subtest: duplicate task ids are rejected\nok 17 - duplicate task ids are rejected\n  ---\n  duration_ms: 0.30575\n  ...\n# Subtest: invalid statuses are rejected\nok 18 - invalid statuses are rejected\n  ---\n  duration_ms: 0.5255\n  ...\n# Subtest: unknown dependencies are rejected\nok 19 - unknown dependencies are rejected\n  ---\n  duration_ms: 0.313958\n  ...\n# Subtest: journal is append-only and detectable per task\nok 20 - journal is append-only and detectable per task\n  ---\n  duration_ms: 1.156375\n  ...\n# Subtest: evidence records are written per task and per run\nok 21 - evidence records are written per task and per run\n  ---\n  duration_ms: 1.021666\n  ...\n# Subtest: parses a bare verdict object\nok 22 - parses a bare verdict object\n  ---\n  duration_ms: 0.335375\n  ...\n# Subtest: parses a verdict wrapped in model chatter and ANSI noise\nok 23 - parses a verdict wrapped in model chatter and ANSI noise\n  ---\n  duration_ms: 0.279083\n  ...\n# Subtest: survives braces and escaped quotes inside the reasons\nok 24 - survives braces and escaped quotes inside the reasons\n  ---\n  duration_ms: 0.075917\n  ...\n# Subtest: returns null when no verdict is present\nok 25 - returns null when no verdict is present\n  ---\n  duration_ms: 0.037583\n  ...\n# Subtest: returns null when the object is malformed\nok 26 - returns null when the object is malformed\n  ---\n  duration_ms: 0.432625\n  ...\n# Subtest: recovers the decision from JSON broken by a stray escape\nok 27 - recovers the decision from JSON broken by a stray escape\n  ---\n  duration_ms: 0.151\n  ...\n1..27\n# tests 27\n# suites 0\n# pass 27\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 330.790791\n[gate] G3           PASS  harness unit tests\n-- product gates --\n[gate] TYPECHECK    PASS  npm run typecheck\n[gate] LINT         PASS  npm run lint\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/unit/money.test.ts (6 tests) 2ms\n ✓ tests/unit/utils.test.ts (4 tests) 3ms\n ✓ tests/unit/vendor-schema.test.ts (9 tests) 4ms\n ✓ tests/unit/workflow.test.ts (8 tests) 6ms\n ✓ tests/unit/pdf-model.test.ts (7 tests) 111ms\n\n Test Files  5 passed (5)\n      Tests  34 passed (34)\n   Start at  17:34:43\n   Duration  548ms (transform 95ms, setup 0ms, collect 248ms, tests 126ms, environment 0ms, prepare 230ms)\n\n[gate] UNIT         PASS  npm run test:unit\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/integration/guards.test.ts (20 tests) 470ms\n ✓ tests/integration/documents.test.ts (14 tests) 164ms\n ✓ tests/integration/docflow-schema.test.ts (7 tests) 42ms\n ✓ tests/integration/search.test.ts (11 tests) 98ms\n ✓ tests/integration/dashboard.test.ts (4 tests) 66ms\n\n Test Files  5 passed (5)\n      Tests  56 passed (56)\n   Start at  17:34:44\n   Duration  1.49s (transform 53ms, setup 0ms, collect 155ms, tests 840ms, environment 0ms, prepare 106ms)\n\n[gate] INTEGRATION  PASS  npm run test:integration\n ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.\n We detected multiple lockfiles and selected the directory of /Users/arjunsubramanya/package-lock.json as the root directory.\n To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.\n   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.\n Detected additional lockfiles: \n   * /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/package-lock.json\n\n   ▲ Next.js 15.5.28\n   - Environments: .env\n\n   Creating an optimized production build ...\n ✓ Compiled successfully in 1084ms\n   Linting and checking validity of types ...\n\n ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n   Collecting page data ...\n   Generating static pages (0/3) ...\n ✓ Generating static pages (3/3)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size  First Load JS\n┌ ƒ /                                      164 B         106 kB\n├ ○ /_not-found                            990 B         104 kB\n├ ƒ /api/documents/[shno]/pdf              123 B         103 kB\n├ ƒ /documents                             164 B         106 kB\n├ ƒ /documents/[shno]                    1.66 kB         115 kB\n├ ƒ /documents/[shno]/edit                 124 B         112 kB\n├ ƒ /documents/new                         124 B         112 kB\n└ ƒ /vendors                             2.44 kB         115 kB\n+ First Load JS shared by all             103 kB\n  ├ chunks/255-b1e2483a7e02feee.js       46.6 kB\n  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB\n  └ other shared chunks (total)          1.92 kB\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n[gate] BUILD        PASS  npm run build\n-- task acceptance (Q1-T3) --\n   cwd: /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   $ npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e\n\n> docentra@0.1.0 typecheck\n> tsc --noEmit\n\n\n> docentra@0.1.0 lint\n> eslint .\n\n\n> docentra@0.1.0 test:unit\n> vitest run --dir tests/unit\n\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/unit/money.test.ts (6 tests) 2ms\n ✓ tests/unit/utils.test.ts (4 tests) 3ms\n ✓ tests/unit/vendor-schema.test.ts (9 tests) 4ms\n ✓ tests/unit/workflow.test.ts (8 tests) 8ms\n ✓ tests/unit/pdf-model.test.ts (7 tests) 114ms\n\n Test Files  5 passed (5)\n      Tests  34 passed (34)\n   Start at  17:34:54\n   Duration  397ms (transform 94ms, setup 0ms, collect 226ms, tests 130ms, environment 0ms, prepare 240ms)\n\n\n> docentra@0.1.0 test:integration\n> node --env-file-if-exists=.env ./node_modules/vitest/vitest.mjs run --dir tests/integration --no-file-parallelism\n\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/integration/guards.test.ts (20 tests) 476ms\n ✓ tests/integration/documents.test.ts (14 tests) 146ms\n ✓ tests/integration/docflow-schema.test.ts (7 tests) 44ms\n ✓ tests/integration/search.test.ts (11 tests) 89ms\n ✓ tests/integration/dashboard.test.ts (4 tests) 69ms\n\n Test Files  5 passed (5)\n      Tests  56 passed (56)\n   Start at  17:34:55\n   Duration  1.46s (transform 52ms, setup 0ms, collect 143ms, tests 824ms, environment 0ms, prepare 108ms)\n\n\n> docentra@0.1.0 test:e2e\n> node --env-file-if-exists=.env scripts/e2e.mjs\n\nE2E artifacts: /var/folders/82/d8xptlz976z981kdf1yg_k3c0000gn/T/docentra-e2e-rKMfaH\nCreated dedicated E2E database: docentra_e2e_run_f6ba5851685c494db15e2b4e\nEnvironment variables loaded from .env\nPrisma schema loaded from prisma/schema.prisma\nDatasource \"db\": PostgreSQL database \"docentra_e2e_run_f6ba5851685c494db15e2b4e\", schemas \"docflow\" at \"127.0.0.1:56000\"\n\n8 migrations found in prisma/migrations\n\nApplying migration `20261102000000_init`\nApplying migration `20261102120000_guards`\nApplying migration `20261102130000_maintenance_override`\nApplying migration `20261102140000_detail_move_guard`\nApplying migration `20261102150000_detail_guard_locking`\nApplying migration `20261102160000_detail_guard_no_key_update`\nApplying migration `20261102170000_detail_guard_lock_order`\nApplying migration `20261102180000_detail_parent_immutable`\n\nThe following migration(s) have been applied:\n\nmigrations/\n  └─ 20261102000000_init/\n    └─ migration.sql\n  └─ 20261102120000_guards/\n    └─ migration.sql\n  └─ 20261102130000_maintenance_override/\n    └─ migration.sql\n  └─ 20261102140000_detail_move_guard/\n    └─ migration.sql\n  └─ 20261102150000_detail_guard_locking/\n    └─ migration.sql\n  └─ 20261102160000_detail_guard_no_key_update/\n    └─ migration.sql\n  └─ 20261102170000_detail_guard_lock_order/\n    └─ migration.sql\n  └─ 20261102180000_detail_parent_immutable/\n    └─ migration.sql\n      \nAll migrations have been successfully applied.\n   ▲ Next.js 15.5.28\n\n   Creating an optimized production build ...\n ✓ Compiled successfully in 2.7s\n   Linting and checking validity of types ...\n\n ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n   Collecting page data ...\n   Generating static pages (0/3) ...\n ✓ Generating static pages (3/3)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size  First Load JS\n┌ ƒ /                                      164 B         106 kB\n├ ○ /_not-found                            992 B         104 kB\n├ ƒ /api/documents/[shno]/pdf              123 B         103 kB\n├ ƒ /documents                             164 B         106 kB\n├ ƒ /documents/[shno]                    1.66 kB         114 kB\n├ ƒ /documents/[shno]/edit                 124 B         112 kB\n├ ƒ /documents/new                         124 B         112 kB\n└ ƒ /vendors                             2.44 kB         115 kB\n+ First Load JS shared by all             103 kB\n  ├ chunks/650937d2-90548dcd109c19be.js  54.2 kB\n  ├ chunks/879-9986bc4bafbe419b.js       46.5 kB\n  └ other shared chunks (total)          1.93 kB\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n   ▲ Next.js 15.5.28\n   - Local:        http://127.0.0.1:55122\n   - Network:      http://127.0.0.1:55122\n\n ✓ Starting...\n ✓ Ready in 253ms\nVerified database-to-HTTP identity: docentra_e2e_run_f6ba5851685c494db15e2b4e\n\nRunning 4 tests using 1 worker\n\n  ✓  1 [chromium] › tests/e2e/00-dashboard.spec.ts:5:5 › dashboard presentation with deterministic empty and populated data (5.0s)\n  ✓  2 [chromium] › tests/e2e/docflow.spec.ts:26:5 › a document can be created, approved, searched and exported (880ms)\n  ✓  3 [chromium] › tests/e2e/docflow.spec.ts:113:5 › invalid vendor input is rejected with an accessible message (211ms)\nDocument PDF generation failed Error: WinAnsi cannot encode \"東\" (0x6771)\n    at bd.encodeUnicodeCodePoint (.next/server/app/api/documents/[shno]/pdf/route.js:1:168960)\n    at a.encodeTextAsGlyphs (.next/server/app/api/documents/[shno]/pdf/route.js:1:217931)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:216966)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:342703)\n    at g (.next/server/app/api/documents/[shno]/pdf/route.js:1:409402)\n    at j (.next/server/app/api/documents/[shno]/pdf/route.js:1:409914)\n    at gf (.next/server/app/api/documents/[shno]/pdf/route.js:1:410029)\n    at async gi (.next/server/app/api/documents/[shno]/pdf/route.js:1:410620)\n  ✓  4 [chromium] › tests/e2e/docflow.spec.ts:124:5 › PDF errors stay on the document and allow retry without losing data (490ms)\n\n  4 passed (7.2s)\n{\"target\":\"docentra_e2e_run_f6ba5851685c494db15e2b4e\",\"cleanup\":true,\"preserved\":true,\"seed\":{\"vendor\":{\"count\":1,\"fingerprint\":\"d8d3c92a50fcb111e07261e74639020b\",\"rows\":[{\"id\":1,\"code\":\"E2E-SEED\",\"name\":\"Deterministic seed\",\"email\":null,\"phone\":null,\"address\":null,\"is_active\":true,\"created_at\":\"2026-01-01T00:00:00+00:00\",\"updated_at\":\"2026-01-01T00:00:00+00:00\"}]},\"document_header\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]},\"document_detail\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]}}}\n[gate] ACCEPT       PASS  task acceptance command\n== summary ==\nGATES: PASS\n"
+  },
+  "taskAcceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
+  "diagnosticTranscript": "\n> docentra@0.1.0 test:e2e\n> node --env-file-if-exists=.env scripts/e2e.mjs\n\nE2E artifacts: /var/folders/82/d8xptlz976z981kdf1yg_k3c0000gn/T/docentra-e2e-Nj4h9K\nCreated dedicated E2E database: docentra_e2e_run_18cb2ee50ddbc051c5a82ef0\nEnvironment variables loaded from .env\nPrisma schema loaded from prisma/schema.prisma\nDatasource \"db\": PostgreSQL database \"docentra_e2e_run_18cb2ee50ddbc051c5a82ef0\", schemas \"docflow\" at \"127.0.0.1:56000\"\n\n8 migrations found in prisma/migrations\n\nApplying migration `20261102000000_init`\nApplying migration `20261102120000_guards`\nApplying migration `20261102130000_maintenance_override`\nApplying migration `20261102140000_detail_move_guard`\nApplying migration `20261102150000_detail_guard_locking`\nApplying migration `20261102160000_detail_guard_no_key_update`\nApplying migration `20261102170000_detail_guard_lock_order`\nApplying migration `20261102180000_detail_parent_immutable`\n\nThe following migration(s) have been applied:\n\nmigrations/\n  └─ 20261102000000_init/\n    └─ migration.sql\n  └─ 20261102120000_guards/\n    └─ migration.sql\n  └─ 20261102130000_maintenance_override/\n    └─ migration.sql\n  └─ 20261102140000_detail_move_guard/\n    └─ migration.sql\n  └─ 20261102150000_detail_guard_locking/\n    └─ migration.sql\n  └─ 20261102160000_detail_guard_no_key_update/\n    └─ migration.sql\n  └─ 20261102170000_detail_guard_lock_order/\n    └─ migration.sql\n  └─ 20261102180000_detail_parent_immutable/\n    └─ migration.sql\n      \nAll migrations have been successfully applied.\n   ▲ Next.js 15.5.28\n\n   Creating an optimized production build ...\n ✓ Compiled successfully in 2.7s\n   Linting and checking validity of types ...\n\n ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n   Collecting page data ...\n   Generating static pages (0/3) ...\n ✓ Generating static pages (3/3)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size  First Load JS\n┌ ƒ /                                      164 B         106 kB\n├ ○ /_not-found                            992 B         104 kB\n├ ƒ /api/documents/[shno]/pdf              123 B         103 kB\n├ ƒ /documents                             164 B         106 kB\n├ ƒ /documents/[shno]                    1.66 kB         114 kB\n├ ƒ /documents/[shno]/edit                 123 B         112 kB\n├ ƒ /documents/new                         123 B         112 kB\n└ ƒ /vendors                             2.44 kB         115 kB\n+ First Load JS shared by all             103 kB\n  ├ chunks/650937d2-90548dcd109c19be.js  54.2 kB\n  ├ chunks/879-9986bc4bafbe419b.js       46.5 kB\n  └ other shared chunks (total)          1.93 kB\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n   ▲ Next.js 15.5.28\n   - Local:        http://127.0.0.1:54506\n   - Network:      http://127.0.0.1:54506\n\n ✓ Starting...\n ✓ Ready in 240ms\nVerified database-to-HTTP identity: docentra_e2e_run_18cb2ee50ddbc051c5a82ef0\n\nRunning 4 tests using 1 worker\n\n  ✘  1 [chromium] › tests/e2e/00-dashboard.spec.ts:5:5 › dashboard presentation with deterministic empty and populated data (2.0s)\n  ✓  2 [chromium] › tests/e2e/docflow.spec.ts:26:5 › a document can be created, approved, searched and exported (965ms)\n  ✓  3 [chromium] › tests/e2e/docflow.spec.ts:113:5 › invalid vendor input is rejected with an accessible message (211ms)\nDocument PDF generation failed Error: WinAnsi cannot encode \"東\" (0x6771)\n    at bd.encodeUnicodeCodePoint (.next/server/app/api/documents/[shno]/pdf/route.js:1:182325)\n    at a.encodeTextAsGlyphs (.next/server/app/api/documents/[shno]/pdf/route.js:1:231296)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:230331)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:356068)\n    at g (.next/server/app/api/documents/[shno]/pdf/route.js:1:422767)\n    at j (.next/server/app/api/documents/[shno]/pdf/route.js:1:423279)\n    at gf (.next/server/app/api/documents/[shno]/pdf/route.js:1:423394)\n    at async gi (.next/server/app/api/documents/[shno]/pdf/route.js:1:423985)\n  ✓  4 [chromium] › tests/e2e/docflow.spec.ts:124:5 › PDF errors stay on the document and allow retry without losing data (486ms)\n\n\n  1) [chromium] › tests/e2e/00-dashboard.spec.ts:5:5 › dashboard presentation with deterministic empty and populated data \n\n    Error: expect(received).toBe(expected) // Object.is equality\n\n    Expected: true\n    Received: false\n\n      92 |         }\n      93 |         await page.screenshot({ path: testInfo.outputPath(`${name}-${width}.png`), fullPage: true });\n    > 94 |         expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);\n         |                                                                                                      ^\n      95 |         expect(await page.locator(\"a button, button a\").count()).toBe(0);\n      96 |         const scrollRegion = page.getByRole(\"region\", { name: /table$/ }).first();\n      97 |         if (await scrollRegion.count()) {\n        at /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tests/e2e/00-dashboard.spec.ts:94:102\n\n    attachment #1: dashboard accessible names and landmarks (text/plain) ───────────────────────────\n    - link \"Skip to content\":\n      - /url: \"#main\"\n    - complementary:\n      - paragraph: Docentra\n      - paragraph: DocFlow workspace\n      - navigation \"Main\":\n        - link \"Dashboard\":\n          - /url: /\n        - link \"Vendors\":\n          - /url: /vendors\n        - link \"Documents\":\n          - /url: /documents\n      - paragraph: Local deve...\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n    Error Context: ../../../../../var/folders/82/d8xptlz976z981kdf1yg_k3c0000gn/T/docentra-e2e-Nj4h9K/test-results/00-dashboard-dashboard-pre-ebac6-ic-empty-and-populated-data-chromium/error-context.md\n\n    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────\n    ../../../../../var/folders/82/d8xptlz976z981kdf1yg_k3c0000gn/T/docentra-e2e-Nj4h9K/test-results/00-dashboard-dashboard-pre-ebac6-ic-empty-and-populated-data-chromium/trace.zip\n    Usage:\n\n        npx playwright show-trace ../../../../../var/folders/82/d8xptlz976z981kdf1yg_k3c0000gn/T/docentra-e2e-Nj4h9K/test-results/00-dashboard-dashboard-pre-ebac6-ic-empty-and-populated-data-chromium/trace.zip\n\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n  1 failed\n    [chromium] › tests/e2e/00-dashboard.spec.ts:5:5 › dashboard presentation with deterministic empty and populated data \n  3 passed (4.6s)\n/usr/local/bin/node failed (1)\n{\"target\":\"docentra_e2e_run_18cb2ee50ddbc051c5a82ef0\",\"cleanup\":true,\"preserved\":true,\"seed\":{\"vendor\":{\"count\":1,\"fingerprint\":\"d8d3c92a50fcb111e07261e74639020b\",\"rows\":[{\"id\":1,\"code\":\"E2E-SEED\",\"name\":\"Deterministic seed\",\"email\":null,\"phone\":null,\"address\":null,\"is_active\":true,\"created_at\":\"2026-01-01T00:00:00+00:00\",\"updated_at\":\"2026-01-01T00:00:00+00:00\"}]},\"document_header\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]},\"document_detail\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]}},\"error\":\"/usr/local/bin/node failed (1)\"}\n",
+  "rootCause": "Absolutely positioned sr-only Actions label escaped scrollport containing block (x819.984-820.984), extending document to821px at768px; relative positioning of table-scroll contains it without hiding root overflow. Internal scroll494/708px preserved.",
+  "responsive": [
+    {
+      "file": "dashboard-1024-geometry.json",
+      "viewport": 1024,
+      "documentWidth": 1024,
+      "pass": true
+    },
+    {
+      "file": "dashboard-1440-geometry.json",
+      "viewport": 1440,
+      "documentWidth": 1440,
+      "pass": true
+    },
+    {
+      "file": "dashboard-320-geometry.json",
+      "viewport": 320,
+      "documentWidth": 320,
+      "pass": true
+    },
+    {
+      "file": "dashboard-375-geometry.json",
+      "viewport": 375,
+      "documentWidth": 375,
+      "pass": true
+    },
+    {
+      "file": "dashboard-390-geometry.json",
+      "viewport": 390,
+      "documentWidth": 390,
+      "pass": true
+    },
+    {
+      "file": "dashboard-768-geometry.json",
+      "viewport": 768,
+      "documentWidth": 768,
+      "pass": true
+    },
+    {
+      "file": "detail-1024-geometry.json",
+      "viewport": 1024,
+      "documentWidth": 1024,
+      "pass": true
+    },
+    {
+      "file": "detail-1440-geometry.json",
+      "viewport": 1440,
+      "documentWidth": 1440,
+      "pass": true
+    },
+    {
+      "file": "detail-320-geometry.json",
+      "viewport": 320,
+      "documentWidth": 320,
+      "pass": true
+    },
+    {
+      "file": "detail-375-geometry.json",
+      "viewport": 375,
+      "documentWidth": 375,
+      "pass": true
+    },
+    {
+      "file": "detail-390-geometry.json",
+      "viewport": 390,
+      "documentWidth": 390,
+      "pass": true
+    },
+    {
+      "file": "detail-768-geometry.json",
+      "viewport": 768,
+      "documentWidth": 768,
+      "pass": true
+    },
+    {
+      "file": "documents-1024-geometry.json",
+      "viewport": 1024,
+      "documentWidth": 1024,
+      "pass": true
+    },
+    {
+      "file": "documents-1440-geometry.json",
+      "viewport": 1440,
+      "documentWidth": 1440,
+      "pass": true
+    },
+    {
+      "file": "documents-320-geometry.json",
+      "viewport": 320,
+      "documentWidth": 320,
+      "pass": true
+    },
+    {
+      "file": "documents-375-geometry.json",
+      "viewport": 375,
+      "documentWidth": 375,
+      "pass": true
+    },
+    {
+      "file": "documents-390-geometry.json",
+      "viewport": 390,
+      "documentWidth": 390,
+      "pass": true
+    },
+    {
+      "file": "documents-768-geometry.json",
+      "viewport": 768,
+      "documentWidth": 768,
+      "pass": true
+    },
+    {
+      "file": "vendors-1024-geometry.json",
+      "viewport": 1024,
+      "documentWidth": 1024,
+      "pass": true
+    },
+    {
+      "file": "vendors-1440-geometry.json",
+      "viewport": 1440,
+      "documentWidth": 1440,
+      "pass": true
+    },
+    {
+      "file": "vendors-320-geometry.json",
+      "viewport": 320,
+      "documentWidth": 320,
+      "pass": true
+    },
+    {
+      "file": "vendors-375-geometry.json",
+      "viewport": 375,
+      "documentWidth": 375,
+      "pass": true
+    },
+    {
+      "file": "vendors-390-geometry.json",
+      "viewport": 390,
+      "documentWidth": 390,
+      "pass": true
+    },
+    {
+      "file": "vendors-768-geometry.json",
+      "viewport": 768,
+      "documentWidth": 768,
+      "pass": true
+    }
+  ],
+  "contrast": {
+    "method": "WCAG relative luminance calculation from configured palette; not a full rendered-page accessibility audit. Rendered table/notice foregrounds separately asserted by Playwright.",
+    "pairs": [
+      {
+        "name": "body on card",
+        "foreground": [
+          23.97,
+          23.97,
+          27.03
+        ],
+        "background": [
+          255,
+          255,
+          255
+        ],
+        "contrast": 17.72114504336197
+      },
+      {
+        "name": "muted text on card",
+        "foreground": [
+          112.608,
+          112.608,
+          121.99200000000002
+        ],
+        "background": [
+          255,
+          255,
+          255
+        ],
+        "contrast": 4.858259358493255
+      },
+      {
+        "name": "table headings on 60% muted over white",
+        "foreground": [
+          71,
+          85,
+          105
+        ],
+        "background": [
+          248.57399999999998,
+          248.57399999999998,
+          249.186
+        ],
+        "contrast": 7.173595097680523
+      },
+      {
+        "name": "approved notice on muted",
+        "foreground": [
+          23.97,
+          23.97,
+          27.03
+        ],
+        "background": [
+          244.29,
+          244.29,
+          245.31
+        ],
+        "contrast": 16.163806069139653
+      },
+      {
+        "name": "brand links/focus on white",
+        "foreground": [
+          37.29374999999997,
+          28.687499999999996,
+          200.81250000000003
+        ],
+        "background": [
+          255,
+          255,
+          255
+        ],
+        "contrast": 10.028187017359791
+      },
+      {
+        "name": "active navigation",
+        "foreground": [
+          37.29374999999997,
+          28.687499999999996,
+          200.81250000000003
+        ],
+        "background": [
+          233.229375,
+          232.36875,
+          249.58125
+        ],
+        "contrast": 8.324274121326269
+      }
+    ]
+  },
+  "isolationReport": {
+    "target": "docentra_e2e_run_f6ba5851685c494db15e2b4e",
+    "cleanup": true,
+    "preserved": true,
+    "seed": {
+      "vendor": {
+        "count": 1,
+        "fingerprint": "d8d3c92a50fcb111e07261e74639020b",
+        "rows": [
+          {
+            "id": 1,
+            "code": "E2E-SEED",
+            "name": "Deterministic seed",
+            "email": null,
+            "phone": null,
+            "address": null,
+            "is_active": true,
+            "created_at": "2026-01-01T00:00:00+00:00",
+            "updated_at": "2026-01-01T00:00:00+00:00"
+          }
+        ]
+      },
+      "document_header": {
+        "count": 0,
+        "fingerprint": "d41d8cd98f00b204e9800998ecf8427e",
+        "rows": []
+      },
+      "document_detail": {
+        "count": 0,
+        "fingerprint": "d41d8cd98f00b204e9800998ecf8427e",
+        "rows": []
+      }
+    }
+  },
+  "changedFiles": [
+    "docs/q1-ui-validation.md",
+    "tasks/evidence/Q1-T3/2026-11-02-ui-blocked.json",
+    "tasks/evidence/Q1-T3/resume/dashboard-1024-geometry.json",
+    "tasks/evidence/Q1-T3/resume/dashboard-1440-geometry.json",
+    "tasks/evidence/Q1-T3/resume/dashboard-1440.png",
+    "tasks/evidence/Q1-T3/resume/dashboard-320-geometry.json",
+    "tasks/evidence/Q1-T3/resume/dashboard-375-geometry.json",
+    "tasks/evidence/Q1-T3/resume/dashboard-375.png",
+    "tasks/evidence/Q1-T3/resume/dashboard-390-geometry.json",
+    "tasks/evidence/Q1-T3/resume/dashboard-768-geometry.json",
+    "tasks/evidence/Q1-T3/resume/dashboard-accessibility.txt",
+    "tasks/evidence/Q1-T3/resume/dashboard-focus-and-text-styles.json",
+    "tasks/evidence/Q1-T3/resume/detail-1024-geometry.json",
+    "tasks/evidence/Q1-T3/resume/detail-1440-geometry.json",
+    "tasks/evidence/Q1-T3/resume/detail-320-geometry.json",
+    "tasks/evidence/Q1-T3/resume/detail-375-geometry.json",
+    "tasks/evidence/Q1-T3/resume/detail-390-geometry.json",
+    "tasks/evidence/Q1-T3/resume/detail-768-geometry.json",
+    "tasks/evidence/Q1-T3/resume/documents-1024-geometry.json",
+    "tasks/evidence/Q1-T3/resume/documents-1440-geometry.json",
+    "tasks/evidence/Q1-T3/resume/documents-320-geometry.json",
+    "tasks/evidence/Q1-T3/resume/documents-375-geometry.json",
+    "tasks/evidence/Q1-T3/resume/documents-390-geometry.json",
+    "tasks/evidence/Q1-T3/resume/documents-768-geometry.json",
+    "tasks/evidence/Q1-T3/resume/report.json",
+    "tasks/evidence/Q1-T3/resume/responsive-summary.json",
+    "tasks/evidence/Q1-T3/resume/vendors-1024-geometry.json",
+    "tasks/evidence/Q1-T3/resume/vendors-1440-geometry.json",
+    "tasks/evidence/Q1-T3/resume/vendors-320-geometry.json",
+    "tasks/evidence/Q1-T3/resume/vendors-375-geometry.json",
+    "tasks/evidence/Q1-T3/resume/vendors-375.png",
+    "tasks/evidence/Q1-T3/resume/vendors-390-geometry.json",
+    "tasks/evidence/Q1-T3/resume/vendors-768-geometry.json",
+    "tasks/evidence/Q1-T3/resume/vendors-768.png",
+    "tasks/evidence/QUALITY/development-current.json",
+    "tests/e2e/00-dashboard.spec.ts",
+    "app/(docflow)/documents/[shno]/page.tsx",
+    "app/(docflow)/documents/page.tsx",
+    "app/(docflow)/layout.tsx",
+    "app/(docflow)/page.tsx",
+    "app/(docflow)/vendors/page.tsx",
+    "app/globals.css",
+    "components/shell/nav-link.tsx",
+    "journal/2026-11-02.md",
+    "tasks/state.json"
+  ],
+  "priorEvidence": [
+    "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/Q1-T3/2026-11-02-ui-blocked.json"
+  ],
+  "tokenUsage": "unmeasured",
+  "cost": "unmeasured",
+  "reviewer": {
+    "verdict": "accept",
+    "reasons": [],
+    "sessionID": "ses_e6180baacffeejeOlshBopJS8E",
+    "reviewedAt": "2026-11-02T23:02:38.534Z"
+  }
+}
