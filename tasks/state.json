@@ -696,18 +696,135 @@
         "reviewedAt": "2026-11-02T22:01:34.893Z",
         "readOnly": true
       }
+    },
+    {
+      "id": "Q1-T1",
+      "milestone": "Q1",
+      "title": "Fix and validate actual PDF downloads",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 2,
+      "dependsOn": [],
+      "scope": [
+        "app/",
+        "components/",
+        "lib/pdf/",
+        "tests/",
+        "docs/",
+        "PLANS.md",
+        "tasks/",
+        "journal/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration",
+      "brief": "Reproduce UI PDF failure in browser before editing, identify root cause, fix complete download including useful error state, validate downloaded PDFs with a real parser/viewer and content for draft+approved documents; no new business requirements or dependencies without need.",
+      "startedAt": "2026-11-02T22:05:57.041Z",
+      "baseHead": "c2e1468328a1348c4477f2260a9621e636579e4e",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/Q1-T1/2026-11-02-pdf-final.json"
+      ],
+      "completedAt": "2026-11-02T22:13:50.496Z"
+    },
+    {
+      "id": "Q1-T2",
+      "milestone": "Q1",
+      "title": "Isolate deterministic E2E database and enable CI",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "Q1-T1"
+      ],
+      "scope": [
+        "scripts/",
+        "tests/",
+        "playwright.config.ts",
+        "package.json",
+        "package-lock.json",
+        ".github/",
+        ".gitignore",
+        "docs/",
+        "tasks/",
+        "journal/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
+      "brief": "Dedicated disposable E2E DB, deterministic fixtures, verify app database identity, reject unsafe targets/reused regular servers, scoped cleanup and preserve development fingerprint; practical CI E2E."
+    },
+    {
+      "id": "Q1-T3",
+      "milestone": "Q1",
+      "title": "Polish dashboard navigation tables and responsive accessibility",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "Q1-T2"
+      ],
+      "scope": [
+        "app/",
+        "components/",
+        "tests/",
+        "docs/",
+        "tasks/",
+        "journal/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
+      "brief": "Improve visual hierarchy, readable KPI/status visualization, tables/navigation/spacing/typography/responsive/accessibility; preserve routes and workflows, no currency assumptions."
+    },
+    {
+      "id": "Q1-T4",
+      "milestone": "Q1",
+      "title": "Improve document and vendor usability",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "Q1-T3"
+      ],
+      "scope": [
+        "app/",
+        "components/",
+        "lib/schemas/",
+        "tests/",
+        "docs/",
+        "tasks/",
+        "journal/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
+      "brief": "Improve entry forms, inline validation, loading/error/success/empty states, consequential-operation confirmations, clear workflow actions and vendor selection. No new business features."
+    },
+    {
+      "id": "Q1-T5",
+      "milestone": "Q1",
+      "title": "Verify quality package end to end",
+      "synthetic": false,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [
+        "Q1-T4"
+      ],
+      "scope": [
+        "tests/",
+        "scripts/",
+        "docs/",
+        "tasks/",
+        "journal/"
+      ],
+      "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
+      "brief": "Full gates/unit/PostgreSQL integration/E2E/build; actual PDF draft+approved content, development fingerprints unchanged, keyboard/accessibility/responsive and immutability regression; independent acceptance, push and CI verification."
     }
   ],
-  "updatedAt": "2026-11-02T22:01:34.897Z",
+  "updatedAt": "2026-11-02T22:13:50.496Z",
   "authorization": {
     "authorizedBy": "owner",
     "authorizedAt": "2026-11-02",
-    "scope": "M2-M5 local development",
+    "scope": "Q1 P1–P4 and P6 local code, tests/docs, commits and verified pushes to existing arjun2126/docentra; GitHub Actions",
     "boundaries": [
       "no production deployment",
-      "no remote repository",
+      "no destructive existing-data operations",
       "no paid services",
-      "no auth architecture change"
+      "no auth/security architecture changes",
+      "no new business features",
+      "no force push/history rewriting"
     ]
   }
 }

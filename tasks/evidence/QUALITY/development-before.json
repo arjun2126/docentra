@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-11-02T22:05:17.096Z",
+  "db": {
+    "name": "docentra_dev",
+    "version": "PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+  },
+  "migrations": [
+    {
+      "migration_name": "20261102000000_init",
+      "checksum": "e6da6d07bca48a5f78bfe45264810eac8008bfd2d9de0b7acad8459300dc8e76",
+      "finished_at": "2026-11-02T19:42:11.378Z",
+      "localChecksumMatches": true
+    },
+    {
+      "migration_name": "20261102120000_guards",
+      "checksum": "fe84854d851293603c89279cb0f45b566f4146da1f13a5d16e8a5497f6df8ae8",
+      "finished_at": "2026-11-02T20:23:43.935Z",
+      "localChecksumMatches": true
+    },
+    {
+      "migration_name": "20261102130000_maintenance_override",
+      "checksum": "f824811cd0552fd00c786af8c2592816552435d233ec3511dbf3e78c9751a5df",
+      "finished_at": "2026-11-02T20:32:57.979Z",
+      "localChecksumMatches": true
+    },
+    {
+      "migration_name": "20261102140000_detail_move_guard",
+      "checksum": "054af5dfca4ac25d02ee02de6c12da1f9f582beb6303f0f9f80bfaa3a1a75f54",
+      "finished_at": "2026-11-02T21:24:42.153Z",
+      "localChecksumMatches": true
+    },
+    {
+      "migration_name": "20261102150000_detail_guard_locking",
+      "checksum": "b618e39cb47a38dda9ed4c0637b795f6a4ef3c6e1f5ee029f1afe3d1d355cb00",
+      "finished_at": "2026-11-02T21:37:15.924Z",
+      "localChecksumMatches": true
+    },
+    {
+      "migration_name": "20261102160000_detail_guard_no_key_update",
+      "checksum": "b9549df3eebc1884368c1969d5ce74ee64c39d82d809e2cb2fe431f2f62cc809",
+      "finished_at": "2026-11-02T21:38:26.742Z",
+      "localChecksumMatches": true
+    },
+    {
+      "migration_name": "20261102170000_detail_guard_lock_order",
+      "checksum": "176eb012fd3945882912d5200f510578ac0cfcb724a39162b6247091838b93ad",
+      "finished_at": "2026-11-02T21:40:17.362Z",
+      "localChecksumMatches": true
+    },
+    {
+      "migration_name": "20261102180000_detail_parent_immutable",
+      "checksum": "3b97bc04f259d0ed73aad957320e07a6101ffc936c94dcf3ad453f36abd02379",
+      "finished_at": "2026-11-02T21:58:43.375Z",
+      "localChecksumMatches": true
+    }
+  ],
+  "vendor": {
+    "count": 13,
+    "fingerprint": "85967cd9f1e9b89b36fb49f897ee7694"
+  },
+  "document_header": {
+    "count": 19,
+    "fingerprint": "f24a90ba4d9a6d18a418eaeb74c1c768"
+  },
+  "document_detail": {
+    "count": 41,
+    "fingerprint": "b04dac65acd2bbe4587c2058a6fc1a6f"
+  }
+}

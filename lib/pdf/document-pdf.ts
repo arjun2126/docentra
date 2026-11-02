@@ -18,30 +18,20 @@ export type PdfModel = {
 export type PdfRow = { cells: string[]; widths: number[] };
 
 const COLUMNS = ["#", "Item", "Quantity", "Price", "Amount"];
-const WIDTHS = [28, 250, 70, 80, 90];
-
-/** pdf-lib standard fonts are WinAnsi; everything else would throw. */
-function toWinAnsi(value: string): string {
-  return value
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/[\u201C\u201D]/g, '"')
-    .replace(/[\u2013\u2014]/g, "-")
-    .replace(/\u00B7/g, "-")
-    .replace(/[^\x20-\x7E]/g, "?");
-}
+const WIDTHS = [28, 221, 80, 80, 90];
 
 export function buildDocumentPdfModel(document: DocumentDto): PdfModel {
   return {
-    title: `Document ${toWinAnsi(document.documentNumber)}`,
+    title: `Document ${document.documentNumber}`,
     subtitle: [
-      `Vendor: ${toWinAnsi(document.vendor.name)} (${toWinAnsi(document.vendor.code)})`,
+      `Vendor: ${document.vendor.name} (${document.vendor.code})`,
       `Date: ${document.documentDate}`,
       `Status: ${document.status}`,
     ],
     columns: COLUMNS,
     rows: document.lines.map((line) => [
       String(line.lineNo),
-      toWinAnsi(line.item),
+      line.item,
       line.quantity,
       line.price,
       line.amount,
@@ -67,32 +57,72 @@ export async function renderDocumentPdf(model: PdfModel): Promise<Uint8Array> {
   let page = pdf.addPage([pageWidth, pageHeight]);
   let y = pageHeight - margin;
 
-  const drawRow = (cells: string[], size: number, useBold: boolean) => {
-    let x = margin;
-    cells.forEach((cell, index) => {
-      page.drawText(cell.slice(0, 60), {
-        x,
-        y,
-        size,
-        font: useBold ? bold : font,
-        color: rgb(0.1, 0.1, 0.12),
-      });
-      x += WIDTHS[index] ?? 80;
-    });
+  const wrap = (text: string, width: number, size: number, useBold = false) => {
+    const selectedFont = useBold ? bold : font;
+    const lines: string[] = [];
+    for (const paragraph of text.split(/\r\n|\r|\n/)) {
+      let line = "";
+      for (const character of paragraph) {
+        // widthOfTextAtSize also validates the font's character coverage.
+        if (line && selectedFont.widthOfTextAtSize(line + character, size) > width) {
+          const space = line.lastIndexOf(" ");
+          if (space > 0) {
+            lines.push(line.slice(0, space));
+            line = line.slice(space + 1);
+          } else {
+            lines.push(line);
+            line = "";
+          }
+        }
+        selectedFont.widthOfTextAtSize(character, size);
+        line += character;
+      }
+      lines.push(line);
+    }
+    return lines;
   };
 
   const newPageIfNeeded = () => {
-    if (y < margin + 60) {
+    if (y < margin + 40) {
       page = pdf.addPage([pageWidth, pageHeight]);
       y = pageHeight - margin;
     }
   };
 
-  page.drawText(toWinAnsi(model.title), { x: margin, y, size: 18, font: bold });
-  y -= 26;
+  const drawRow = (cells: string[], size: number, useBold: boolean) => {
+    const lines = cells.map((cell, index) => wrap(cell, WIDTHS[index] - 8, size, useBold));
+    const height = Math.max(...lines.map((cell) => cell.length));
+    for (let line = 0; line < height; line += 1) {
+      newPageIfNeeded();
+      let x = margin;
+      lines.forEach((cell, index) => {
+        const text = cell[line] ?? "";
+        const selectedFont = useBold ? bold : font;
+        page.drawText(text, {
+          x: index >= 2 ? x + WIDTHS[index] - 8 - selectedFont.widthOfTextAtSize(text, size) : x,
+          y,
+          size,
+          font: selectedFont,
+          color: rgb(0.1, 0.1, 0.12),
+        });
+        x += WIDTHS[index];
+      });
+      y -= size + 4;
+    }
+  };
+
+  const drawText = (text: string, size: number, useBold = false) => {
+    for (const line of wrap(text, pageWidth - margin * 2, size, useBold)) {
+      newPageIfNeeded();
+      page.drawText(line, { x: margin, y, size, font: useBold ? bold : font });
+      y -= size + 4;
+    }
+  };
+
+  drawText(model.title, 18, true);
+  y -= 4;
   for (const line of model.subtitle) {
-    page.drawText(toWinAnsi(line), { x: margin, y, size: 10, font, color: rgb(0.35, 0.35, 0.4) });
-    y -= 14;
+    drawText(line, 10);
   }
 
   y -= 12;
@@ -109,7 +139,7 @@ export async function renderDocumentPdf(model: PdfModel): Promise<Uint8Array> {
   for (const row of model.rows) {
     newPageIfNeeded();
     drawRow(row, 10, false);
-    y -= 16;
+    y -= 2;
   }
 
   newPageIfNeeded();
@@ -123,7 +153,7 @@ export async function renderDocumentPdf(model: PdfModel): Promise<Uint8Array> {
   y -= 18;
   page.drawText(`Total: ${model.total}`, { x: pageWidth - margin - 160, y, size: 12, font: bold });
 
-  page.drawText(toWinAnsi(model.footer), {
+  page.drawText(model.footer, {
     x: margin,
     y: margin / 2,
     size: 8,

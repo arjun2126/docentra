@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { changeDocumentStatus } from "@/app/(docflow)/documents/actions";
+import { DownloadPdf } from "@/components/documents/download-pdf";
 import { StatusBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,12 +49,7 @@ export default async function DocumentPage({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <a
-            href={`/api/documents/${document.shno}/pdf`}
-            className="text-sm text-brand hover:underline"
-          >
-            Download PDF
-          </a>
+          <DownloadPdf shno={document.shno} documentNumber={document.documentNumber} />
           {editable ? (
             <Link href={`/documents/${document.shno}/edit`}>
               <Button variant="outline">Edit draft</Button>

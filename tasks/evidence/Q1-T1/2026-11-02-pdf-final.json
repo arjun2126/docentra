@@ -1,0 +1,78 @@
+{
+  "runId": "2026-11-02-pdf-final",
+  "taskId": "Q1-T1",
+  "attempts": 2,
+  "startedAt": "2026-11-02T22:05:57.041Z",
+  "finishedAt": "2026-11-02T22:13:16.338Z",
+  "implementer": {
+    "invoked": true,
+    "agent": "general acting as implementer",
+    "sessionID": "ses_e61b38a86ffeYeEsOhMEdcax7s",
+    "delegated": true
+  },
+  "gate": {
+    "command": "HARNESS_BUILD=1 TASK_ID=Q1-T1 TASK_ACCEPTANCE=<registered command> bash scripts/gates.sh (explicit isolated database environment)",
+    "exitCode": 0,
+    "transcript": "== gates ==\n   code:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   data:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n[gate] G0           PASS  harness files present\nstate ok: 36 tasks, 5 not done (/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/state.json)\n[gate] G1           PASS  task state valid\n[gate] G2           PASS  shell syntax\nTAP version 13\n# Subtest: selects the first pending task whose dependencies are done\nok 1 - selects the first pending task whose dependencies are done\n  ---\n  duration_ms: 0.64275\n  ...\n# Subtest: never selects a task whose dependency is unfinished\nok 2 - never selects a task whose dependency is unfinished\n  ---\n  duration_ms: 0.092417\n  ...\n# Subtest: never selects a task whose dependency is blocked\nok 3 - never selects a task whose dependency is blocked\n  ---\n  duration_ms: 0.257\n  ...\n# Subtest: resumes an in-flight task instead of starting a new one\nok 4 - resumes an in-flight task instead of starting a new one\n  ---\n  duration_ms: 0.044208\n  ...\n# Subtest: independent ready work proceeds while an approval gate is open\nok 5 - independent ready work proceeds while an approval gate is open\n  ---\n  duration_ms: 0.087416\n  ...\n# Subtest: an approval gate is reported once it is the only thing preventing progress\nok 6 - an approval gate is reported once it is the only thing preventing progress\n  ---\n  duration_ms: 0.042333\n  ...\n# Subtest: reports none when every task is done\nok 7 - reports none when every task is done\n  ---\n  duration_ms: 0.076\n  ...\n# Subtest: selection is deterministic across repeated calls\nok 8 - selection is deterministic across repeated calls\n  ---\n  duration_ms: 0.04\n  ...\n# Subtest: state round-trips through disk\nok 9 - state round-trips through disk\n  ---\n  duration_ms: 3.082542\n  ...\n# Subtest: writes are atomic and leave no temp files behind\nok 10 - writes are atomic and leave no temp files behind\n  ---\n  duration_ms: 0.911291\n  ...\n# Subtest: a partially written state can never be observed\nok 11 - a partially written state can never be observed\n  ---\n  duration_ms: 0.504042\n  ...\n# Subtest: duplicate task ids are rejected\nok 12 - duplicate task ids are rejected\n  ---\n  duration_ms: 0.210667\n  ...\n# Subtest: invalid statuses are rejected\nok 13 - invalid statuses are rejected\n  ---\n  duration_ms: 0.282375\n  ...\n# Subtest: unknown dependencies are rejected\nok 14 - unknown dependencies are rejected\n  ---\n  duration_ms: 0.150541\n  ...\n# Subtest: journal is append-only and detectable per task\nok 15 - journal is append-only and detectable per task\n  ---\n  duration_ms: 1.510125\n  ...\n# Subtest: evidence records are written per task and per run\nok 16 - evidence records are written per task and per run\n  ---\n  duration_ms: 1.166625\n  ...\n# Subtest: parses a bare verdict object\nok 17 - parses a bare verdict object\n  ---\n  duration_ms: 0.334625\n  ...\n# Subtest: parses a verdict wrapped in model chatter and ANSI noise\nok 18 - parses a verdict wrapped in model chatter and ANSI noise\n  ---\n  duration_ms: 0.278792\n  ...\n# Subtest: survives braces and escaped quotes inside the reasons\nok 19 - survives braces and escaped quotes inside the reasons\n  ---\n  duration_ms: 0.074667\n  ...\n# Subtest: returns null when no verdict is present\nok 20 - returns null when no verdict is present\n  ---\n  duration_ms: 0.065583\n  ...\n# Subtest: returns null when the object is malformed\nok 21 - returns null when the object is malformed\n  ---\n  duration_ms: 0.3645\n  ...\n# Subtest: recovers the decision from JSON broken by a stray escape\nok 22 - recovers the decision from JSON broken by a stray escape\n  ---\n  duration_ms: 0.196416\n  ...\n1..22\n# tests 22\n# suites 0\n# pass 22\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 61.858958\n[gate] G3           PASS  harness unit tests\n-- product gates --\n[gate] TYPECHECK    PASS  npm run typecheck\n[gate] LINT         PASS  npm run lint\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/unit/money.test.ts (6 tests) 2ms\n ✓ tests/unit/utils.test.ts (4 tests) 4ms\n ✓ tests/unit/vendor-schema.test.ts (9 tests) 4ms\n ✓ tests/unit/workflow.test.ts (8 tests) 7ms\n ✓ tests/unit/pdf-model.test.ts (7 tests) 113ms\n\n Test Files  5 passed (5)\n      Tests  34 passed (34)\n   Start at  17:12:17\n   Duration  514ms (transform 94ms, setup 0ms, collect 247ms, tests 129ms, environment 0ms, prepare 220ms)\n\n[gate] UNIT         PASS  npm run test:unit\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/integration/guards.test.ts (20 tests) 483ms\n ✓ tests/integration/documents.test.ts (14 tests) 170ms\n ✓ tests/integration/docflow-schema.test.ts (7 tests) 65ms\n ✓ tests/integration/search.test.ts (11 tests) 84ms\n ✓ tests/integration/dashboard.test.ts (4 tests) 89ms\n\n Test Files  5 passed (5)\n      Tests  56 passed (56)\n   Start at  17:12:18\n   Duration  1.55s (transform 53ms, setup 0ms, collect 160ms, tests 891ms, environment 0ms, prepare 109ms)\n\n[gate] INTEGRATION  PASS  npm run test:integration\n ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.\n We detected multiple lockfiles and selected the directory of /Users/arjunsubramanya/package-lock.json as the root directory.\n To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.\n   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.\n Detected additional lockfiles: \n   * /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/package-lock.json\n\n   ▲ Next.js 15.5.28\n   - Environments: .env\n\n   Creating an optimized production build ...\n ✓ Compiled successfully in 1541ms\n   Linting and checking validity of types ...\n\n ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n   Collecting page data ...\n   Generating static pages (0/3) ...\n ✓ Generating static pages (3/3)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size  First Load JS\n┌ ƒ /                                      164 B         106 kB\n├ ○ /_not-found                            990 B         104 kB\n├ ƒ /api/documents/[shno]/pdf              123 B         103 kB\n├ ƒ /documents                             164 B         106 kB\n├ ƒ /documents/[shno]                    1.66 kB         115 kB\n├ ƒ /documents/[shno]/edit                 124 B         112 kB\n├ ƒ /documents/new                         124 B         112 kB\n└ ƒ /vendors                             2.44 kB         115 kB\n+ First Load JS shared by all             103 kB\n  ├ chunks/255-b1e2483a7e02feee.js       46.6 kB\n  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB\n  └ other shared chunks (total)          1.92 kB\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n[gate] BUILD        PASS  npm run build\n-- task acceptance (Q1-T1) --\n   cwd: /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   $ npm run typecheck && npm run lint && npm run test:unit && npm run test:integration\n\n> docentra@0.1.0 typecheck\n> tsc --noEmit\n\n\n> docentra@0.1.0 lint\n> eslint .\n\n\n> docentra@0.1.0 test:unit\n> vitest run --dir tests/unit\n\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/unit/money.test.ts (6 tests) 2ms\n ✓ tests/unit/utils.test.ts (4 tests) 5ms\n ✓ tests/unit/vendor-schema.test.ts (9 tests) 3ms\n ✓ tests/unit/workflow.test.ts (8 tests) 5ms\n ✓ tests/unit/pdf-model.test.ts (7 tests) 124ms\n\n Test Files  5 passed (5)\n      Tests  34 passed (34)\n   Start at  17:12:31\n   Duration  600ms (transform 133ms, setup 0ms, collect 344ms, tests 139ms, environment 0ms, prepare 404ms)\n\n\n> docentra@0.1.0 test:integration\n> node --env-file-if-exists=.env ./node_modules/vitest/vitest.mjs run --dir tests/integration --no-file-parallelism\n\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/integration/guards.test.ts (20 tests) 548ms\n ✓ tests/integration/documents.test.ts (14 tests) 170ms\n ✓ tests/integration/docflow-schema.test.ts (7 tests) 65ms\n ✓ tests/integration/search.test.ts (11 tests) 116ms\n ✓ tests/integration/dashboard.test.ts (4 tests) 83ms\n\n Test Files  5 passed (5)\n      Tests  56 passed (56)\n   Start at  17:12:32\n   Duration  1.70s (transform 59ms, setup 0ms, collect 172ms, tests 981ms, environment 0ms, prepare 132ms)\n\n[gate] ACCEPT       PASS  task acceptance command\n== summary ==\nGATES: PASS\n"
+  },
+  "taskAcceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration",
+  "browser": {
+    "exitCode": 0,
+    "transcript": "\n> docentra@0.1.0 test:e2e\n> playwright test\n\n[WebServer]  ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.\n[WebServer]  We detected multiple lockfiles and selected the directory of /Users/arjunsubramanya/package-lock.json as the root directory.\n[WebServer]  To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.\n[WebServer]    See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.\n[WebServer]  Detected additional lockfiles: \n[WebServer]    * /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/package-lock.json\n[WebServer] \n\nRunning 3 tests using 1 worker\n\n[WebServer]  ⚠ Cross origin request detected from 127.0.0.1 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure \"allowedDevOrigins\" in next.config to allow this.\n[WebServer] Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins\n  ✓  1 [chromium] › tests/e2e/docflow.spec.ts:10:5 › a document can be created, approved, searched and exported (7.3s)\n  ✓  2 [chromium] › tests/e2e/docflow.spec.ts:91:5 › invalid vendor input is rejected with an accessible message (801ms)\n[WebServer] Document PDF generation failed Error: WinAnsi cannot encode \"東\" (0x6771)\n[WebServer]     at wrap (lib/pdf/document-pdf.ts:67:34)\n[WebServer]     at drawText (lib/pdf/document-pdf.ts:115:24)\n[WebServer]     at renderDocumentPdf (lib/pdf/document-pdf.ts:125:5)\n[WebServer]     at async GET (app/api/documents/[shno]/pdf/route.ts:19:19)\n[WebServer]   65 |       for (const character of paragraph) {\n[WebServer]   66 |         // widthOfTextAtSize also validates the font's character coverage.\n[WebServer] > 67 |         if (line && selectedFont.widthOfTextAtSize(line + character, size) > width) {\n[WebServer]      |                                  ^\n[WebServer]   68 |           const space = line.lastIndexOf(\" \");\n[WebServer]   69 |           if (space > 0) {\n[WebServer]   70 |             lines.push(line.slice(0, space));\n  ✓  3 [chromium] › tests/e2e/docflow.spec.ts:102:5 › PDF errors stay on the document and allow retry without losing data (1.8s)\n\n  3 passed (13.7s)\n"
+  },
+  "pdfValidation": {
+    "transcript": "PDFKit parsed + rendered + verified all fields: draft, 1 page(s)\nPDFKit parsed + rendered + verified all fields: approved, 1 page(s)\n",
+    "artifacts": [
+      "tasks/evidence/Q1-T1/q1-pdf-before-long.pdf",
+      "tasks/evidence/Q1-T1/q1-pdf-before-long.txt",
+      "tasks/evidence/Q1-T1/q1-pdf-after-draft.pdf",
+      "tasks/evidence/Q1-T1/q1-pdf-after-draft.txt",
+      "tasks/evidence/Q1-T1/q1-pdf-after-approved.pdf",
+      "tasks/evidence/Q1-T1/q1-pdf-after-approved.txt",
+      "tasks/evidence/Q1-T1/q1-pdf-after-draft-render.png",
+      "tasks/evidence/Q1-T1/q1-pdf-after-approved-render.png",
+      "tasks/evidence/Q1-T1/q1-validate-pdf.swift",
+      "tasks/evidence/Q1-T1/q1-pdf-pdfkit-validation.log",
+      "tasks/evidence/Q1-T1/q1-pdf-browser-attempt1.log",
+      "tasks/evidence/Q1-T1/q1-pdf-browser-attempt2.log",
+      "tasks/evidence/Q1-T1/q1-pdf-gates-attempt1.log",
+      "tasks/evidence/Q1-T1/q1-pdf-gates-attempt2.log"
+    ]
+  },
+  "changedFiles": [
+    "components/documents/download-pdf.tsx",
+    "docs/q1-pdf-validation.md",
+    "tasks/evidence/Q1-T1/q1-pdf-after-approved-render.png",
+    "tasks/evidence/Q1-T1/q1-pdf-after-approved.pdf",
+    "tasks/evidence/Q1-T1/q1-pdf-after-approved.txt",
+    "tasks/evidence/Q1-T1/q1-pdf-after-draft-render.png",
+    "tasks/evidence/Q1-T1/q1-pdf-after-draft.pdf",
+    "tasks/evidence/Q1-T1/q1-pdf-after-draft.txt",
+    "tasks/evidence/Q1-T1/q1-pdf-before-long.pdf",
+    "tasks/evidence/Q1-T1/q1-pdf-before-long.txt",
+    "tasks/evidence/Q1-T1/q1-validate-pdf.swift",
+    "tasks/evidence/QUALITY/development-before.json",
+    "tests/helpers/pdf-text.ts",
+    "PLANS.md",
+    "app/(docflow)/documents/[shno]/page.tsx",
+    "app/api/documents/[shno]/pdf/route.ts",
+    "journal/2026-11-02.md",
+    "lib/pdf/document-pdf.ts",
+    "tasks/state.json",
+    "tests/e2e/docflow.spec.ts",
+    "tests/unit/pdf-model.test.ts"
+  ],
+  "repairHistory": [
+    "Browser attempt 1: extra unnamed Next.js alert made locator ambiguous; named PDF error alert and reran all checks. No assertion disabled."
+  ],
+  "tokenUsage": "unmeasured",
+  "cost": "unmeasured",
+  "reviewer": {
+    "verdict": "accept",
+    "reasons": [
+      "Gates, production build and three browser tests passed; real draft/approved PDF content and PDFKit rendering verified; within scope."
+    ],
+    "sessionID": "ses_e61acfa86ffeQ8IFDoyzQd3atw",
+    "reviewedAt": "2026-11-02T22:13:50.495Z"
+  }
+}

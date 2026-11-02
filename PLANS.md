@@ -162,6 +162,26 @@ task halts its dependents; unrelated tasks may continue.
 
 ## Decisions log
 
+### Authorized quality package — 2026-11-02
+
+Owner authorizes P1–P4 and P6 as one autonomous local development and verification
+package, with pushes to `arjun2126/docentra` after independent acceptance. This
+supersedes the old local-only/no-remote authorization for this package; it does
+not authorize production deployment, paid services, auth/security architecture
+changes, business scope expansion, history rewriting or destruction of existing
+data. Existing migrations remain unchanged; tests use explicitly disposable DBs.
+
+Execution register: `Q1-T1` PDF browser reproduction/download/content verification;
+`Q1-T2` disposable deterministic E2E isolation and CI; `Q1-T3` dashboard/navigation/
+table/responsive accessibility polish; `Q1-T4` forms/validation/feedback/workflow
+confirmation usability; `Q1-T5` final full regression, actual downloaded PDF,
+data-preservation verification, independent review and CI. Tasks are sequential;
+one delegated coding agent at a time and a separate read-only reviewer per task.
+The orchestrator owns planning/checkpoints/evidence through existing harness
+utilities; delegated implementers own application/test/script changes. No new
+orchestration framework or business feature is authorized. Costs/tokens remain
+`unmeasured` unless available from a real source.
+
 | # | Decision | Source |
 |---|---|---|
 | 1 | Preserve existing Workflow Agent design; no redesign | Stakeholder |

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { DocumentDto } from "../../lib/docflow/documents";
 import { buildDocumentPdfModel, renderDocumentPdf } from "../../lib/pdf/document-pdf";
+import { readPdf } from "../helpers/pdf-text";
 
 const document: DocumentDto = {
   shno: "42",
@@ -32,9 +33,9 @@ describe("buildDocumentPdfModel", () => {
     expect(model.rows[1][4]).toBe("3.75");
   });
 
-  it("transliterates characters the standard PDF fonts cannot encode", () => {
+  it("preserves supported Unicode characters without transliteration", () => {
     const model = buildDocumentPdfModel(document);
-    expect(model.rows[1][1]).toBe("Toner - black");
+    expect(model.rows[1][1]).toBe("Toner — black");
   });
 
   it("includes vendor, date and status for auditability", () => {
@@ -50,5 +51,23 @@ describe("renderDocumentPdf", () => {
     const bytes = await renderDocumentPdf(buildDocumentPdfModel(document));
     expect(bytes.byteLength).toBeGreaterThan(500);
     expect(Buffer.from(bytes.slice(0, 5)).toString()).toBe("%PDF-");
+  });
+
+  it("retains accented text, long items and every row across multiple pages", async () => {
+    const model = buildDocumentPdfModel(document);
+    const item = "Crème brûlée — " + "catalogue specifications ".repeat(6) + "FINAL";
+    model.subtitle[0] = "Vendor: Café Müller";
+    model.rows = Array.from({ length: 100 }, (_, index) => [String(index + 1), item, "2.5000", "12.34", "30.85"]);
+    const parsed = await readPdf(await renderDocumentPdf(model));
+    expect(parsed.pages.length).toBeGreaterThan(1);
+    expect(parsed.text).toContain("Café Müller");
+    expect(parsed.text.match(/FINAL/g)).toHaveLength(100);
+    expect(parsed.text).toContain("Total: 24.75");
+  });
+
+  it("rejects unsupported scripts rather than silently substituting question marks", async () => {
+    const model = buildDocumentPdfModel(document);
+    model.subtitle[0] = "Vendor: 東京";
+    await expect(renderDocumentPdf(model)).rejects.toThrow("cannot encode");
   });
 });
