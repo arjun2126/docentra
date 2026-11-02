@@ -18,6 +18,7 @@ import {
   CODE_ROOT,
   DEFAULT_MAX_ATTEMPTS,
   appendJournal,
+  dataRoot,
   findTask,
   journalHasTask,
   loadState,
@@ -34,8 +35,26 @@ const MAX_ITERATIONS = Number(process.env.HARNESS_MAX_ITERATIONS ?? 25);
 // Harness-owned paths never count as implementation changes.
 const HARNESS_OWNED = ['tasks/', 'journal/', '.harness-tmp/'];
 
+function gitToplevel(dir) {
+  const probe = spawnSync('git', ['-C', dir, 'rev-parse', '--show-toplevel'], {
+    encoding: 'utf8',
+  });
+  if (probe.status !== 0) return null;
+  try {
+    return fs.realpathSync(probe.stdout.trim());
+  } catch {
+    return null;
+  }
+}
+
+// Changed files are measured in the run's own data root. A verification root
+// nested inside another repository must not borrow that repository's tree, so
+// git has to own the root itself (rev-parse toplevel === data root).
 function changedFiles() {
-  const result = spawnSync('git', ['-C', CODE_ROOT, 'status', '--porcelain'], {
+  const root = dataRoot();
+  const top = gitToplevel(root);
+  if (!top || top !== fs.realpathSync(root)) return { gitTracked: false, files: [] };
+  const result = spawnSync('git', ['-C', root, 'status', '--porcelain'], {
     encoding: 'utf8',
   });
   if (result.status !== 0) return { gitTracked: false, files: [] };
@@ -230,15 +249,18 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
 
   // Review is a separate step with separate inputs: it never sees the
   // implementer's conversation, only the recorded evidence.
-  const probePath = writeEvidence(task.id, { ...evidence, outcome: 'awaiting-review' });
-  const review = process.env.HARNESS_REVIEWER_CMD
-    ? runExternalReviewer(task, evidence, probePath)
-    : reviewEvidence({
-        task,
-        evidence,
-        maxAttempts,
-        hasJournal: journalHasTask(task.id),
-      });
+  let review;
+  if (process.env.HARNESS_REVIEWER_CMD) {
+    const probePath = writeEvidence(task.id, { ...evidence, outcome: 'awaiting-review' });
+    review = runExternalReviewer(task, evidence, probePath);
+  } else {
+    review = reviewEvidence({
+      task,
+      evidence,
+      maxAttempts,
+      hasJournal: journalHasTask(task.id),
+    });
+  }
 
   evidence.review = review;
   evidence.outcome = review.verdict === 'accept' ? 'accepted' : 'review-rejected';
@@ -246,6 +268,10 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
   task.evidence = [...(task.evidence ?? []), evidencePath];
 
   if (review.verdict === 'accept') {
+    if (process.env.HARNESS_CRASH_TASK === task.id) {
+      log(`[harness] simulating hard kill during ${task.id}, before completion is recorded`);
+      process.kill(process.pid, 'SIGKILL');
+    }
     task.status = 'done';
     task.completedAt = nowIso();
     saveState(state);

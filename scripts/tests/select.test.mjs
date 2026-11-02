@@ -29,8 +29,14 @@ test('resumes an in-flight task instead of starting a new one', () => {
   assert.equal(selection.task.id, 'A');
 });
 
-test('an approval gate outranks ready work', () => {
+test('independent ready work proceeds while an approval gate is open', () => {
   const selection = selectNext(state([task('B', 'pending'), task('GATE', 'awaiting_approval')]));
+  assert.equal(selection.kind, 'task');
+  assert.equal(selection.task.id, 'B');
+});
+
+test('an approval gate is reported once it is the only thing preventing progress', () => {
+  const selection = selectNext(state([task('GATE', 'awaiting_approval'), task('B', 'pending', ['GATE'])]));
   assert.equal(selection.kind, 'awaiting_approval');
   assert.equal(selection.task.id, 'GATE');
 });

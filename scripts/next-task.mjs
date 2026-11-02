@@ -5,8 +5,10 @@ import { loadState, statePath } from './lib/state.mjs';
 
 /**
  * Decide what the loop should do next.
- * Order of precedence: resume in-flight work, honour approval gates, then the
- * first ready task whose dependencies are all done.
+ *
+ * Precedence: resume in-flight work, then any ready task whose dependencies are
+ * done, and only then report an open approval gate. An approval gate blocks its
+ * dependents, not independent authorized work that is already approved.
  */
 export function selectNext(state) {
   const byId = new Map(state.tasks.map((t) => [t.id, t]));
@@ -16,11 +18,11 @@ export function selectNext(state) {
   const inProgress = state.tasks.find((t) => t.status === 'in_progress');
   if (inProgress) return { kind: 'resume', task: inProgress };
 
-  const awaiting = state.tasks.find((t) => t.status === 'awaiting_approval');
-  if (awaiting) return { kind: 'awaiting_approval', task: awaiting };
-
   const ready = state.tasks.filter((t) => t.status === 'pending' && depsMet(t));
   if (ready.length) return { kind: 'task', task: ready[0] };
+
+  const awaiting = state.tasks.find((t) => t.status === 'awaiting_approval');
+  if (awaiting) return { kind: 'awaiting_approval', task: awaiting };
 
   const blocked = state.tasks.filter((t) => t.status === 'blocked');
   if (blocked.length) {

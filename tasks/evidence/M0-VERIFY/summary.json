@@ -1,0 +1,33 @@
+{
+  "stage": "M0",
+  "generatedAt": "2026-11-02T18:33:12.614Z",
+  "node": "v22.12.0",
+  "failures": 0,
+  "scenarios": [
+    {
+      "name": "S1",
+      "passed": true,
+      "detail": "exit=0"
+    },
+    {
+      "name": "S2",
+      "passed": true,
+      "detail": "crash_exit=137 resume_exit=0"
+    },
+    {
+      "name": "S3",
+      "passed": true,
+      "detail": "exit=1"
+    },
+    {
+      "name": "S4",
+      "passed": true,
+      "detail": "exit=1"
+    },
+    {
+      "name": "S5",
+      "passed": true,
+      "detail": "exit=0"
+    }
+  ]
+}
