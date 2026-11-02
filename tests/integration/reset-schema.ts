@@ -59,10 +59,13 @@ export async function insertDocument(
     items: Array<{ item: string; quantity: string; price: string }>;
   },
 ): Promise<string> {
+  // Lines must be added while the document is still a draft: the immutability
+  // guard rejects new lines on an approved document. Fixtures follow the real
+  // flow instead of bypassing it.
   const { rows } = await client.query(
     `insert into docflow.document_header (document_number, document_date, vendor_id, status)
-     values ($1, $2, $3, $4) returning shno::text as shno`,
-    [input.number, input.date, input.vendorId, input.status ?? "draft"],
+     values ($1, $2, $3, 'draft') returning shno::text as shno`,
+    [input.number, input.date, input.vendorId],
   );
   const shno = rows[0].shno;
   let lineNo = 0;
@@ -73,6 +76,12 @@ export async function insertDocument(
        values ($1, $2, $3, $4, $5, round($4::numeric * $5::numeric, 2))`,
       [shno, lineNo, item.item, item.quantity, item.price],
     );
+  }
+  if (input.status && input.status !== "draft") {
+    await client.query("update docflow.document_header set status = $1 where shno = $2", [
+      input.status,
+      shno,
+    ]);
   }
   return shno;
 }

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Docentra",
   "module": "DocFlow",
-  "milestone": "M2",
+  "milestone": "M3",
   "maxRepairAttempts": 2,
   "tasks": [
     {
@@ -380,7 +380,7 @@
       "milestone": "M3",
       "title": "Create and edit draft documents transactionally",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M2-ACCEPT"
@@ -392,14 +392,19 @@
         "tests/integration/"
       ],
       "acceptance": "npm run test:unit && npm run test:integration",
-      "brief": "Document creation with 1..n line items in one transaction: validate with Zod, allocate a unique document number, recompute every amount server-side (never trust client totals), and roll back completely if any line fails. Editing a draft replaces its lines atomically. Unit-test the pure calculation helpers and integration-test the transactional behaviour including rollback."
+      "brief": "Document creation with 1..n line items in one transaction: validate with Zod, allocate a unique document number, recompute every amount server-side (never trust client totals), and roll back completely if any line fails. Editing a draft replaces its lines atomically. Unit-test the pure calculation helpers and integration-test the transactional behaviour including rollback.",
+      "completedAt": "2026-11-02T20:27:05.005Z",
+      "evidence": [
+        "tasks/evidence/M3-T1/2026-11-02T20-27-05-004Z-M3-T1.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M3-T2",
       "milestone": "M3",
       "title": "Status workflow, approval immutability, optimistic concurrency",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M3-T1"
@@ -411,14 +416,19 @@
         "tests/unit/"
       ],
       "acceptance": "npm run test:unit && npm run test:integration",
-      "brief": "Enforce draft->submitted->approved|rejected and rejected->draft transitions in one place, reject every other transition with a typed error, make approved documents immutable (content edits rejected at both application and database layer), and bump a version column so a stale write fails with a concurrency error instead of overwriting."
+      "brief": "Enforce draft->submitted->approved|rejected and rejected->draft transitions in one place, reject every other transition with a typed error, make approved documents immutable (content edits rejected at both application and database layer), and bump a version column so a stale write fails with a concurrency error instead of overwriting.",
+      "completedAt": "2026-11-02T20:27:05.006Z",
+      "evidence": [
+        "tasks/evidence/M3-T2/2026-11-02T20-27-05-004Z-M3-T2.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M3-T3",
       "milestone": "M3",
       "title": "Document UI: list, create, edit, view, workflow actions",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M3-T2"
@@ -429,14 +439,19 @@
         "lib/docflow/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit",
-      "brief": "Document list, detail view, and a create/edit form with add/remove line items, live server-verified totals on submit, accessible validation, and workflow buttons shown only for permitted transitions. Surface concurrency conflicts as a clear reload message rather than silently discarding input."
+      "brief": "Document list, detail view, and a create/edit form with add/remove line items, live server-verified totals on submit, accessible validation, and workflow buttons shown only for permitted transitions. Surface concurrency conflicts as a clear reload message rather than silently discarding input.",
+      "completedAt": "2026-11-02T20:27:05.006Z",
+      "evidence": [
+        "tasks/evidence/M3-T3/2026-11-02T20-27-05-004Z-M3-T3.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M3-ACCEPT",
       "milestone": "M3",
       "title": "M3 milestone acceptance: regression and production build",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M3-T3"
@@ -448,7 +463,12 @@
         "tests/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run build",
-      "brief": "Milestone boundary regression for document management."
+      "brief": "Milestone boundary regression for document management.",
+      "completedAt": "2026-11-02T20:27:05.007Z",
+      "evidence": [
+        "tasks/evidence/M3-ACCEPT/2026-11-02T20-27-05-004Z-M3-ACCEPT.json"
+      ],
+      "note": "implemented by manager; independently reviewed"
     },
     {
       "id": "M4-T1",
