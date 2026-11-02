@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "project": "Docentra",
+  "module": "DocFlow",
+  "milestone": "M0",
+  "maxRepairAttempts": 2,
+  "tasks": [
+    {
+      "id": "M0-T1",
+      "milestone": "M0",
+      "title": "Harness contract and milestone register",
+      "synthetic": true,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": [],
+      "scope": ["AGENTS.md", "PLANS.md", "README.md"],
+      "acceptance": "test -f AGENTS.md && test -f PLANS.md && test -f README.md"
+    },
+    {
+      "id": "M0-T2",
+      "milestone": "M0",
+      "title": "Deterministic gate script and state validation",
+      "synthetic": true,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M0-T1"],
+      "scope": ["scripts/gates.sh", "scripts/validate-state.mjs", "scripts/lib/"],
+      "acceptance": "node scripts/validate-state.mjs tasks/state.json"
+    },
+    {
+      "id": "M0-T3",
+      "milestone": "M0",
+      "title": "Task selection with dependency and approval precedence",
+      "synthetic": true,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M0-T2"],
+      "scope": ["scripts/next-task.mjs", "scripts/tests/select.test.mjs"],
+      "acceptance": "node --test scripts/tests/select.test.mjs"
+    },
+    {
+      "id": "M0-T4",
+      "milestone": "M0",
+      "title": "Bounded retries, independent review, resumable state",
+      "synthetic": true,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M0-T3"],
+      "scope": ["scripts/loop.mjs", "scripts/review.mjs", "scripts/tests/state.test.mjs"],
+      "acceptance": "node --test scripts/tests/state.test.mjs"
+    },
+    {
+      "id": "M0-T5",
+      "milestone": "M0",
+      "title": "Five-scenario harness verification",
+      "synthetic": true,
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M0-T4"],
+      "scope": ["scripts/verify-m0.sh", "harness/"],
+      "acceptance": "node -e \"const s=require('./tasks/evidence/M0-VERIFY/summary.json'); if(s.failures>0) process.exit(1); if(s.scenarios.length!==5) process.exit(1)\""
+    },
+    {
+      "id": "M1-GATE",
+      "milestone": "M1",
+      "title": "Human approval to begin M1 foundation",
+      "status": "awaiting_approval",
+      "attempts": 0,
+      "dependsOn": [],
+      "note": "M0 must be verified and reported before product work starts. Approve by setting status to done."
+    },
+    {
+      "id": "M1-T1",
+      "milestone": "M1",
+      "title": "Next.js + TypeScript + Tailwind + shadcn scaffold, product gates added",
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M1-GATE"],
+      "scope": ["app/", "src/", "package.json", "scripts/gates.sh"],
+      "acceptance": "npm run typecheck && npm test"
+    },
+    {
+      "id": "M1-T2",
+      "milestone": "M1",
+      "title": "Docker Compose Postgres 16 with isolated dev and test databases",
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M1-GATE"],
+      "scope": ["docker-compose.yml", "package.json", "scripts/"],
+      "acceptance": "docker compose config --quiet"
+    },
+    {
+      "id": "M1-T3",
+      "milestone": "M1",
+      "title": "Prisma docflow schema, initial migration, total trigger, invariant tests",
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M1-T2"],
+      "scope": ["prisma/", "src/", "tests/"],
+      "acceptance": "npm run test:integration"
+    },
+    {
+      "id": "M1-T4",
+      "milestone": "M1",
+      "title": "Idempotent demonstration seed data",
+      "status": "pending",
+      "attempts": 0,
+      "dependsOn": ["M1-T3"],
+      "scope": ["prisma/seed", "prisma/", "tests/"],
+      "acceptance": "npm run db:seed && npm run db:seed"
+    }
+  ]
+}

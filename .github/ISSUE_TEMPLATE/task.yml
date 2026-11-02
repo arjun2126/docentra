@@ -1,0 +1,65 @@
+name: Task
+description: A unit of work small enough to verify in one pass.
+title: "M<n>-T<n>: "
+labels: ["task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One task = one verifiable change. If you cannot state the acceptance
+        command, the task is too vague. Keep the same ID in `tasks/state.json`.
+  - type: input
+    id: task-id
+    attributes:
+      label: Task ID
+      description: Matches `tasks/state.json` (e.g. M1-T3).
+      placeholder: M1-T3
+    validations:
+      required: true
+  - type: dropdown
+    id: milestone
+    attributes:
+      label: Milestone
+      options: ["M0", "M1", "M2", "M3", "M4", "M5", "M6"]
+    validations:
+      required: true
+  - type: textarea
+    id: intent
+    attributes:
+      label: Intent
+      description: What must be true when this is done. Not how to do it.
+    validations:
+      required: true
+  - type: input
+    id: acceptance
+    attributes:
+      label: Acceptance command
+      description: The exact command that proves completion. It must fail before the change and pass after.
+      placeholder: npm run test:integration
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Path prefixes the change may touch. Anything outside is rejected by review.
+      placeholder: |
+        prisma/
+        src/lib/documents/
+    validations:
+      required: true
+  - type: input
+    id: depends-on
+    attributes:
+      label: Depends on
+      description: Comma-separated task IDs that must be done first.
+      placeholder: M1-T2
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Contract acknowledgement
+      options:
+        - label: No gate will be bypassed to make this task pass
+          required: true
+        - label: Changes outside the declared scope need approval first
+          required: true

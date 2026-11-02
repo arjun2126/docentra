@@ -1,0 +1,25 @@
+# harness scratch space (isolated M0 verification runs)
+.harness-tmp/
+
+# dependencies / build
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+
+# test artifacts
+playwright-report/
+test-results/
+
+# environment (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# local logs
+*.log
+
+# OS
+.DS_Store
