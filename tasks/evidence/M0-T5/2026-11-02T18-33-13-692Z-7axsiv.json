@@ -1,0 +1,28 @@
+{
+  "runId": "2026-11-02T18-33-13-692Z-7axsiv",
+  "taskId": "M0-T5",
+  "milestone": "M0",
+  "attempt": 1,
+  "startedAt": "2026-11-02T18:33:13.692Z",
+  "finishedAt": "2026-11-02T18:33:13.916Z",
+  "implementer": {
+    "invoked": false,
+    "reason": "synthetic task: no implementer required"
+  },
+  "gate": {
+    "exitCode": 0,
+    "transcript": "== gates ==\n   code:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   data:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n[gate] G0           PASS  harness files present\nstate ok: 10 tasks, 6 not done (/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/state.json)\n[gate] G1           PASS  task state valid\n[gate] G2           PASS  shell syntax\nTAP version 13\n# Subtest: selects the first pending task whose dependencies are done\nok 1 - selects the first pending task whose dependencies are done\n  ---\n  duration_ms: 0.737041\n  ...\n# Subtest: never selects a task whose dependency is unfinished\nok 2 - never selects a task whose dependency is unfinished\n  ---\n  duration_ms: 0.098875\n  ...\n# Subtest: never selects a task whose dependency is blocked\nok 3 - never selects a task whose dependency is blocked\n  ---\n  duration_ms: 0.256667\n  ...\n# Subtest: resumes an in-flight task instead of starting a new one\nok 4 - resumes an in-flight task instead of starting a new one\n  ---\n  duration_ms: 0.041875\n  ...\n# Subtest: independent ready work proceeds while an approval gate is open\nok 5 - independent ready work proceeds while an approval gate is open\n  ---\n  duration_ms: 0.083167\n  ...\n# Subtest: an approval gate is reported once it is the only thing preventing progress\nok 6 - an approval gate is reported once it is the only thing preventing progress\n  ---\n  duration_ms: 0.038583\n  ...\n# Subtest: reports none when every task is done\nok 7 - reports none when every task is done\n  ---\n  duration_ms: 0.066708\n  ...\n# Subtest: selection is deterministic across repeated calls\nok 8 - selection is deterministic across repeated calls\n  ---\n  duration_ms: 0.040416\n  ...\n# Subtest: state round-trips through disk\nok 9 - state round-trips through disk\n  ---\n  duration_ms: 3.570375\n  ...\n# Subtest: writes are atomic and leave no temp files behind\nok 10 - writes are atomic and leave no temp files behind\n  ---\n  duration_ms: 1.029458\n  ...\n# Subtest: a partially written state can never be observed\nok 11 - a partially written state can never be observed\n  ---\n  duration_ms: 0.572583\n  ...\n# Subtest: duplicate task ids are rejected\nok 12 - duplicate task ids are rejected\n  ---\n  duration_ms: 0.213375\n  ...\n# Subtest: invalid statuses are rejected\nok 13 - invalid statuses are rejected\n  ---\n  duration_ms: 0.282458\n  ...\n# Subtest: unknown dependencies are rejected\nok 14 - unknown dependencies are rejected\n  ---\n  duration_ms: 0.157625\n  ...\n# Subtest: journal is append-only and detectable per task\nok 15 - journal is append-only and detectable per task\n  ---\n  duration_ms: 1.06175\n  ...\n# Subtest: evidence records are written per task and per run\nok 16 - evidence records are written per task and per run\n  ---\n  duration_ms: 1.536833\n  ...\n1..16\n# tests 16\n# suites 0\n# pass 16\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 70.6935\n[gate] G3           PASS  harness unit tests\n-- task acceptance (M0-T5) --\n   $ node -e \"const s=require('./tasks/evidence/M0-VERIFY/summary.json'); if(s.failures>0) process.exit(1); if(s.scenarios.length!==5) process.exit(1)\"\n[gate] ACCEPT       PASS  task acceptance command\n== summary ==\nGATES: PASS\n"
+  },
+  "taskAcceptance": "node -e \"const s=require('./tasks/evidence/M0-VERIFY/summary.json'); if(s.failures>0) process.exit(1); if(s.scenarios.length!==5) process.exit(1)\"",
+  "scope": [
+    "scripts/verify-m0.sh",
+    "harness/"
+  ],
+  "changedFiles": [],
+  "gitTracked": true,
+  "review": {
+    "verdict": "accept",
+    "reasons": []
+  },
+  "outcome": "accepted"
+}

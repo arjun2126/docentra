@@ -1,0 +1,29 @@
+{
+  "runId": "2026-11-02T18-33-12-896Z-eepvjr",
+  "taskId": "M0-T2",
+  "milestone": "M0",
+  "attempt": 1,
+  "startedAt": "2026-11-02T18:33:12.896Z",
+  "finishedAt": "2026-11-02T18:33:13.125Z",
+  "implementer": {
+    "invoked": false,
+    "reason": "synthetic task: no implementer required"
+  },
+  "gate": {
+    "exitCode": 0,
+    "transcript": "== gates ==\n   code:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   data:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n[gate] G0           PASS  harness files present\nstate ok: 10 tasks, 9 not done (/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/state.json)\n[gate] G1           PASS  task state valid\n[gate] G2           PASS  shell syntax\nTAP version 13\n# Subtest: selects the first pending task whose dependencies are done\nok 1 - selects the first pending task whose dependencies are done\n  ---\n  duration_ms: 0.943334\n  ...\n# Subtest: never selects a task whose dependency is unfinished\nok 2 - never selects a task whose dependency is unfinished\n  ---\n  duration_ms: 0.099\n  ...\n# Subtest: never selects a task whose dependency is blocked\nok 3 - never selects a task whose dependency is blocked\n  ---\n  duration_ms: 0.319875\n  ...\n# Subtest: resumes an in-flight task instead of starting a new one\nok 4 - resumes an in-flight task instead of starting a new one\n  ---\n  duration_ms: 0.052875\n  ...\n# Subtest: independent ready work proceeds while an approval gate is open\nok 5 - independent ready work proceeds while an approval gate is open\n  ---\n  duration_ms: 0.091667\n  ...\n# Subtest: an approval gate is reported once it is the only thing preventing progress\nok 6 - an approval gate is reported once it is the only thing preventing progress\n  ---\n  duration_ms: 0.04075\n  ...\n# Subtest: reports none when every task is done\nok 7 - reports none when every task is done\n  ---\n  duration_ms: 0.075208\n  ...\n# Subtest: selection is deterministic across repeated calls\nok 8 - selection is deterministic across repeated calls\n  ---\n  duration_ms: 0.039042\n  ...\n# Subtest: state round-trips through disk\nok 9 - state round-trips through disk\n  ---\n  duration_ms: 2.821708\n  ...\n# Subtest: writes are atomic and leave no temp files behind\nok 10 - writes are atomic and leave no temp files behind\n  ---\n  duration_ms: 2.806292\n  ...\n# Subtest: a partially written state can never be observed\nok 11 - a partially written state can never be observed\n  ---\n  duration_ms: 0.676167\n  ...\n# Subtest: duplicate task ids are rejected\nok 12 - duplicate task ids are rejected\n  ---\n  duration_ms: 0.2245\n  ...\n# Subtest: invalid statuses are rejected\nok 13 - invalid statuses are rejected\n  ---\n  duration_ms: 0.311041\n  ...\n# Subtest: unknown dependencies are rejected\nok 14 - unknown dependencies are rejected\n  ---\n  duration_ms: 0.147083\n  ...\n# Subtest: journal is append-only and detectable per task\nok 15 - journal is append-only and detectable per task\n  ---\n  duration_ms: 1.904\n  ...\n# Subtest: evidence records are written per task and per run\nok 16 - evidence records are written per task and per run\n  ---\n  duration_ms: 1.419833\n  ...\n1..16\n# tests 16\n# suites 0\n# pass 16\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 65.375208\n[gate] G3           PASS  harness unit tests\n-- task acceptance (M0-T2) --\n   $ node scripts/validate-state.mjs tasks/state.json\nstate ok: 10 tasks, 9 not done (tasks/state.json)\n[gate] ACCEPT       PASS  task acceptance command\n== summary ==\nGATES: PASS\n"
+  },
+  "taskAcceptance": "node scripts/validate-state.mjs tasks/state.json",
+  "scope": [
+    "scripts/gates.sh",
+    "scripts/validate-state.mjs",
+    "scripts/lib/"
+  ],
+  "changedFiles": [],
+  "gitTracked": true,
+  "review": {
+    "verdict": "accept",
+    "reasons": []
+  },
+  "outcome": "accepted"
+}

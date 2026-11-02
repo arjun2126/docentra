@@ -10,55 +10,106 @@
       "milestone": "M0",
       "title": "Harness contract and milestone register",
       "synthetic": true,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [],
-      "scope": ["AGENTS.md", "PLANS.md", "README.md"],
-      "acceptance": "test -f AGENTS.md && test -f PLANS.md && test -f README.md"
+      "scope": [
+        "AGENTS.md",
+        "PLANS.md",
+        "README.md"
+      ],
+      "acceptance": "test -f AGENTS.md && test -f PLANS.md && test -f README.md",
+      "startedAt": "2026-11-02T18:33:12.712Z",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T1/2026-11-02T18-33-12-714Z-n1lipq.json"
+      ],
+      "completedAt": "2026-11-02T18:33:12.895Z"
     },
     {
       "id": "M0-T2",
       "milestone": "M0",
       "title": "Deterministic gate script and state validation",
       "synthetic": true,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
-      "dependsOn": ["M0-T1"],
-      "scope": ["scripts/gates.sh", "scripts/validate-state.mjs", "scripts/lib/"],
-      "acceptance": "node scripts/validate-state.mjs tasks/state.json"
+      "dependsOn": [
+        "M0-T1"
+      ],
+      "scope": [
+        "scripts/gates.sh",
+        "scripts/validate-state.mjs",
+        "scripts/lib/"
+      ],
+      "acceptance": "node scripts/validate-state.mjs tasks/state.json",
+      "startedAt": "2026-11-02T18:33:12.896Z",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T2/2026-11-02T18-33-12-896Z-eepvjr.json"
+      ],
+      "completedAt": "2026-11-02T18:33:13.125Z"
     },
     {
       "id": "M0-T3",
       "milestone": "M0",
       "title": "Task selection with dependency and approval precedence",
       "synthetic": true,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
-      "dependsOn": ["M0-T2"],
-      "scope": ["scripts/next-task.mjs", "scripts/tests/select.test.mjs"],
-      "acceptance": "node --test scripts/tests/select.test.mjs"
+      "dependsOn": [
+        "M0-T2"
+      ],
+      "scope": [
+        "scripts/next-task.mjs",
+        "scripts/tests/select.test.mjs"
+      ],
+      "acceptance": "node --test scripts/tests/select.test.mjs",
+      "startedAt": "2026-11-02T18:33:13.126Z",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T3/2026-11-02T18-33-13-126Z-xsj8hg.json"
+      ],
+      "completedAt": "2026-11-02T18:33:13.407Z"
     },
     {
       "id": "M0-T4",
       "milestone": "M0",
       "title": "Bounded retries, independent review, resumable state",
       "synthetic": true,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
-      "dependsOn": ["M0-T3"],
-      "scope": ["scripts/loop.mjs", "scripts/review.mjs", "scripts/tests/state.test.mjs"],
-      "acceptance": "node --test scripts/tests/state.test.mjs"
+      "dependsOn": [
+        "M0-T3"
+      ],
+      "scope": [
+        "scripts/loop.mjs",
+        "scripts/review.mjs",
+        "scripts/tests/state.test.mjs"
+      ],
+      "acceptance": "node --test scripts/tests/state.test.mjs",
+      "startedAt": "2026-11-02T18:33:13.408Z",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T4/2026-11-02T18-33-13-408Z-5ergml.json"
+      ],
+      "completedAt": "2026-11-02T18:33:13.691Z"
     },
     {
       "id": "M0-T5",
       "milestone": "M0",
       "title": "Five-scenario harness verification",
       "synthetic": true,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
-      "dependsOn": ["M0-T4"],
-      "scope": ["scripts/verify-m0.sh", "harness/"],
-      "acceptance": "node -e \"const s=require('./tasks/evidence/M0-VERIFY/summary.json'); if(s.failures>0) process.exit(1); if(s.scenarios.length!==5) process.exit(1)\""
+      "dependsOn": [
+        "M0-T4"
+      ],
+      "scope": [
+        "scripts/verify-m0.sh",
+        "harness/"
+      ],
+      "acceptance": "node -e \"const s=require('./tasks/evidence/M0-VERIFY/summary.json'); if(s.failures>0) process.exit(1); if(s.scenarios.length!==5) process.exit(1)\"",
+      "startedAt": "2026-11-02T18:33:13.692Z",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T5/2026-11-02T18-33-13-692Z-7axsiv.json"
+      ],
+      "completedAt": "2026-11-02T18:33:13.918Z"
     },
     {
       "id": "M1-GATE",
@@ -75,8 +126,15 @@
       "title": "Next.js + TypeScript + Tailwind + shadcn scaffold, product gates added",
       "status": "pending",
       "attempts": 0,
-      "dependsOn": ["M1-GATE"],
-      "scope": ["app/", "src/", "package.json", "scripts/gates.sh"],
+      "dependsOn": [
+        "M1-GATE"
+      ],
+      "scope": [
+        "app/",
+        "src/",
+        "package.json",
+        "scripts/gates.sh"
+      ],
       "acceptance": "npm run typecheck && npm test"
     },
     {
@@ -85,8 +143,14 @@
       "title": "Docker Compose Postgres 16 with isolated dev and test databases",
       "status": "pending",
       "attempts": 0,
-      "dependsOn": ["M1-GATE"],
-      "scope": ["docker-compose.yml", "package.json", "scripts/"],
+      "dependsOn": [
+        "M1-GATE"
+      ],
+      "scope": [
+        "docker-compose.yml",
+        "package.json",
+        "scripts/"
+      ],
       "acceptance": "docker compose config --quiet"
     },
     {
@@ -95,8 +159,14 @@
       "title": "Prisma docflow schema, initial migration, total trigger, invariant tests",
       "status": "pending",
       "attempts": 0,
-      "dependsOn": ["M1-T2"],
-      "scope": ["prisma/", "src/", "tests/"],
+      "dependsOn": [
+        "M1-T2"
+      ],
+      "scope": [
+        "prisma/",
+        "src/",
+        "tests/"
+      ],
       "acceptance": "npm run test:integration"
     },
     {
@@ -105,9 +175,16 @@
       "title": "Idempotent demonstration seed data",
       "status": "pending",
       "attempts": 0,
-      "dependsOn": ["M1-T3"],
-      "scope": ["prisma/seed", "prisma/", "tests/"],
+      "dependsOn": [
+        "M1-T3"
+      ],
+      "scope": [
+        "prisma/seed",
+        "prisma/",
+        "tests/"
+      ],
       "acceptance": "npm run db:seed && npm run db:seed"
     }
-  ]
+  ],
+  "updatedAt": "2026-11-02T18:33:13.918Z"
 }
