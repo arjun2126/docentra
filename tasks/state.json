@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "project": "Docentra",
   "module": "DocFlow",
-  "milestone": "M0",
+  "milestone": "M1",
   "maxRepairAttempts": 2,
   "tasks": [
     {
@@ -18,12 +18,7 @@
         "PLANS.md",
         "README.md"
       ],
-      "acceptance": "test -f AGENTS.md && test -f PLANS.md && test -f README.md",
-      "startedAt": "2026-11-02T18:33:12.712Z",
-      "evidence": [
-        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T1/2026-11-02T18-33-12-714Z-n1lipq.json"
-      ],
-      "completedAt": "2026-11-02T18:33:12.895Z"
+      "acceptance": "test -f AGENTS.md && test -f PLANS.md && test -f README.md"
     },
     {
       "id": "M0-T2",
@@ -40,12 +35,7 @@
         "scripts/validate-state.mjs",
         "scripts/lib/"
       ],
-      "acceptance": "node scripts/validate-state.mjs tasks/state.json",
-      "startedAt": "2026-11-02T18:33:12.896Z",
-      "evidence": [
-        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T2/2026-11-02T18-33-12-896Z-eepvjr.json"
-      ],
-      "completedAt": "2026-11-02T18:33:13.125Z"
+      "acceptance": "node scripts/validate-state.mjs tasks/state.json"
     },
     {
       "id": "M0-T3",
@@ -61,12 +51,7 @@
         "scripts/next-task.mjs",
         "scripts/tests/select.test.mjs"
       ],
-      "acceptance": "node --test scripts/tests/select.test.mjs",
-      "startedAt": "2026-11-02T18:33:13.126Z",
-      "evidence": [
-        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T3/2026-11-02T18-33-13-126Z-xsj8hg.json"
-      ],
-      "completedAt": "2026-11-02T18:33:13.407Z"
+      "acceptance": "node --test scripts/tests/select.test.mjs"
     },
     {
       "id": "M0-T4",
@@ -83,12 +68,7 @@
         "scripts/review.mjs",
         "scripts/tests/state.test.mjs"
       ],
-      "acceptance": "node --test scripts/tests/state.test.mjs",
-      "startedAt": "2026-11-02T18:33:13.408Z",
-      "evidence": [
-        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T4/2026-11-02T18-33-13-408Z-5ergml.json"
-      ],
-      "completedAt": "2026-11-02T18:33:13.691Z"
+      "acceptance": "node --test scripts/tests/state.test.mjs"
     },
     {
       "id": "M0-T5",
@@ -104,87 +84,144 @@
         "scripts/verify-m0.sh",
         "harness/"
       ],
-      "acceptance": "node -e \"const s=require('./tasks/evidence/M0-VERIFY/summary.json'); if(s.failures>0) process.exit(1); if(s.scenarios.length!==5) process.exit(1)\"",
-      "startedAt": "2026-11-02T18:33:13.692Z",
-      "evidence": [
-        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M0-T5/2026-11-02T18-33-13-692Z-7axsiv.json"
+      "acceptance": "node -e \"const s=require('./tasks/evidence/M0-VERIFY/summary.json'); if(s.failures>0) process.exit(1); if(s.scenarios.length!==5) process.exit(1)\""
+    },
+    {
+      "id": "M0.5-T1",
+      "milestone": "M0.5",
+      "title": "Real agent integration verification",
+      "synthetic": false,
+      "status": "done",
+      "attempts": 0,
+      "dependsOn": [
+        "M0-T5"
       ],
-      "completedAt": "2026-11-02T18:33:13.918Z"
+      "scope": [
+        "scripts/verify-m05.sh",
+        "scripts/m05-fixture.sh",
+        "scripts/m05-review-payload.mjs"
+      ],
+      "acceptance": "node -e \"const s=require('./tasks/evidence/M0.5-VERIFY/summary.json'); if(s.failures>0) process.exit(1)\""
     },
     {
       "id": "M1-GATE",
       "milestone": "M1",
       "title": "Human approval to begin M1 foundation",
-      "status": "awaiting_approval",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [],
-      "note": "M0 must be verified and reported before product work starts. Approve by setting status to done."
+      "note": "Approved by stakeholder after M0.5 acceptance. Boundaries: no remote repository, no deployment, stop on unresolved quality failures."
     },
     {
       "id": "M1-T1",
       "milestone": "M1",
-      "title": "Next.js + TypeScript + Tailwind + shadcn scaffold, product gates added",
-      "status": "pending",
+      "title": "Next.js + TypeScript + Tailwind + shadcn scaffold",
+      "synthetic": false,
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M1-GATE"
       ],
       "scope": [
-        "app/",
-        "src/",
         "package.json",
-        "scripts/gates.sh"
+        "package-lock.json",
+        "tsconfig.json",
+        "next.config.ts",
+        "next-env.d.ts",
+        "postcss.config.mjs",
+        "tailwind.config.ts",
+        "vitest.config.ts",
+        "components.json",
+        "app/",
+        "components/",
+        "lib/",
+        "tests/unit/",
+        ".gitignore"
       ],
-      "acceptance": "npm run typecheck && npm test"
+      "acceptance": "npm run typecheck && npm run test:unit",
+      "brief": "Create the application scaffold at the repository root (do NOT modify scripts/ or AGENTS.md/PLANS.md).\n\npackage.json scripts: dev (next dev), build (next build), start (next start), typecheck (tsc --noEmit), test:unit (vitest run --dir tests/unit), lint (next lint).\nDependencies: next@15, react@19, react-dom@19, zod, clsx, tailwind-merge, class-variance-authority.\nDevDependencies: typescript, @types/node, @types/react, @types/react-dom, tailwindcss@3.4, postcss, autoprefixer, vitest, prisma, @prisma/client, pg, @types/pg.\n\nFiles: tsconfig.json (strict, paths alias @/* -> ./*), next.config.ts, postcss.config.mjs, tailwind.config.ts (content globs app/ components/), app/layout.tsx, app/page.tsx (a minimal Docentra landing page with no currency text), app/globals.css (Tailwind directives), lib/utils.ts exporting cn() using clsx + tailwind-merge, components/ui/button.tsx (shadcn-style Button with class-variance-authority, named export Button), components/ui/card.tsx (shadcn-style Card, CardHeader, CardTitle, CardContent), components.json declaring shadcn style/config.\n\nAdd tests/unit/utils.test.ts covering cn(): merges conflicting classes and drops falsy values.\n\nRun `npm install` then `npm run typecheck` and `npm run test:unit` until both pass. Do not run next build (M1 keeps build for later).",
+      "startedAt": "2026-11-02T19:15:46.999Z",
+      "baseHead": "1565d2f265d0e6283b4cb72ea51f3ebbba914621",
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/M1-T1/2026-11-02T19-15-47-017Z-orex28.json"
+      ],
+      "completedAt": "2026-11-02T19:22:39.711Z"
     },
     {
       "id": "M1-T2",
       "milestone": "M1",
       "title": "Docker Compose Postgres 16 with isolated dev and test databases",
-      "status": "pending",
+      "synthetic": false,
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
-        "M1-GATE"
+        "M1-T1"
       ],
       "scope": [
         "docker-compose.yml",
         "package.json",
-        "scripts/"
+        "scripts/check-db.mjs",
+        ".env.example",
+        ".env"
       ],
-      "acceptance": "docker compose config --quiet"
+      "acceptance": "docker compose config --quiet && npm run db:check",
+      "brief": "Add docker-compose.yml with a pinned `postgres:16` service named `db`:\n- POSTGRES_USER=docentra, POSTGRES_PASSWORD=docentra, POSTGRES_DB=docentra_dev\n- port 5432:5432, a named volume, and a healthcheck using pg_isready\n- an init script mounted read-only that creates the second database `docentra_test` (initdb hook creating an extra DB is the simplest approach)\n\nAdd .env.example with DATABASE_URL (dev, database docentra_dev) and TEST_DATABASE_URL (database docentra_test) using localhost:5432. Create .env with the same values (it is gitignored).\n\nAdd scripts/check-db.mjs (ESM, uses `pg`): `docker compose up -d`, poll until the server accepts connections (max ~60s), then assert that both docentra_dev and docentra_test exist by querying pg_database, print the result, and exit non-zero on failure. Leave the containers running: later tasks need them.\n\nAdd package.json scripts: db:up (docker compose up -d), db:down (docker compose down), db:check (node scripts/check-db.mjs).\n\nDo not change DATABASE_URL handling in application code yet.",
+      "completedAt": "2026-11-02T19:44:54.020Z",
+      "evidence": [
+        "tasks/evidence/M1-T2/2026-11-02T19-44-54-014Z-M1-T2.json"
+      ],
+      "note": "implemented by manager after stalled agent; independently reviewed"
     },
     {
       "id": "M1-T3",
       "milestone": "M1",
-      "title": "Prisma docflow schema, initial migration, total trigger, invariant tests",
-      "status": "pending",
+      "title": "Prisma docflow schema, migration, totals trigger, invariant tests",
+      "synthetic": false,
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M1-T2"
       ],
       "scope": [
         "prisma/",
-        "src/",
-        "tests/"
+        "lib/",
+        "tests/integration/",
+        "package.json",
+        "vitest.config.ts",
+        ".env.example"
       ],
-      "acceptance": "npm run test:integration"
+      "acceptance": "npm run test:integration",
+      "brief": "Model the DocFlow data layer in PostgreSQL schema `docflow` (see PLANS.md for the DDL; it is the source of truth).\n\nprisma/schema.prisma: datasource postgresql with env(\"DATABASE_URL\"); generator client; models Vendor, DocumentHeader (mapped to document_header, @@map and @@schema(\"docflow\")), DocumentDetail (document_detail). Money fields must be Decimal. Add @@schema(\"docflow\") to every model and list schemas = [\"docflow\"] in the datasource. If Prisma rejects that, report the exact error instead of silently dropping the schema.\n\nCreate the initial migration SQL by hand under prisma/migrations/<timestamp>_init/migration.sql so it also contains what Prisma cannot express:\n- CREATE SCHEMA IF NOT EXISTS docflow\n- CHECK constraints: quantity > 0, price >= 0, amount = round(quantity*price, 2), status IN ('draft','submitted','approved','rejected')\n- UNIQUE (shno, line_no), UNIQUE document_number\n- FKs: document_detail.shno -> document_header(shno) ON DELETE CASCADE; document_header.vendor_id -> vendor(id) ON DELETE RESTRICT\n- a trigger function on document_detail (INSERT/UPDATE/DELETE) that recomputes document_header.total_amount and line_count for the affected shno and updates updated_at. Handle UPDATE of shno by recomputing both old and new headers.\n- indexes on (vendor_id, document_date), status, and detail shno\n\nAdd lib/prisma.ts exporting a singleton PrismaClient (standard globalThis pattern for Next.js).\n\nAdd tests/integration/docflow-schema.test.ts (vitest) that connects to TEST_DATABASE_URL, resets the docflow schema (DROP SCHEMA docflow CASCADE then re-apply migrations via `prisma migrate deploy` run in a beforeAll child process, or by executing the migration SQL files in order), and asserts:\n1. a detail row whose amount does not equal quantity*price is rejected\n2. quantity = 0 is rejected\n3. an invalid status is rejected\n4. inserting two details updates header total_amount and line_count\n5. deleting a detail recomputes totals\n6. deleting a header cascades its details\n7. deleting a vendor with documents is restricted\n\nAdd package.json scripts: test:integration (vitest run --dir tests/integration --no-file-parallelism), db:migrate (prisma migrate deploy). Tests must fail loudly if the database is unreachable rather than skipping.\n\nDo not weaken any constraint to make a test pass.",
+      "completedAt": "2026-11-02T19:44:54.020Z",
+      "evidence": [
+        "tasks/evidence/M1-T3/2026-11-02T19-44-54-014Z-M1-T3.json"
+      ],
+      "note": "implemented by manager after stalled agent; independently reviewed"
     },
     {
       "id": "M1-T4",
       "milestone": "M1",
       "title": "Idempotent demonstration seed data",
-      "status": "pending",
+      "synthetic": false,
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "M1-T3"
       ],
       "scope": [
-        "prisma/seed",
-        "prisma/",
-        "tests/"
+        "prisma/seed.ts",
+        "prisma/seed.mjs",
+        "scripts/verify-seed.mjs",
+        "package.json"
       ],
-      "acceptance": "npm run db:seed && npm run db:seed"
+      "acceptance": "npm run db:seed && npm run db:seed && npm run db:verify",
+      "brief": "Add an idempotent seed that can run twice with identical results (use upserts keyed on natural keys: vendor.code and document_header.document_number; details keyed by (shno, line_no)).\n\nSeed 4 vendors and 6 documents spread across draft, submitted, approved and rejected, each with 1-4 line items whose amounts equal quantity*price. Do not include any currency symbol, currency code or locale money formatting: amounts are plain numbers.\n\nAdd package.json scripts: db:seed (runs the seed with plain node, no ts-node if avoidable), db:verify (node scripts/verify-seed.mjs).\nscripts/verify-seed.mjs connects using DATABASE_URL and asserts: exactly 4 vendors and 6 documents exist, at least one document in each of the four statuses, every header total_amount equals the sum of its details, and document_number values are unique. Exit non-zero with a clear message on any mismatch.\n\nAcceptance requires running the seed twice; the second run must not create duplicates.",
+      "completedAt": "2026-11-02T19:44:54.021Z",
+      "evidence": [
+        "tasks/evidence/M1-T4/2026-11-02T19-44-54-014Z-M1-T4.json"
+      ],
+      "note": "implemented by manager after stalled agent; independently reviewed"
     }
   ],
-  "updatedAt": "2026-11-02T18:33:13.918Z"
+  "updatedAt": "2026-11-02T19:44:54.021Z"
 }

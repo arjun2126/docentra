@@ -1,0 +1,67 @@
+// Prisma schema for the DocFlow module. PostgreSQL schema `docflow` keeps the
+// module isolated so later Docentra modules can add their own schemas.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  schemas  = ["docflow"]
+}
+
+model Vendor {
+  id        BigInt   @id @default(autoincrement())
+  code      String   @unique
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz
+
+  documents DocumentHeader[]
+
+  @@map("vendor")
+  @@schema("docflow")
+}
+
+model DocumentHeader {
+  shno           BigInt   @id @default(autoincrement())
+  documentNumber String   @unique @map("document_number")
+  documentDate   DateTime @map("document_date") @db.Date
+  vendorId       BigInt   @map("vendor_id")
+  status         String   @default("draft")
+  totalAmount    Decimal  @default(0) @map("total_amount") @db.Decimal(16, 2)
+  lineCount      Int      @default(0) @map("line_count")
+  notes          String?
+  version        Int      @default(1)
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime @default(now()) @map("updated_at") @db.Timestamptz
+
+  vendor  Vendor           @relation(fields: [vendorId], references: [id], onDelete: Restrict)
+  details DocumentDetail[]
+
+  @@index([vendorId, documentDate])
+  @@index([status])
+  @@map("document_header")
+  @@schema("docflow")
+}
+
+model DocumentDetail {
+  detailId BigInt  @id @default(autoincrement()) @map("detail_id")
+  shno     BigInt
+  lineNo   Int     @map("line_no")
+  item     String
+  quantity Decimal @db.Decimal(14, 4)
+  price    Decimal @db.Decimal(14, 2)
+  amount   Decimal @db.Decimal(16, 2)
+
+  header DocumentHeader @relation(fields: [shno], references: [shno], onDelete: Cascade)
+
+  @@unique([shno, lineNo])
+  @@index([shno])
+  @@map("document_detail")
+  @@schema("docflow")
+}

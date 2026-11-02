@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:16
+    container_name: docentra-db
+    environment:
+      POSTGRES_USER: docentra
+      POSTGRES_PASSWORD: docentra
+      POSTGRES_DB: docentra_dev
+    ports:
+      # Loopback only, on a verified-free port: a local PostgreSQL owns 5432 on
+      # some machines, and binding 0.0.0.0 invites exactly that confusion.
+      - "127.0.0.1:56000:5432"
+    volumes:
+      - docentra_pgdata:/var/lib/postgresql/data
+      - ./docker/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docentra -d docentra_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+volumes:
+  docentra_pgdata:

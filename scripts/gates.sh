@@ -66,6 +66,24 @@ gate_g1 && pass G1 "task state valid" || fail G1 "task state invalid"
 gate_g2 && pass G2 "shell syntax" || fail G2 "shell syntax errors"
 gate_g3 && pass G3 "harness unit tests" || fail G3 "harness unit tests failed"
 
+# Product gates — only once the application exists, so harness-only runs stay
+# green and a missing app never silently counts as passing.
+if [[ -f "$CODE_ROOT/package.json" ]]; then
+  echo "-- product gates --"
+  if ( cd "$CODE_ROOT" && npm run --silent typecheck ); then
+    pass TYPECHECK "npm run typecheck"
+  else
+    fail TYPECHECK "npm run typecheck failed"
+  fi
+  if ( cd "$CODE_ROOT" && npm run --silent test:unit ); then
+    pass UNIT "npm run test:unit"
+  else
+    fail UNIT "npm run test:unit failed"
+  fi
+else
+  echo "[gate] PRODUCT      SKIP  no package.json yet"
+fi
+
 # Task acceptance — the task's own definition of done. It runs in the task's
 # working directory (an isolated fixture may be the unit under test).
 if [[ -n "${TASK_ACCEPTANCE:-}" ]]; then

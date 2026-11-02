@@ -30,8 +30,10 @@ import {
 } from './lib/state.mjs';
 import { selectNext } from './next-task.mjs';
 import { reviewEvidence } from './review.mjs';
+import { extractVerdict } from './lib/verdict.mjs';
 
 const MAX_ITERATIONS = Number(process.env.HARNESS_MAX_ITERATIONS ?? 25);
+const MAX_REVIEWER_RETRIES = Number(process.env.HARNESS_REVIEWER_RETRIES ?? 1);
 
 // Harness-owned paths never count as implementation changes.
 const HARNESS_OWNED = ['tasks/', 'journal/', '.harness-tmp/'];
@@ -190,37 +192,6 @@ function runGates(task) {
   };
 }
 
-// Model CLIs wrap answers in prose or logs, so pull the verdict object out
-// instead of assuming stdout is pure JSON.
-export function extractVerdict(text = '') {
-  const marker = text.lastIndexOf('"verdict"');
-  if (marker === -1) return null;
-  const start = text.lastIndexOf('{', marker);
-  if (start === -1) return null;
-  let depth = 0;
-  let inString = false;
-  let escaped = false;
-  for (let i = start; i < text.length; i += 1) {
-    const ch = text[i];
-    if (escaped) { escaped = false; continue; }
-    if (ch === '\\') { escaped = true; continue; }
-    if (ch === '"') { inString = !inString; continue; }
-    if (inString) continue;
-    if (ch === '{') depth += 1;
-    else if (ch === '}') {
-      depth -= 1;
-      if (depth === 0) {
-        try {
-          return JSON.parse(text.slice(start, i + 1));
-        } catch {
-          return null;
-        }
-      }
-    }
-  }
-  return null;
-}
-
 function runExternalReviewer(task, evidence, evidencePath) {
   const command = process.env.HARNESS_REVIEWER_CMD;
   const result = spawnSync('bash', ['-c', command], {
@@ -247,6 +218,7 @@ function runExternalReviewer(task, evidence, evidencePath) {
   }
   return {
     verdict: 'reject',
+    unavailable: true,
     reasons: [`external reviewer produced no valid verdict (exit ${result.status})`],
     reviewer: 'external',
     rawTail: `${stdout}${stderr}`.slice(-1500),
@@ -384,6 +356,15 @@ for (let iteration = 0; iteration < MAX_ITERATIONS; iteration += 1) {
   if (process.env.HARNESS_REVIEWER_CMD) {
     const probePath = writeEvidence(task.id, { ...evidence, outcome: 'awaiting-review' });
     review = runExternalReviewer(task, evidence, probePath);
+    // No verdict is an infrastructure failure, not a judgement. Retry boundedly
+    // so a model quota error cannot block work whose gates actually passed.
+    let reviewerRetries = 0;
+    while (review.unavailable === true && reviewerRetries < MAX_REVIEWER_RETRIES) {
+      reviewerRetries += 1;
+      log('REVIEW_RETRY ' + task.id + ' (no verdict; retry ' + reviewerRetries + '/' + MAX_REVIEWER_RETRIES + ')');
+      review = runExternalReviewer(task, evidence, probePath);
+    }
+    review.reviewerRetries = reviewerRetries;
   } else {
     review = reviewEvidence({
       task,

@@ -8,7 +8,14 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:unit": "vitest run --dir tests/unit",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:check": "node --env-file-if-exists=.env scripts/check-db.mjs",
+    "db:migrate": "prisma migrate deploy",
+    "db:seed": "node --env-file-if-exists=.env prisma/seed.mjs",
+    "db:verify": "node --env-file-if-exists=.env scripts/verify-seed.mjs",
+    "test:integration": "node --env-file-if-exists=.env ./node_modules/vitest/vitest.mjs run --dir tests/integration --no-file-parallelism"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
