@@ -14,16 +14,23 @@ test.beforeAll(async () => {
   try {
     const { rows } = await db.query("SELECT current_database() AS name, oid::text, shobj_description(oid, 'pg_database') AS marker FROM pg_database WHERE datname=current_database()");
     expect(rows[0]).toEqual({ name: receipt.name, oid: receipt.oid, marker: receipt.marker });
-    expect((await db.query("SELECT code, name FROM docflow.vendor ORDER BY id")).rows).toEqual([{ code: "E2E-SEED", name: "Deterministic seed" }]);
-    const seed = (await db.query("SELECT row_to_json(v) AS row FROM docflow.vendor v")).rows[0].row;
+    // Idempotent: Playwright may re-run file hooks after a failed test, so assert
+    // the seed row rather than the absence of fixtures created by earlier tests.
+    const seed = (await db.query("SELECT row_to_json(v) AS row FROM docflow.vendor v WHERE code='E2E-SEED'")).rows[0]?.row;
     expect(seed).toEqual({ id: 1, code: "E2E-SEED", name: "Deterministic seed", email: null, phone: null, address: null,
       is_active: true, created_at: "2026-01-01T00:00:00+00:00", updated_at: "2026-01-01T00:00:00+00:00" });
-    expect((await db.query("SELECT count(*)::int AS n FROM docflow.document_header")).rows[0].n).toBe(0);
-    expect((await db.query("SELECT count(*)::int AS n FROM docflow.document_detail")).rows[0].n).toBe(0);
   } finally { await db.end(); }
 });
 
 test("a document can be created, approved, searched and exported", async ({ page }, testInfo) => {
+  // This spec starts from the deterministic empty state before creating fixtures.
+  const initial = new pg.Client({ connectionString: process.env.DATABASE_URL });
+  await initial.connect();
+  try {
+    expect((await initial.query("SELECT count(*)::int AS n FROM docflow.document_header")).rows[0].n).toBe(0);
+    expect((await initial.query("SELECT count(*)::int AS n FROM docflow.document_detail")).rows[0].n).toBe(0);
+  } finally { await initial.end(); }
+
   // 1. Create a vendor.
   await page.goto("/vendors");
   await page.fill("#vendor-code", vendorCode);
@@ -54,10 +61,11 @@ test("a document can be created, approved, searched and exported", async ({ page
   await page.getByRole("button", { name: "Create draft" }).click();
 
   // 3. Server-computed totals, not client input.
-  await expect(page).toHaveURL(/\/documents\/\d+$/);
+  await expect(page).toHaveURL(/\/documents\/\d+(\?saved=1)?$/);
+  await expect(page.getByRole("status")).toContainText("Draft saved.");
   const number = (await page.locator("p.font-mono").first().innerText()).trim();
   expect(number).toMatch(/^DOC-\d{4}-\d{6}$/);
-  await expect(page.getByText("24.75")).toBeVisible();
+  await expect(page.getByRole("cell", { name: "24.75" })).toBeVisible();
 
   // Draft replacement still supports editing, insertion and deletion.
   await page.getByRole("link", { name: "Edit draft" }).click();
@@ -68,15 +76,25 @@ test("a document can be created, approved, searched and exported", async ({ page
   await page.locator('input[name="quantity"]').nth(1).fill("1");
   await page.locator('input[name="price"]').nth(1).fill("2.00");
   await page.getByRole("button", { name: "Save draft" }).click();
-  await expect(page).toHaveURL(/\/documents\/\d+$/);
-  await expect(page.getByText("33.50")).toBeVisible();
+  await expect(page).toHaveURL(/\/documents\/\d+(\?saved=1)?$/);
+  await expect(page.getByRole("cell", { name: "33.50" })).toBeVisible();
 
-  const detailUrl = page.url();
+  const detailUrl = page.url().split("?")[0];
   for (const status of ["draft", "approved"]) {
     if (status === "approved") {
+      // Consequential actions are confirmed in a keyboard-accessible dialog.
       await page.getByRole("button", { name: "Submit for approval" }).click();
+      const submitDialog = page.getByRole("dialog", { name: "Submit for approval", exact: true });
+      await expect(submitDialog).toBeVisible();
+      await expect(submitDialog.getByRole("button", { name: "Cancel" })).toBeFocused();
+      await submitDialog.getByRole("button", { name: "Confirm" }).click();
+      await expect(page.getByText("Document is now submitted.")).toBeVisible();
       await expect(page.getByText("submitted", { exact: true })).toBeVisible();
       await page.getByRole("button", { name: "Approve", exact: true }).click();
+      const approveDialog = page.getByRole("dialog", { name: "Approve", exact: true });
+      await expect(approveDialog).toBeVisible();
+      await approveDialog.getByRole("button", { name: "Confirm" }).click();
+      await expect(page.getByText("Document is now approved.")).toBeVisible();
       await expect(page.getByText("approved", { exact: true })).toBeVisible();
     }
     const pending = page.waitForEvent("download");
@@ -94,7 +112,7 @@ test("a document can be created, approved, searched and exported", async ({ page
       "3.0000", "10.50", "31.50", "Replacement toner", "1.0000", "2.00", "Total: 33.50"]) {
       expect(normalized).toContain(value);
     }
-    await expect(page).toHaveURL(detailUrl);
+    expect(page.url().split("?")[0]).toBe(detailUrl);
   }
 
   await expect(page.getByText("This document is approved and can no longer be edited.")).toBeVisible();
@@ -136,13 +154,13 @@ test("PDF errors stay on the document and allow retry without losing data", asyn
   await page.locator('input[name="price"]').nth(0).fill("3.50");
   await page.getByRole("button", { name: "Remove line 2", exact: true }).click();
   await page.getByRole("button", { name: "Create draft" }).click();
-  await expect(page).toHaveURL(/\/documents\/\d+$/);
+  await expect(page).toHaveURL(/\/documents\/\d+(\?saved=1)?$/);
   const url = page.url();
   await page.getByRole("button", { name: "Download PDF" }).click();
   await expect(page.getByRole("alert", { name: "PDF download error" })).toContainText("characters the export font cannot display");
   await expect(page).toHaveURL(url);
   await expect(page.getByText("東京 Supply", { exact: true })).toBeVisible();
-  await expect(page.getByText("7.00").last()).toBeVisible();
+  await expect(page.locator("tbody").getByRole("cell", { name: "7.00" })).toBeVisible();
   await page.route("**/api/documents/*/pdf", (route) => route.abort());
   await page.getByRole("button", { name: "Download PDF" }).click();
   await expect(page.getByRole("alert", { name: "PDF download error" })).toContainText("PDF download failed. Please try again.");

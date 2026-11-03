@@ -5,6 +5,7 @@ import { VendorForm } from "@/components/vendors/vendor-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ConfirmedAction } from "@/components/ui/confirmed-action";
 import { getVendor, listVendors } from "@/lib/docflow/vendors";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 export default async function VendorsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; edit?: string; saved?: string }>;
+  searchParams: Promise<{ q?: string; edit?: string; saved?: string; error?: string }>;
 }) {
   const params = await searchParams;
   const query = params.q?.trim() ?? "";
@@ -49,9 +50,14 @@ export default async function VendorsPage({
 
       {params.saved ? (
         <p role="status" className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
-          Vendor saved.
+          {params.saved === "deactivated"
+            ? "Vendor deactivated. It is no longer available for new documents; existing history is unchanged."
+            : params.saved === "reactivated"
+              ? "Vendor reactivated and available for new documents."
+              : "Vendor saved."}
         </p>
       ) : null}
+      {params.error ? <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">Could not update vendor availability. Nothing was confirmed saved; refresh and try again.</p> : null}
 
       <div className="grid items-start gap-6 2xl:grid-cols-[minmax(0,1fr)_360px]">
         <Card className="min-w-0">
@@ -113,20 +119,7 @@ export default async function VendorsPage({
                           >
                             Edit
                           </Link>
-                          <form action={toggleVendorActive}>
-                            <input type="hidden" name="id" value={vendor.id} />
-                            <input
-                              type="hidden"
-                              name="active"
-                              value={vendor.isActive ? "false" : "true"}
-                            />
-                            <button
-                              type="submit"
-                              className="text-sm text-muted-foreground hover:underline"
-                            >
-                              {vendor.isActive ? "Deactivate" : "Reactivate"}
-                            </button>
-                          </form>
+                          <ConfirmedAction action={toggleVendorActive} fields={{ id: vendor.id, active: vendor.isActive ? "false" : "true" }} label={vendor.isActive ? "Deactivate" : "Reactivate"} summary={`${vendor.code} — ${vendor.name}: ${vendor.isActive ? "Remove from new-document choices? Existing document history stays intact. You can reactivate this vendor later." : "Make this vendor available for new documents again? Existing document history will not change."}`} />
                         </div>
                       </td>
                     </tr>
@@ -139,7 +132,7 @@ export default async function VendorsPage({
 
         <Card>
           <CardContent className="pt-6">
-            <VendorForm vendor={editing ?? undefined} />
+            <VendorForm key={editing?.id ?? "new"} vendor={editing ?? undefined} />
           </CardContent>
         </Card>
       </div>

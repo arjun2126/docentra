@@ -56,5 +56,5 @@ export async function toggleVendorActive(formData: FormData): Promise<void> {
     redirect("/vendors?error=toggle");
   }
   revalidatePath("/vendors");
-  redirect("/vendors");
+  redirect(`/vendors?saved=${next ? "reactivated" : "deactivated"}`);
 }

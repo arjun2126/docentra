@@ -1,0 +1,140 @@
+{
+  "runId": "2026-11-02-usability-final",
+  "taskId": "Q1-T4",
+  "attempts": 0,
+  "validationRuns": [
+    {
+      "run": "full-gates-1",
+      "result": "fail",
+      "scope": "test harness",
+      "causes": [
+        "dialog summary duplicated amount text in strict locators",
+        "beforeAll assumed no prior fixtures after a re-run",
+        "forward focus wrap is not guaranteed by native dialog"
+      ]
+    },
+    {
+      "run": "e2e-2",
+      "result": "fail",
+      "scope": "test harness",
+      "causes": [
+        "one-line document amount equals total in the same table (two cells)",
+        "dependent test had no shno after the first failure"
+      ]
+    },
+    {
+      "run": "e2e-3",
+      "result": "fail",
+      "scope": "test harness",
+      "causes": [
+        "cleanup attempted to delete an approved document and correctly hit the immutability constraint"
+      ]
+    },
+    {
+      "run": "e2e-4",
+      "result": "pass",
+      "scope": "test harness correction validated",
+      "counts": {
+        "browser": 8
+      }
+    },
+    {
+      "run": "full-gates-final",
+      "result": "pass",
+      "scope": "product candidate",
+      "counts": {
+        "harness": 27,
+        "unit": 34,
+        "integration": 56,
+        "browser": 8
+      }
+    }
+  ],
+  "startedAt": "2026-11-02T23:03:14.561Z",
+  "finishedAt": "2026-11-02T23:35:03.622Z",
+  "implementer": {
+    "invoked": false,
+    "delegated": false,
+    "note": "Delegated implementer recovery exhausted (usage limits, credits, local service). OpenCode is the single writer per AGENTS.md; this record does not claim delegated execution."
+  },
+  "gate": {
+    "command": "TEST_DATABASE_URL=<disposable integration> HARNESS_BUILD=1 TASK_ID=Q1-T4 TASK_ACCEPTANCE=<registered acceptance> bash scripts/gates.sh",
+    "exitCode": 0,
+    "transcript": "== gates ==\n   code:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   data:  /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n[gate] G0           PASS  harness files present\nstate ok: 36 tasks, 2 not done (/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/state.json)\n[gate] G1           PASS  task state valid\n[gate] G2           PASS  shell syntax\nTAP version 13\n# Subtest: direct Playwright invocation refuses before running browser tests\nok 1 - direct Playwright invocation refuses before running browser tests\n  ---\n  duration_ms: 270.1385\n  ...\n# Subtest: target names are fresh, safely configurable and never an existing regular name\nok 2 - target names are fresh, safely configurable and never an existing regular name\n  ---\n  duration_ms: 0.401875\n  ...\n# Subtest: app environment discards inherited database and process overrides\nok 3 - app environment discards inherited database and process overrides\n  ---\n  duration_ms: 0.133667\n  ...\n# Subtest: creation collision never returns a receipt or invokes cleanup\nok 4 - creation collision never returns a receipt or invokes cleanup\n  ---\n  duration_ms: 0.365709\n  ...\n# Subtest: cleanup refuses unknown, changed and previous databases; only receipt identity can drop\nok 5 - cleanup refuses unknown, changed and previous databases; only receipt identity can drop\n  ---\n  duration_ms: 0.2595\n  ...\n# Subtest: selects the first pending task whose dependencies are done\nok 6 - selects the first pending task whose dependencies are done\n  ---\n  duration_ms: 0.786084\n  ...\n# Subtest: never selects a task whose dependency is unfinished\nok 7 - never selects a task whose dependency is unfinished\n  ---\n  duration_ms: 0.099834\n  ...\n# Subtest: never selects a task whose dependency is blocked\nok 8 - never selects a task whose dependency is blocked\n  ---\n  duration_ms: 0.276709\n  ...\n# Subtest: resumes an in-flight task instead of starting a new one\nok 9 - resumes an in-flight task instead of starting a new one\n  ---\n  duration_ms: 0.0475\n  ...\n# Subtest: independent ready work proceeds while an approval gate is open\nok 10 - independent ready work proceeds while an approval gate is open\n  ---\n  duration_ms: 0.097125\n  ...\n# Subtest: an approval gate is reported once it is the only thing preventing progress\nok 11 - an approval gate is reported once it is the only thing preventing progress\n  ---\n  duration_ms: 0.044792\n  ...\n# Subtest: reports none when every task is done\nok 12 - reports none when every task is done\n  ---\n  duration_ms: 0.078917\n  ...\n# Subtest: selection is deterministic across repeated calls\nok 13 - selection is deterministic across repeated calls\n  ---\n  duration_ms: 0.041\n  ...\n# Subtest: state round-trips through disk\nok 14 - state round-trips through disk\n  ---\n  duration_ms: 2.246417\n  ...\n# Subtest: writes are atomic and leave no temp files behind\nok 15 - writes are atomic and leave no temp files behind\n  ---\n  duration_ms: 0.708709\n  ...\n# Subtest: a partially written state can never be observed\nok 16 - a partially written state can never be observed\n  ---\n  duration_ms: 0.52575\n  ...\n# Subtest: duplicate task ids are rejected\nok 17 - duplicate task ids are rejected\n  ---\n  duration_ms: 0.209792\n  ...\n# Subtest: invalid statuses are rejected\nok 18 - invalid statuses are rejected\n  ---\n  duration_ms: 0.275958\n  ...\n# Subtest: unknown dependencies are rejected\nok 19 - unknown dependencies are rejected\n  ---\n  duration_ms: 0.1545\n  ...\n# Subtest: journal is append-only and detectable per task\nok 20 - journal is append-only and detectable per task\n  ---\n  duration_ms: 0.977208\n  ...\n# Subtest: evidence records are written per task and per run\nok 21 - evidence records are written per task and per run\n  ---\n  duration_ms: 1.902875\n  ...\n# Subtest: parses a bare verdict object\nok 22 - parses a bare verdict object\n  ---\n  duration_ms: 0.424959\n  ...\n# Subtest: parses a verdict wrapped in model chatter and ANSI noise\nok 23 - parses a verdict wrapped in model chatter and ANSI noise\n  ---\n  duration_ms: 0.289125\n  ...\n# Subtest: survives braces and escaped quotes inside the reasons\nok 24 - survives braces and escaped quotes inside the reasons\n  ---\n  duration_ms: 0.079542\n  ...\n# Subtest: returns null when no verdict is present\nok 25 - returns null when no verdict is present\n  ---\n  duration_ms: 0.038417\n  ...\n# Subtest: returns null when the object is malformed\nok 26 - returns null when the object is malformed\n  ---\n  duration_ms: 0.428917\n  ...\n# Subtest: recovers the decision from JSON broken by a stray escape\nok 27 - recovers the decision from JSON broken by a stray escape\n  ---\n  duration_ms: 0.148667\n  ...\n1..27\n# tests 27\n# suites 0\n# pass 27\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 342.439333\n[gate] G3           PASS  harness unit tests\n-- product gates --\n[gate] TYPECHECK    PASS  npm run typecheck\n[gate] LINT         PASS  npm run lint\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/unit/money.test.ts (6 tests) 3ms\n ✓ tests/unit/utils.test.ts (4 tests) 3ms\n ✓ tests/unit/vendor-schema.test.ts (9 tests) 8ms\n ✓ tests/unit/workflow.test.ts (8 tests) 11ms\n ✓ tests/unit/pdf-model.test.ts (7 tests) 132ms\n\n Test Files  5 passed (5)\n      Tests  34 passed (34)\n   Start at  18:33:24\n   Duration  472ms (transform 114ms, setup 0ms, collect 299ms, tests 156ms, environment 1ms, prepare 229ms)\n\n[gate] UNIT         PASS  npm run test:unit\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/integration/guards.test.ts (20 tests) 532ms\n ✓ tests/integration/documents.test.ts (14 tests) 174ms\n ✓ tests/integration/docflow-schema.test.ts (7 tests) 44ms\n ✓ tests/integration/search.test.ts (11 tests) 99ms\n ✓ tests/integration/dashboard.test.ts (4 tests) 91ms\n\n Test Files  5 passed (5)\n      Tests  56 passed (56)\n   Start at  18:33:25\n   Duration  1.63s (transform 60ms, setup 0ms, collect 160ms, tests 940ms, environment 0ms, prepare 125ms)\n\n[gate] INTEGRATION  PASS  npm run test:integration\n ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.\n We detected multiple lockfiles and selected the directory of /Users/arjunsubramanya/package-lock.json as the root directory.\n To silence this warning, set `outputFileTracingRoot` in your Next.js config, or consider removing one of the lockfiles if it's not needed.\n   See https://nextjs.org/docs/app/api-reference/config/next-config-js/output#caveats for more information.\n Detected additional lockfiles: \n   * /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/package-lock.json\n\n   ▲ Next.js 15.5.28\n   - Environments: .env\n\n   Creating an optimized production build ...\n ✓ Compiled successfully in 1031ms\n   Linting and checking validity of types ...\n\n ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n   Collecting page data ...\n   Generating static pages (0/3) ...\n ✓ Generating static pages (3/3)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size  First Load JS\n┌ ƒ /                                      164 B         106 kB\n├ ○ /_not-found                            990 B         104 kB\n├ ƒ /api/documents/[shno]/pdf              123 B         103 kB\n├ ƒ /documents                             164 B         106 kB\n├ ƒ /documents/[shno]                    2.33 kB         115 kB\n├ ƒ /documents/[shno]/edit                 124 B         113 kB\n├ ƒ /documents/new                         124 B         113 kB\n└ ƒ /vendors                             3.64 kB         117 kB\n+ First Load JS shared by all             103 kB\n  ├ chunks/255-b1e2483a7e02feee.js       46.6 kB\n  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB\n  └ other shared chunks (total)          1.92 kB\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n[gate] BUILD        PASS  npm run build\n-- task acceptance (Q1-T4) --\n   cwd: /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n   $ npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e\n\n> docentra@0.1.0 typecheck\n> tsc --noEmit\n\n\n> docentra@0.1.0 lint\n> eslint .\n\n\n> docentra@0.1.0 test:unit\n> vitest run --dir tests/unit\n\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/unit/money.test.ts (6 tests) 2ms\n ✓ tests/unit/utils.test.ts (4 tests) 3ms\n ✓ tests/unit/vendor-schema.test.ts (9 tests) 3ms\n ✓ tests/unit/workflow.test.ts (8 tests) 6ms\n ✓ tests/unit/pdf-model.test.ts (7 tests) 129ms\n\n Test Files  5 passed (5)\n      Tests  34 passed (34)\n   Start at  18:33:36\n   Duration  470ms (transform 127ms, setup 0ms, collect 281ms, tests 143ms, environment 0ms, prepare 356ms)\n\n\n> docentra@0.1.0 test:integration\n> node --env-file-if-exists=.env ./node_modules/vitest/vitest.mjs run --dir tests/integration --no-file-parallelism\n\n\u001b[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.\u001b[39m\n\n RUN  v2.1.9 /Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management\n\n ✓ tests/integration/guards.test.ts (20 tests) 519ms\n ✓ tests/integration/documents.test.ts (14 tests) 165ms\n ✓ tests/integration/docflow-schema.test.ts (7 tests) 45ms\n ✓ tests/integration/search.test.ts (11 tests) 97ms\n ✓ tests/integration/dashboard.test.ts (4 tests) 81ms\n\n Test Files  5 passed (5)\n      Tests  56 passed (56)\n   Start at  18:33:37\n   Duration  1.61s (transform 59ms, setup 0ms, collect 162ms, tests 907ms, environment 0ms, prepare 125ms)\n\n\n> docentra@0.1.0 test:e2e\n> node --env-file-if-exists=.env scripts/e2e.mjs\n\nE2E artifacts: /var/folders/82/d8xptlz976z981kdf1yg_k3c0000gn/T/docentra-e2e-uSz1cZ\nCreated dedicated E2E database: docentra_e2e_run_c58295d908e95b6dfb59b6e6\nEnvironment variables loaded from .env\nPrisma schema loaded from prisma/schema.prisma\nDatasource \"db\": PostgreSQL database \"docentra_e2e_run_c58295d908e95b6dfb59b6e6\", schemas \"docflow\" at \"127.0.0.1:56000\"\n\n8 migrations found in prisma/migrations\n\nApplying migration `20261102000000_init`\nApplying migration `20261102120000_guards`\nApplying migration `20261102130000_maintenance_override`\nApplying migration `20261102140000_detail_move_guard`\nApplying migration `20261102150000_detail_guard_locking`\nApplying migration `20261102160000_detail_guard_no_key_update`\nApplying migration `20261102170000_detail_guard_lock_order`\nApplying migration `20261102180000_detail_parent_immutable`\n\nThe following migration(s) have been applied:\n\nmigrations/\n  └─ 20261102000000_init/\n    └─ migration.sql\n  └─ 20261102120000_guards/\n    └─ migration.sql\n  └─ 20261102130000_maintenance_override/\n    └─ migration.sql\n  └─ 20261102140000_detail_move_guard/\n    └─ migration.sql\n  └─ 20261102150000_detail_guard_locking/\n    └─ migration.sql\n  └─ 20261102160000_detail_guard_no_key_update/\n    └─ migration.sql\n  └─ 20261102170000_detail_guard_lock_order/\n    └─ migration.sql\n  └─ 20261102180000_detail_parent_immutable/\n    └─ migration.sql\n      \nAll migrations have been successfully applied.\n   ▲ Next.js 15.5.28\n\n   Creating an optimized production build ...\n ✓ Compiled successfully in 3.1s\n   Linting and checking validity of types ...\n\n ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n   Collecting page data ...\n   Generating static pages (0/3) ...\n ✓ Generating static pages (3/3)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size  First Load JS\n┌ ƒ /                                      164 B         106 kB\n├ ○ /_not-found                            992 B         104 kB\n├ ƒ /api/documents/[shno]/pdf              123 B         103 kB\n├ ƒ /documents                             164 B         106 kB\n├ ƒ /documents/[shno]                    2.33 kB         115 kB\n├ ƒ /documents/[shno]/edit                 123 B         113 kB\n├ ƒ /documents/new                         123 B         113 kB\n└ ƒ /vendors                             3.63 kB         116 kB\n+ First Load JS shared by all             103 kB\n  ├ chunks/650937d2-90548dcd109c19be.js  54.2 kB\n  ├ chunks/879-9986bc4bafbe419b.js       46.5 kB\n  └ other shared chunks (total)          1.93 kB\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n   ▲ Next.js 15.5.28\n   - Local:        http://127.0.0.1:57822\n   - Network:      http://127.0.0.1:57822\n\n ✓ Starting...\n ✓ Ready in 283ms\nVerified database-to-HTTP identity: docentra_e2e_run_c58295d908e95b6dfb59b6e6\n\nRunning 8 tests using 1 worker\n\n  ✓  1 [chromium] › tests/e2e/00-dashboard.spec.ts:5:5 › dashboard presentation with deterministic empty and populated data (5.2s)\n  ✓  2 [chromium] › tests/e2e/docflow.spec.ts:25:5 › a document can be created, approved, searched and exported (1.1s)\n  ✓  3 [chromium] › tests/e2e/docflow.spec.ts:131:5 › invalid vendor input is rejected with an accessible message (221ms)\nDocument PDF generation failed Error: WinAnsi cannot encode \"東\" (0x6771)\n    at bd.encodeUnicodeCodePoint (.next/server/app/api/documents/[shno]/pdf/route.js:1:182081)\n    at a.encodeTextAsGlyphs (.next/server/app/api/documents/[shno]/pdf/route.js:1:231052)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:230087)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:355824)\n    at g (.next/server/app/api/documents/[shno]/pdf/route.js:1:422523)\n    at j (.next/server/app/api/documents/[shno]/pdf/route.js:1:423035)\n    at gf (.next/server/app/api/documents/[shno]/pdf/route.js:1:423150)\n    at async gi (.next/server/app/api/documents/[shno]/pdf/route.js:1:423741)\n  ✓  4 [chromium] › tests/e2e/docflow.spec.ts:142:5 › PDF errors stay on the document and allow retry without losing data (493ms)\n  ✓  5 [chromium] › tests/e2e/zz-usability.spec.ts:68:5 › document form reports inline errors, focuses the first field, and saves a draft (324ms)\n  ✓  6 [chromium] › tests/e2e/zz-usability.spec.ts:105:5 › workflow transitions require confirmation, support Escape and focus trapping, and stay accurate (464ms)\n  ✓  7 [chromium] › tests/e2e/zz-usability.spec.ts:161:5 › vendor deactivation is confirmed, cancelable, and reversible (625ms)\nKeeping immutable approved fixtures in the disposable E2E database.\n  ✓  8 [chromium] › tests/e2e/zz-usability.spec.ts:207:5 › forms and confirmation dialogs do not create document-level horizontal overflow (380ms)\n\n  8 passed (9.5s)\n{\"target\":\"docentra_e2e_run_c58295d908e95b6dfb59b6e6\",\"cleanup\":true,\"preserved\":true,\"seed\":{\"vendor\":{\"count\":1,\"fingerprint\":\"d8d3c92a50fcb111e07261e74639020b\",\"rows\":[{\"id\":1,\"code\":\"E2E-SEED\",\"name\":\"Deterministic seed\",\"email\":null,\"phone\":null,\"address\":null,\"is_active\":true,\"created_at\":\"2026-01-01T00:00:00+00:00\",\"updated_at\":\"2026-01-01T00:00:00+00:00\"}]},\"document_header\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]},\"document_detail\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]}}}\n[gate] ACCEPT       PASS  task acceptance command\n== summary ==\nGATES: PASS\n"
+  },
+  "taskAcceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
+  "browserTranscript": "\n> docentra@0.1.0 test:e2e\n> node --env-file-if-exists=.env scripts/e2e.mjs\n\nE2E artifacts: /var/folders/82/d8xptlz976z981kdf1yg_k3c0000gn/T/docentra-e2e-8CHXLM\nCreated dedicated E2E database: docentra_e2e_run_7ed9cfa28bfd65182c194764\nEnvironment variables loaded from .env\nPrisma schema loaded from prisma/schema.prisma\nDatasource \"db\": PostgreSQL database \"docentra_e2e_run_7ed9cfa28bfd65182c194764\", schemas \"docflow\" at \"127.0.0.1:56000\"\n\n8 migrations found in prisma/migrations\n\nApplying migration `20261102000000_init`\nApplying migration `20261102120000_guards`\nApplying migration `20261102130000_maintenance_override`\nApplying migration `20261102140000_detail_move_guard`\nApplying migration `20261102150000_detail_guard_locking`\nApplying migration `20261102160000_detail_guard_no_key_update`\nApplying migration `20261102170000_detail_guard_lock_order`\nApplying migration `20261102180000_detail_parent_immutable`\n\nThe following migration(s) have been applied:\n\nmigrations/\n  └─ 20261102000000_init/\n    └─ migration.sql\n  └─ 20261102120000_guards/\n    └─ migration.sql\n  └─ 20261102130000_maintenance_override/\n    └─ migration.sql\n  └─ 20261102140000_detail_move_guard/\n    └─ migration.sql\n  └─ 20261102150000_detail_guard_locking/\n    └─ migration.sql\n  └─ 20261102160000_detail_guard_no_key_update/\n    └─ migration.sql\n  └─ 20261102170000_detail_guard_lock_order/\n    └─ migration.sql\n  └─ 20261102180000_detail_parent_immutable/\n    └─ migration.sql\n      \nAll migrations have been successfully applied.\n   ▲ Next.js 15.5.28\n\n   Creating an optimized production build ...\n ✓ Compiled successfully in 3.1s\n   Linting and checking validity of types ...\n\n ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config\n   Collecting page data ...\n   Generating static pages (0/3) ...\n ✓ Generating static pages (3/3)\n   Finalizing page optimization ...\n   Collecting build traces ...\n\nRoute (app)                                 Size  First Load JS\n┌ ƒ /                                      164 B         106 kB\n├ ○ /_not-found                            992 B         104 kB\n├ ƒ /api/documents/[shno]/pdf              123 B         103 kB\n├ ƒ /documents                             164 B         106 kB\n├ ƒ /documents/[shno]                    2.33 kB         115 kB\n├ ƒ /documents/[shno]/edit                 123 B         113 kB\n├ ƒ /documents/new                         123 B         113 kB\n└ ƒ /vendors                             3.63 kB         116 kB\n+ First Load JS shared by all             103 kB\n  ├ chunks/650937d2-90548dcd109c19be.js  54.2 kB\n  ├ chunks/879-9986bc4bafbe419b.js       46.5 kB\n  └ other shared chunks (total)          1.93 kB\n\n\n○  (Static)   prerendered as static content\nƒ  (Dynamic)  server-rendered on demand\n\n   ▲ Next.js 15.5.28\n   - Local:        http://127.0.0.1:57515\n   - Network:      http://127.0.0.1:57515\n\n ✓ Starting...\n ✓ Ready in 265ms\nVerified database-to-HTTP identity: docentra_e2e_run_7ed9cfa28bfd65182c194764\n\nRunning 8 tests using 1 worker\n\n  ✓  1 [chromium] › tests/e2e/00-dashboard.spec.ts:5:5 › dashboard presentation with deterministic empty and populated data (5.2s)\n  ✓  2 [chromium] › tests/e2e/docflow.spec.ts:25:5 › a document can be created, approved, searched and exported (1.1s)\n  ✓  3 [chromium] › tests/e2e/docflow.spec.ts:131:5 › invalid vendor input is rejected with an accessible message (214ms)\nDocument PDF generation failed Error: WinAnsi cannot encode \"東\" (0x6771)\n    at bd.encodeUnicodeCodePoint (.next/server/app/api/documents/[shno]/pdf/route.js:1:182674)\n    at a.encodeTextAsGlyphs (.next/server/app/api/documents/[shno]/pdf/route.js:1:231645)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:230680)\n    at a.widthOfTextAtSize (.next/server/app/api/documents/[shno]/pdf/route.js:1:356417)\n    at g (.next/server/app/api/documents/[shno]/pdf/route.js:1:423116)\n    at j (.next/server/app/api/documents/[shno]/pdf/route.js:1:423628)\n    at gf (.next/server/app/api/documents/[shno]/pdf/route.js:1:423743)\n    at async gi (.next/server/app/api/documents/[shno]/pdf/route.js:1:424334)\n  ✓  4 [chromium] › tests/e2e/docflow.spec.ts:142:5 › PDF errors stay on the document and allow retry without losing data (497ms)\n  ✓  5 [chromium] › tests/e2e/zz-usability.spec.ts:68:5 › document form reports inline errors, focuses the first field, and saves a draft (345ms)\n  ✓  6 [chromium] › tests/e2e/zz-usability.spec.ts:105:5 › workflow transitions require confirmation, support Escape and focus trapping, and stay accurate (462ms)\n  ✓  7 [chromium] › tests/e2e/zz-usability.spec.ts:161:5 › vendor deactivation is confirmed, cancelable, and reversible (570ms)\nKeeping immutable approved fixtures in the disposable E2E database.\n  ✓  8 [chromium] › tests/e2e/zz-usability.spec.ts:207:5 › forms and confirmation dialogs do not create document-level horizontal overflow (374ms)\n\n  8 passed (9.5s)\n{\"target\":\"docentra_e2e_run_7ed9cfa28bfd65182c194764\",\"cleanup\":true,\"preserved\":true,\"seed\":{\"vendor\":{\"count\":1,\"fingerprint\":\"d8d3c92a50fcb111e07261e74639020b\",\"rows\":[{\"id\":1,\"code\":\"E2E-SEED\",\"name\":\"Deterministic seed\",\"email\":null,\"phone\":null,\"address\":null,\"is_active\":true,\"created_at\":\"2026-01-01T00:00:00+00:00\",\"updated_at\":\"2026-01-01T00:00:00+00:00\"}]},\"document_header\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]},\"document_detail\":{\"count\":0,\"fingerprint\":\"d41d8cd98f00b204e9800998ecf8427e\",\"rows\":[]}}}\n",
+  "isolation": {
+    "target": "docentra_e2e_run_c58295d908e95b6dfb59b6e6",
+    "cleanup": true,
+    "preserved": true,
+    "seed": {
+      "vendor": {
+        "count": 1,
+        "fingerprint": "d8d3c92a50fcb111e07261e74639020b",
+        "rows": [
+          {
+            "id": 1,
+            "code": "E2E-SEED",
+            "name": "Deterministic seed",
+            "email": null,
+            "phone": null,
+            "address": null,
+            "is_active": true,
+            "created_at": "2026-01-01T00:00:00+00:00",
+            "updated_at": "2026-01-01T00:00:00+00:00"
+          }
+        ]
+      },
+      "document_header": {
+        "count": 0,
+        "fingerprint": "d41d8cd98f00b204e9800998ecf8427e",
+        "rows": []
+      },
+      "document_detail": {
+        "count": 0,
+        "fingerprint": "d41d8cd98f00b204e9800998ecf8427e",
+        "rows": []
+      }
+    }
+  },
+  "developmentPreservation": true,
+  "changedFiles": [
+    "components/ui/confirmation.tsx",
+    "components/ui/confirmed-action.tsx",
+    "components/ui/form-feedback.tsx",
+    "docs/q1-usability-validation.md",
+    "tests/e2e/zz-usability.spec.ts",
+    "app/(docflow)/documents/[shno]/page.tsx",
+    "app/(docflow)/documents/actions.ts",
+    "app/(docflow)/vendors/actions.ts",
+    "app/(docflow)/vendors/page.tsx",
+    "components/documents/document-form.tsx",
+    "components/vendors/vendor-form.tsx",
+    "journal/2026-11-02.md",
+    "tasks/state.json",
+    "tests/e2e/docflow.spec.ts"
+  ],
+  "docs": "docs/q1-usability-validation.md",
+  "limitations": [
+    "PDF standard fonts cannot encode non-WinAnsi scripts; export fails explicitly",
+    "token usage and cost unmeasured"
+  ],
+  "tokenUsage": "unmeasured",
+  "cost": "unmeasured",
+  "reviewer": {
+    "verdict": "accept",
+    "reasons": [
+      "Gates verified from source log: G0-G3 (27), typecheck, lint, unit (34), integration (56), build, acceptance, 8 browser tests, zero skipped; evidence transcript byte-identical.",
+      "Scope confined to app/, components/, tests/e2e/, docs/, tasks/, journal/; no schema/migration/dependency/gate changes; .sf/ unrelated and untouched.",
+      "Status machine, approved finality, draft-only editing, server-derived exact decimals and immutability unchanged; approved detail exposes no transitions/edit.",
+      "Dialogs use native modal semantics, focus Cancel, Escape/Cancel no-op, Confirm is the only submit path, pending state prevents duplicates; inline errors use aria-invalid/aria-describedby and focus the first invalid control.",
+      "Tests drive real dialogs and cover validation, keyboard, cancel/confirm, approval finality, edit redirect and 375/768/1024 no-overflow; P1 PDF and P3 responsive checks retained.",
+      "Development database before/after fingerprints identical; disposable E2E DB cleanup=true and preserved=true.",
+      "Delegation exhaustion and orchestrator-as-single-writer recorded honestly; token/cost unmeasured; three test-harness validation failures recorded, not hidden.",
+      "Non-blocking caveats: product-code byte-identity across failed validation iterations cannot be re-derived from git; vendor edit form confirms deactivation but not reactivation (list reactivation does confirm)."
+    ],
+    "sessionID": "ses_e6162044affeH40obCGOLIvcFg",
+    "reviewedAt": "2026-11-03T00:13:54.493Z"
+  }
+}

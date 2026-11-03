@@ -74,7 +74,7 @@ export async function saveDocument(
 
   revalidatePath("/documents");
   revalidatePath("/");
-  redirect(`/documents/${saved.shno}`);
+  redirect(`/documents/${saved.shno}?saved=1`);
 }
 
 export async function changeDocumentStatus(formData: FormData): Promise<void> {
@@ -93,5 +93,5 @@ export async function changeDocumentStatus(formData: FormData): Promise<void> {
   revalidatePath("/documents");
   revalidatePath(`/documents/${shno}`);
   revalidatePath("/");
-  redirect(`/documents/${shno}`);
+  redirect(`/documents/${shno}?changed=${encodeURIComponent(to)}`);
 }

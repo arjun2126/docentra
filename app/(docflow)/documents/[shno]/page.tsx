@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { changeDocumentStatus } from "@/app/(docflow)/documents/actions";
 import { DownloadPdf } from "@/components/documents/download-pdf";
 import { StatusBadge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { ConfirmedAction } from "@/components/ui/confirmed-action";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDocument } from "@/lib/docflow/documents";
 import { allowedTransitions } from "@/lib/docflow/workflow";
@@ -17,16 +18,22 @@ const LABELS: Record<string, string> = {
   rejected: "Reject",
   draft: "Reopen as draft",
 };
+const SUMMARIES: Record<string, string> = {
+  submitted: "Submit this draft for approval? It will no longer be editable. A submitted document must be rejected before it can be reopened as a draft.",
+  approved: "Approve this document? Approval is final: it cannot be edited, rejected or reopened afterward.",
+  rejected: "Reject this submitted document? It can then be reopened as a draft for revision; this does not delete it.",
+  draft: "Reopen this rejected document as an editable draft? It will need to be submitted again for approval.",
+};
 
 export default async function DocumentPage({
   params,
   searchParams,
 }: {
   params: Promise<{ shno: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string; changed?: string }>;
 }) {
   const { shno } = await params;
-  const { error } = await searchParams;
+  const { error, saved, changed } = await searchParams;
   const document = await getDocument(shno);
   if (!document) notFound();
 
@@ -54,17 +61,11 @@ export default async function DocumentPage({
             <Link href={`/documents/${document.shno}/edit`} className={buttonVariants({ variant: "outline" })}>Edit draft</Link>
           ) : null}
           {transitions.map((to) => (
-            <form key={to} action={changeDocumentStatus}>
-              <input type="hidden" name="shno" value={document.shno} />
-              <input type="hidden" name="to" value={to} />
-              <input type="hidden" name="version" value={document.version} />
-              <Button type="submit" variant={to === "rejected" ? "destructive" : "default"}>
-                {LABELS[to] ?? to}
-              </Button>
-            </form>
+            <ConfirmedAction key={to} action={changeDocumentStatus} fields={{ shno: document.shno, to, version: String(document.version) }} label={LABELS[to] ?? to} summary={`${document.documentNumber} · ${document.vendor.name} · ${document.lineCount} line(s) · Total ${document.totalAmount}. ${SUMMARIES[to]}`} />
           ))}
         </div>
       </header>
+      {saved || changed === document.status ? <p role="status" className="rounded-md bg-emerald-50 px-3 py-2 text-sm text-emerald-900">{saved ? "Draft saved." : `Document is now ${document.status}.`}</p> : null}
 
       {error ? (
         <p role="alert" className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -76,7 +77,9 @@ export default async function DocumentPage({
         <p className="rounded-md bg-muted px-3 py-2 text-sm text-foreground">
           {document.status === "approved"
             ? "This document is approved and can no longer be edited."
-            : "Only drafts can be edited. Reopen the document as a draft to make changes."}
+            : document.status === "submitted"
+              ? "This document is awaiting approval and cannot be edited or reopened directly. Reject it before reopening as a draft for changes."
+              : "This document was rejected. Reopen as a draft to make changes, then submit it again."}
         </p>
       ) : null}
 

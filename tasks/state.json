@@ -803,7 +803,7 @@
       "milestone": "Q1",
       "title": "Improve document and vendor usability",
       "synthetic": false,
-      "status": "pending",
+      "status": "done",
       "attempts": 0,
       "dependsOn": [
         "Q1-T3"
@@ -818,7 +818,111 @@
         "journal/"
       ],
       "acceptance": "npm run typecheck && npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e",
-      "brief": "Improve entry forms, inline validation, loading/error/success/empty states, consequential-operation confirmations, clear workflow actions and vendor selection. No new business features."
+      "brief": "Improve entry forms, inline validation, loading/error/success/empty states, consequential-operation confirmations, clear workflow actions and vendor selection. No new business features.",
+      "startedAt": "2026-11-02T23:03:14.561Z",
+      "baseHead": "9eef0b27540a768d11398acf8f15f2bfdb367782",
+      "implementerRecovery": {
+        "attemptedAt": "2026-11-02T23:08:51.937Z",
+        "failedSession": "ses_e617f20d1ffepL95v0K2vCuPfy",
+        "failure": "provider usage limit reached while resuming after server restart; no verdict, no validation run",
+        "recovery": "retry with fresh implementer session on already-authorized fallback model openai/gpt-6.1-sol (used for M5-T4 implementer); partial files preserved",
+        "attempts": [
+          {
+            "session": "ses_e617f20d1ffepL95v0K2vCuPfy",
+            "model": "default",
+            "failure": "usage limit reached"
+          },
+          {
+            "session": "ses_e6179f2d7ffe8Ha8P6IAA934eW",
+            "model": "openai/gpt-6.1-sol",
+            "failure": "usage limit reached"
+          },
+          {
+            "session": null,
+            "model": "openscale/deepseek/deepseek-v4.1-flash",
+            "status": "retrying"
+          },
+          {
+            "session": "ses_e6179904affeetwHD2DUBdJFc7",
+            "model": "openscale/deepseek/deepseek-v4.1-flash",
+            "failure": "out of credits"
+          },
+          {
+            "session": "ses_e61796566ffeZs3j8tAWgqtfcU",
+            "model": "freebuff/minimax-m3",
+            "failure": "ECONNREFUSED local freebuff service unavailable"
+          }
+        ],
+        "status": "exhausted",
+        "fallback": "Orchestrator acts as the single OpenCode implementer per AGENTS.md role table (OpenCode = implementer); no delegated-execution claim will be made; independent read-only reviewer remains separate."
+      },
+      "evidence": [
+        "/Users/arjunsubramanya/Documents/Coding Projects/Docentra — Intelligent Business Document Management/tasks/evidence/Q1-T4/2026-11-02-usability-final.json"
+      ],
+      "validationRuns": [
+        {
+          "run": "full-gates-1",
+          "result": "fail",
+          "scope": "test harness",
+          "causes": [
+            "dialog summary duplicated amount text in strict locators",
+            "beforeAll assumed no prior fixtures after a re-run",
+            "forward focus wrap is not guaranteed by native dialog"
+          ]
+        },
+        {
+          "run": "e2e-2",
+          "result": "fail",
+          "scope": "test harness",
+          "causes": [
+            "one-line document amount equals total in the same table (two cells)",
+            "dependent test had no shno after the first failure"
+          ]
+        },
+        {
+          "run": "e2e-3",
+          "result": "fail",
+          "scope": "test harness",
+          "causes": [
+            "cleanup attempted to delete an approved document and correctly hit the immutability constraint"
+          ]
+        },
+        {
+          "run": "e2e-4",
+          "result": "pass",
+          "scope": "test harness correction validated",
+          "counts": {
+            "browser": 8
+          }
+        },
+        {
+          "run": "full-gates-final",
+          "result": "pass",
+          "scope": "product candidate",
+          "counts": {
+            "harness": 27,
+            "unit": 34,
+            "integration": 56,
+            "browser": 8
+          }
+        }
+      ],
+      "reviewer": {
+        "verdict": "accept",
+        "reasons": [
+          "Gates verified from source log: G0-G3 (27), typecheck, lint, unit (34), integration (56), build, acceptance, 8 browser tests, zero skipped; evidence transcript byte-identical.",
+          "Scope confined to app/, components/, tests/e2e/, docs/, tasks/, journal/; no schema/migration/dependency/gate changes; .sf/ unrelated and untouched.",
+          "Status machine, approved finality, draft-only editing, server-derived exact decimals and immutability unchanged; approved detail exposes no transitions/edit.",
+          "Dialogs use native modal semantics, focus Cancel, Escape/Cancel no-op, Confirm is the only submit path, pending state prevents duplicates; inline errors use aria-invalid/aria-describedby and focus the first invalid control.",
+          "Tests drive real dialogs and cover validation, keyboard, cancel/confirm, approval finality, edit redirect and 375/768/1024 no-overflow; P1 PDF and P3 responsive checks retained.",
+          "Development database before/after fingerprints identical; disposable E2E DB cleanup=true and preserved=true.",
+          "Delegation exhaustion and orchestrator-as-single-writer recorded honestly; token/cost unmeasured; three test-harness validation failures recorded, not hidden.",
+          "Non-blocking caveats: product-code byte-identity across failed validation iterations cannot be re-derived from git; vendor edit form confirms deactivation but not reactivation (list reactivation does confirm)."
+        ],
+        "sessionID": "ses_e6162044affeH40obCGOLIvcFg",
+        "reviewedAt": "2026-11-03T00:13:54.493Z"
+      },
+      "completedAt": "2026-11-03T00:13:54.494Z"
     },
     {
       "id": "Q1-T5",
@@ -841,7 +945,7 @@
       "brief": "Full gates/unit/PostgreSQL integration/E2E/build; actual PDF draft+approved content, development fingerprints unchanged, keyboard/accessibility/responsive and immutability regression; independent acceptance, push and CI verification."
     }
   ],
-  "updatedAt": "2026-11-02T23:02:38.535Z",
+  "updatedAt": "2026-11-03T00:13:54.494Z",
   "authorization": {
     "authorizedBy": "owner",
     "authorizedAt": "2026-11-02",
