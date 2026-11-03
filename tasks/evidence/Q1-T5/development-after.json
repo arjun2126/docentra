@@ -1,0 +1,779 @@
+{
+  "vendor": {
+    "count": 13,
+    "fingerprint": "85967cd9f1e9b89b36fb49f897ee7694",
+    "rows": [
+      {
+        "id": 1,
+        "code": "V-001",
+        "name": "Northwind Paper",
+        "email": "sales@northwind.example",
+        "phone": "+1-555-0101",
+        "address": "18 Mill Lane, Portland",
+        "is_active": true,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "id": 2,
+        "code": "V-002",
+        "name": "Baltic Office Supply",
+        "email": "orders@baltic.example",
+        "phone": "+1-555-0102",
+        "address": "4 Harbour Road, Riga",
+        "is_active": true,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "id": 3,
+        "code": "V-003",
+        "name": "Cedar Print Works",
+        "email": "hello@cedarprint.example",
+        "phone": "+1-555-0103",
+        "address": "92 Cedar Street, Austin",
+        "is_active": true,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "id": 4,
+        "code": "V-004",
+        "name": "Meridian Hardware",
+        "email": "team@meridian.example",
+        "phone": "+1-555-0104",
+        "address": "7 Meridian Way, Denver",
+        "is_active": true,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "id": 37,
+        "code": "V-005",
+        "name": "Lantern Cleaning Co",
+        "email": "service@lantern.example",
+        "phone": "+1-555-0105",
+        "address": "31 Lantern Court, Boston",
+        "is_active": true,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "id": 38,
+        "code": "V-006",
+        "name": "Orbit IT Services",
+        "email": "support@orbit.example",
+        "phone": "+1-555-0106",
+        "address": "120 Orbit Plaza, Seattle",
+        "is_active": true,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "id": 45,
+        "code": "E2E-1793651601790",
+        "name": "E2E Supply 1793651601790",
+        "email": null,
+        "phone": null,
+        "address": null,
+        "is_active": true,
+        "created_at": "2026-11-02T20:33:25.873+00:00",
+        "updated_at": "2026-11-02T20:33:25.873+00:00"
+      },
+      {
+        "id": 46,
+        "code": "E2E-1793651626333",
+        "name": "E2E Supply 1793651626333",
+        "email": null,
+        "phone": null,
+        "address": null,
+        "is_active": true,
+        "created_at": "2026-11-02T20:33:48.358+00:00",
+        "updated_at": "2026-11-02T20:33:48.358+00:00"
+      },
+      {
+        "id": 53,
+        "code": "E2E-1793651641456",
+        "name": "E2E Supply 1793651641456",
+        "email": null,
+        "phone": null,
+        "address": null,
+        "is_active": true,
+        "created_at": "2026-11-02T20:34:03.261+00:00",
+        "updated_at": "2026-11-02T20:34:03.261+00:00"
+      },
+      {
+        "id": 54,
+        "code": "E2E-1793651671952",
+        "name": "E2E Supply 1793651671952",
+        "email": null,
+        "phone": null,
+        "address": null,
+        "is_active": true,
+        "created_at": "2026-11-02T20:34:33.519+00:00",
+        "updated_at": "2026-11-02T20:34:33.519+00:00"
+      },
+      {
+        "id": 61,
+        "code": "E2E-1793654710634",
+        "name": "E2E Supply 1793654710634",
+        "email": null,
+        "phone": null,
+        "address": null,
+        "is_active": true,
+        "created_at": "2026-11-02T21:25:11.454+00:00",
+        "updated_at": "2026-11-02T21:25:11.454+00:00"
+      },
+      {
+        "id": 62,
+        "code": "E2E-1793654731615",
+        "name": "E2E Supply 1793654731615",
+        "email": null,
+        "phone": null,
+        "address": null,
+        "is_active": true,
+        "created_at": "2026-11-02T21:25:31.981+00:00",
+        "updated_at": "2026-11-02T21:25:31.981+00:00"
+      },
+      {
+        "id": 63,
+        "code": "E2E-1793654801600",
+        "name": "E2E Supply 1793654801600",
+        "email": null,
+        "phone": null,
+        "address": null,
+        "is_active": true,
+        "created_at": "2026-11-02T21:26:43.405+00:00",
+        "updated_at": "2026-11-02T21:26:43.405+00:00"
+      }
+    ]
+  },
+  "document_header": {
+    "count": 19,
+    "fingerprint": "f24a90ba4d9a6d18a418eaeb74c1c768",
+    "rows": [
+      {
+        "shno": 1,
+        "document_number": "DOC-2026-000001",
+        "document_date": "2026-06-03",
+        "vendor_id": 1,
+        "status": "approved",
+        "total_amount": 120.5,
+        "line_count": 2,
+        "notes": "Quarterly paper restock",
+        "version": 1,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 2,
+        "document_number": "DOC-2026-000002",
+        "document_date": "2026-06-11",
+        "vendor_id": 2,
+        "status": "approved",
+        "total_amount": 102.46,
+        "line_count": 3,
+        "notes": "Desk supplies for the new floor",
+        "version": 1,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 3,
+        "document_number": "DOC-2026-000003",
+        "document_date": "2026-06-24",
+        "vendor_id": 3,
+        "status": "approved",
+        "total_amount": 325,
+        "line_count": 4,
+        "notes": "Summer brochure print run",
+        "version": 1,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 4,
+        "document_number": "DOC-2026-000004",
+        "document_date": "2026-07-02",
+        "vendor_id": 4,
+        "status": "rejected",
+        "total_amount": 90,
+        "line_count": 1,
+        "notes": "Rejected: prices above the agreed quote",
+        "version": 1,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 5,
+        "document_number": "DOC-2026-000005",
+        "document_date": "2026-07-09",
+        "vendor_id": 1,
+        "status": "approved",
+        "total_amount": 70.5,
+        "line_count": 2,
+        "notes": "Archive boxes for records",
+        "version": 1,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 6,
+        "document_number": "DOC-2026-000006",
+        "document_date": "2026-07-21",
+        "vendor_id": 2,
+        "status": "submitted",
+        "total_amount": 118.4,
+        "line_count": 3,
+        "notes": "Pantry supplies, awaiting sign-off",
+        "version": 1,
+        "created_at": "2026-11-02T19:42:11.59294+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 39,
+        "document_number": "DOC-2026-000007",
+        "document_date": "2026-08-04",
+        "vendor_id": 37,
+        "status": "approved",
+        "total_amount": 590,
+        "line_count": 2,
+        "notes": "Monthly contract cleaning",
+        "version": 1,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 40,
+        "document_number": "DOC-2026-000008",
+        "document_date": "2026-08-13",
+        "vendor_id": 38,
+        "status": "submitted",
+        "total_amount": 831,
+        "line_count": 2,
+        "notes": "Workstation refresh",
+        "version": 1,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 41,
+        "document_number": "DOC-2026-000009",
+        "document_date": "2026-08-27",
+        "vendor_id": 3,
+        "status": "draft",
+        "total_amount": 1600,
+        "line_count": 2,
+        "notes": "Autumn catalogue, still being priced",
+        "version": 1,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 42,
+        "document_number": "DOC-2026-000010",
+        "document_date": "2026-09-08",
+        "vendor_id": 4,
+        "status": "approved",
+        "total_amount": 218.5,
+        "line_count": 3,
+        "notes": "Workshop consumables",
+        "version": 1,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 43,
+        "document_number": "DOC-2026-000011",
+        "document_date": "2026-09-19",
+        "vendor_id": 37,
+        "status": "rejected",
+        "total_amount": 420,
+        "line_count": 1,
+        "notes": "Rejected: duplicate of the August contract",
+        "version": 1,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 44,
+        "document_number": "DOC-2026-000012",
+        "document_date": "2026-10-01",
+        "vendor_id": 38,
+        "status": "draft",
+        "total_amount": 745.99,
+        "line_count": 2,
+        "notes": "Backup drives for the archive project",
+        "version": 1,
+        "created_at": "2026-11-02T20:32:58.140708+00:00",
+        "updated_at": "2026-11-02T20:35:04.968023+00:00"
+      },
+      {
+        "shno": 57,
+        "document_number": "DOC-2026-000013",
+        "document_date": "2026-10-05",
+        "vendor_id": 45,
+        "status": "approved",
+        "total_amount": 24.75,
+        "line_count": 2,
+        "notes": null,
+        "version": 3,
+        "created_at": "2026-11-02T20:33:27.189+00:00",
+        "updated_at": "2026-11-02T20:33:28.689+00:00"
+      },
+      {
+        "shno": 58,
+        "document_number": "DOC-2026-000014",
+        "document_date": "2026-10-05",
+        "vendor_id": 46,
+        "status": "approved",
+        "total_amount": 24.75,
+        "line_count": 2,
+        "notes": null,
+        "version": 3,
+        "created_at": "2026-11-02T20:33:49.886+00:00",
+        "updated_at": "2026-11-02T20:33:50.779+00:00"
+      },
+      {
+        "shno": 71,
+        "document_number": "DOC-2026-000015",
+        "document_date": "2026-10-05",
+        "vendor_id": 53,
+        "status": "approved",
+        "total_amount": 24.75,
+        "line_count": 2,
+        "notes": null,
+        "version": 3,
+        "created_at": "2026-11-02T20:34:04.826+00:00",
+        "updated_at": "2026-11-02T20:34:06.207+00:00"
+      },
+      {
+        "shno": 72,
+        "document_number": "DOC-2026-000016",
+        "document_date": "2026-10-05",
+        "vendor_id": 54,
+        "status": "approved",
+        "total_amount": 24.75,
+        "line_count": 2,
+        "notes": null,
+        "version": 3,
+        "created_at": "2026-11-02T20:34:34.734+00:00",
+        "updated_at": "2026-11-02T20:34:35.625+00:00"
+      },
+      {
+        "shno": 85,
+        "document_number": "DOC-2026-000017",
+        "document_date": "2026-10-05",
+        "vendor_id": 61,
+        "status": "approved",
+        "total_amount": 24.75,
+        "line_count": 2,
+        "notes": null,
+        "version": 3,
+        "created_at": "2026-11-02T21:25:11.734+00:00",
+        "updated_at": "2026-11-02T21:25:12.012+00:00"
+      },
+      {
+        "shno": 86,
+        "document_number": "DOC-2026-000018",
+        "document_date": "2026-10-05",
+        "vendor_id": 62,
+        "status": "draft",
+        "total_amount": 24.75,
+        "line_count": 2,
+        "notes": null,
+        "version": 1,
+        "created_at": "2026-11-02T21:25:32.25+00:00",
+        "updated_at": "2026-11-02T21:25:32.243459+00:00"
+      },
+      {
+        "shno": 87,
+        "document_number": "DOC-2026-000019",
+        "document_date": "2026-10-05",
+        "vendor_id": 63,
+        "status": "approved",
+        "total_amount": 24.75,
+        "line_count": 2,
+        "notes": null,
+        "version": 3,
+        "created_at": "2026-11-02T21:26:44.725+00:00",
+        "updated_at": "2026-11-02T21:26:45.626+00:00"
+      }
+    ]
+  },
+  "document_detail": {
+    "count": 41,
+    "fingerprint": "b04dac65acd2bbe4587c2058a6fc1a6f",
+    "rows": [
+      {
+        "detail_id": 130,
+        "shno": 57,
+        "line_no": 1,
+        "item": "A4 paper",
+        "quantity": 2,
+        "price": 10.5,
+        "amount": 21
+      },
+      {
+        "detail_id": 131,
+        "shno": 57,
+        "line_no": 2,
+        "item": "Toner",
+        "quantity": 3,
+        "price": 1.25,
+        "amount": 3.75
+      },
+      {
+        "detail_id": 132,
+        "shno": 58,
+        "line_no": 1,
+        "item": "A4 paper",
+        "quantity": 2,
+        "price": 10.5,
+        "amount": 21
+      },
+      {
+        "detail_id": 133,
+        "shno": 58,
+        "line_no": 2,
+        "item": "Toner",
+        "quantity": 3,
+        "price": 1.25,
+        "amount": 3.75
+      },
+      {
+        "detail_id": 161,
+        "shno": 71,
+        "line_no": 1,
+        "item": "A4 paper",
+        "quantity": 2,
+        "price": 10.5,
+        "amount": 21
+      },
+      {
+        "detail_id": 162,
+        "shno": 71,
+        "line_no": 2,
+        "item": "Toner",
+        "quantity": 3,
+        "price": 1.25,
+        "amount": 3.75
+      },
+      {
+        "detail_id": 163,
+        "shno": 72,
+        "line_no": 1,
+        "item": "A4 paper",
+        "quantity": 2,
+        "price": 10.5,
+        "amount": 21
+      },
+      {
+        "detail_id": 164,
+        "shno": 72,
+        "line_no": 2,
+        "item": "Toner",
+        "quantity": 3,
+        "price": 1.25,
+        "amount": 3.75
+      },
+      {
+        "detail_id": 165,
+        "shno": 1,
+        "line_no": 1,
+        "item": "A4 paper, 500 sheets",
+        "quantity": 20,
+        "price": 4.25,
+        "amount": 85
+      },
+      {
+        "detail_id": 166,
+        "shno": 1,
+        "line_no": 2,
+        "item": "A3 paper, 500 sheets",
+        "quantity": 5,
+        "price": 7.1,
+        "amount": 35.5
+      },
+      {
+        "detail_id": 167,
+        "shno": 2,
+        "line_no": 1,
+        "item": "Stapler",
+        "quantity": 4,
+        "price": 12.99,
+        "amount": 51.96
+      },
+      {
+        "detail_id": 168,
+        "shno": 2,
+        "line_no": 2,
+        "item": "Staples, box",
+        "quantity": 10,
+        "price": 1.45,
+        "amount": 14.5
+      },
+      {
+        "detail_id": 169,
+        "shno": 2,
+        "line_no": 3,
+        "item": "Hole punch",
+        "quantity": 2,
+        "price": 18,
+        "amount": 36
+      },
+      {
+        "detail_id": 170,
+        "shno": 3,
+        "line_no": 1,
+        "item": "Brochure, 8pp",
+        "quantity": 500,
+        "price": 0.42,
+        "amount": 210
+      },
+      {
+        "detail_id": 171,
+        "shno": 3,
+        "line_no": 2,
+        "item": "Folding",
+        "quantity": 500,
+        "price": 0.08,
+        "amount": 40
+      },
+      {
+        "detail_id": 172,
+        "shno": 3,
+        "line_no": 3,
+        "item": "Delivery",
+        "quantity": 1,
+        "price": 45,
+        "amount": 45
+      },
+      {
+        "detail_id": 173,
+        "shno": 3,
+        "line_no": 4,
+        "item": "Proof copy",
+        "quantity": 2,
+        "price": 15,
+        "amount": 30
+      },
+      {
+        "detail_id": 174,
+        "shno": 4,
+        "line_no": 1,
+        "item": "Shelving bracket",
+        "quantity": 24,
+        "price": 3.75,
+        "amount": 90
+      },
+      {
+        "detail_id": 175,
+        "shno": 5,
+        "line_no": 1,
+        "item": "Archive box",
+        "quantity": 30,
+        "price": 2.2,
+        "amount": 66
+      },
+      {
+        "detail_id": 176,
+        "shno": 5,
+        "line_no": 2,
+        "item": "Box labels",
+        "quantity": 30,
+        "price": 0.15,
+        "amount": 4.5
+      },
+      {
+        "detail_id": 177,
+        "shno": 6,
+        "line_no": 1,
+        "item": "Coffee, 1kg",
+        "quantity": 6,
+        "price": 14.8,
+        "amount": 88.8
+      },
+      {
+        "detail_id": 178,
+        "shno": 6,
+        "line_no": 2,
+        "item": "Filters",
+        "quantity": 4,
+        "price": 3.3,
+        "amount": 13.2
+      },
+      {
+        "detail_id": 179,
+        "shno": 6,
+        "line_no": 3,
+        "item": "Cups, pack",
+        "quantity": 8,
+        "price": 2.05,
+        "amount": 16.4
+      },
+      {
+        "detail_id": 180,
+        "shno": 39,
+        "line_no": 1,
+        "item": "Cleaning service, August",
+        "quantity": 1,
+        "price": 420,
+        "amount": 420
+      },
+      {
+        "detail_id": 181,
+        "shno": 39,
+        "line_no": 2,
+        "item": "Window cleaning",
+        "quantity": 2,
+        "price": 85,
+        "amount": 170
+      },
+      {
+        "detail_id": 182,
+        "shno": 40,
+        "line_no": 1,
+        "item": "Docking station",
+        "quantity": 6,
+        "price": 129,
+        "amount": 774
+      },
+      {
+        "detail_id": 183,
+        "shno": 40,
+        "line_no": 2,
+        "item": "USB-C cable, 2m",
+        "quantity": 6,
+        "price": 9.5,
+        "amount": 57
+      },
+      {
+        "detail_id": 184,
+        "shno": 41,
+        "line_no": 1,
+        "item": "Catalogue, 16pp",
+        "quantity": 2000,
+        "price": 0.61,
+        "amount": 1220
+      },
+      {
+        "detail_id": 185,
+        "shno": 41,
+        "line_no": 2,
+        "item": "Perfect binding",
+        "quantity": 2000,
+        "price": 0.19,
+        "amount": 380
+      },
+      {
+        "detail_id": 186,
+        "shno": 42,
+        "line_no": 1,
+        "item": "Drill bit set",
+        "quantity": 3,
+        "price": 34.9,
+        "amount": 104.7
+      },
+      {
+        "detail_id": 187,
+        "shno": 42,
+        "line_no": 2,
+        "item": "Safety gloves, pair",
+        "quantity": 12,
+        "price": 6.4,
+        "amount": 76.8
+      },
+      {
+        "detail_id": 188,
+        "shno": 42,
+        "line_no": 3,
+        "item": "Masking tape",
+        "quantity": 20,
+        "price": 1.85,
+        "amount": 37
+      },
+      {
+        "detail_id": 189,
+        "shno": 43,
+        "line_no": 1,
+        "item": "Cleaning service, September",
+        "quantity": 1,
+        "price": 420,
+        "amount": 420
+      },
+      {
+        "detail_id": 190,
+        "shno": 44,
+        "line_no": 1,
+        "item": "External SSD, 2TB",
+        "quantity": 4,
+        "price": 164,
+        "amount": 656
+      },
+      {
+        "detail_id": 191,
+        "shno": 44,
+        "line_no": 2,
+        "item": "Label printer",
+        "quantity": 1,
+        "price": 89.99,
+        "amount": 89.99
+      },
+      {
+        "detail_id": 192,
+        "shno": 85,
+        "line_no": 1,
+        "item": "A4 paper",
+        "quantity": 2,
+        "price": 10.5,
+        "amount": 21
+      },
+      {
+        "detail_id": 193,
+        "shno": 85,
+        "line_no": 2,
+        "item": "Toner",
+        "quantity": 3,
+        "price": 1.25,
+        "amount": 3.75
+      },
+      {
+        "detail_id": 194,
+        "shno": 86,
+        "line_no": 1,
+        "item": "A4 paper",
+        "quantity": 2,
+        "price": 10.5,
+        "amount": 21
+      },
+      {
+        "detail_id": 195,
+        "shno": 86,
+        "line_no": 2,
+        "item": "Toner",
+        "quantity": 3,
+        "price": 1.25,
+        "amount": 3.75
+      },
+      {
+        "detail_id": 196,
+        "shno": 87,
+        "line_no": 1,
+        "item": "A4 paper",
+        "quantity": 2,
+        "price": 10.5,
+        "amount": 21
+      },
+      {
+        "detail_id": 197,
+        "shno": 87,
+        "line_no": 2,
+        "item": "Toner",
+        "quantity": 3,
+        "price": 1.25,
+        "amount": 3.75
+      }
+    ]
+  }
+}
